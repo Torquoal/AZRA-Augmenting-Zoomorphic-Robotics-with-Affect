@@ -204,7 +204,15 @@ public class FaceController : MonoBehaviour
                 }
                 break;
             case "sad":
-                targetMaterial = sadFaceMaterial;
+                if (faceAnimationController != null)
+                {
+                    targetMaterial = faceAnimationController.GetAnimatedMaterial();
+                    shouldAnimate = true;
+                }
+                else
+                {
+                    targetMaterial = sadFaceMaterial;
+                }
                 break;
             case "angry":
                 if (faceAnimationController != null)
@@ -218,10 +226,26 @@ public class FaceController : MonoBehaviour
                 }
                 break;
             case "scared":
-                targetMaterial = scaredFaceMaterial;
+                if (faceAnimationController != null)
+                {
+                    targetMaterial = faceAnimationController.GetAnimatedMaterial();
+                    shouldAnimate = true;
+                }
+                else
+                {
+                    targetMaterial = scaredFaceMaterial;
+                }
                 break;
             case "surprised":
-                targetMaterial = surprisedFaceMaterial;
+                if (faceAnimationController != null)
+                {
+                    targetMaterial = faceAnimationController.GetAnimatedMaterial();
+                    shouldAnimate = true;
+                }
+                else
+                {
+                    targetMaterial = surprisedFaceMaterial;
+                }
                 break;
             case "sleepy":
                 targetMaterial = sleepyFaceMaterial;

@@ -228,7 +228,7 @@ public class EmotionController : MonoBehaviour
             case "loudnoise":
                 sceneController.PlaySound("surprised");
                 sceneController.ShowThought("exclamation");
-                sceneController.SetFaceExpression("shocked");
+                sceneController.SetFaceExpression("scared");
                 sceneController.TailsEmotion("surprised");
                 break;
             case "happyheard":
