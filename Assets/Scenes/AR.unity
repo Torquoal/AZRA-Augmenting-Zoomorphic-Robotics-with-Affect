@@ -25518,6 +25518,14 @@ PrefabInstance:
       propertyPath: emotionController
       value: 
       objectReference: {fileID: 799751471}
+    - target: {fileID: 7823492866149849621, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: thoughtSprites.Array.size
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 7823492866149849621, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: thoughtSprites.Array.data[18]
+      value: 
+      objectReference: {fileID: 21300000, guid: c335c6829af40b040b0a5f26d5016c8f, type: 3}
     - target: {fileID: 8499722750547292698, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: _whenHover.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

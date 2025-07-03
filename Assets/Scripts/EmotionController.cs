@@ -250,10 +250,10 @@ public class EmotionController : MonoBehaviour
                 sceneController.ShowThought("hand");
                 break;
             case "lookingaway":
-                sceneController.ShowThought("eyes");
+                sceneController.ShowThought("looking");
                 break;
             case "lookingtowards":
-                sceneController.ShowThought("eyes");
+                sceneController.ShowThought("looking");
                 break;
         }
 
