@@ -15,7 +15,7 @@ public class ExperimentalEmotionController : EmotionController
             lastPassiveUpdateTime = Time.time;
         }
 
-        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+        if (Keyboard.current != null && Keyboard.current.ctrlKey.wasPressedThisFrame)
         {
             emotionModel.WakeUp();
             Debug.Log("SMILE space pressed ");
@@ -35,7 +35,7 @@ public class ExperimentalEmotionController : EmotionController
 
     public bool TryDisplayEmotion(string displayString, string triggerEvent, bool bypassCooldown = false)
     {
-        if (!hasInitialized || !sceneController.IsWakeUpComplete())
+        if (!sceneController.IsWakeUpComplete())
         {
             Debug.Log("Cannot display emotion - system not initialized or wake-up not complete");
             return false;
