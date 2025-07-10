@@ -9194,7 +9194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneController: {fileID: 799751467}
-  emotionModel: {fileID: 799751474}
+  emotionModel: {fileID: 0}
   emotionText: {fileID: 996060955}
   voiceDetector: {fileID: 1629618762}
   showDebugText: 1
@@ -9220,7 +9220,7 @@ MonoBehaviour:
   responseText: {fileID: 1139059944}
   gaugeValuesText: {fileID: 313650714}
   arCamera: {fileID: 1222378856}
-  emotionModel: {fileID: 799751474}
+  emotionModel: {fileID: 0}
   emotionController: {fileID: 799751471}
   showDebugRay: 0
   debugRayLength: 2
@@ -9259,25 +9259,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 799751465}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b2c9eca53792884b81c596ac2c0d1e2, type: 3}
+  m_Script: {fileID: 11500000, guid: 24488247742117f48928a0d959449b18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  longTermValence: 1.75
-  longTermArousal: 2.15
-  moodValence: 2.02
-  moodArousal: 2.02
+  longTermValence: 10
+  longTermArousal: 0
+  moodValence: 0
+  moodArousal: 0
   currentTemperament: 
   currentMood: 
   showDebugLogs: 1
   useAcceleratedTesting: 0
-  usePersistentEmotions: 0
-  randomizeMoodOnStart: 0
-  testingMultiplier: 250
+  usePersistentEmotions: 1
+  randomizeMoodOnStart: 1
+  testingMultiplier: 180
   responseChance: 100
-  touchGauge: 83.6
-  restGauge: 89.2
-  socialGauge: 90
-  hungerGauge: 91.1
+  touchGauge: 50
+  restGauge: 50
+  socialGauge: 50
+  hungerGauge: 50
   touchFulfilled: 70
   touchNeeded: 30
   restFulfilled: 70
@@ -9288,8 +9288,36 @@ MonoBehaviour:
   hungerNeeded: 30
   maxSleepDuration: 14400
   restRegenerationRate: 0.0069444445
-  sceneController: {fileID: 799751467}
-  emotionController: {fileID: 799751471}
+  sceneController: {fileID: 0}
+  emotionController: {fileID: 0}
+  longTermValence: 10
+  longTermArousal: 0
+  moodValence: 0
+  moodArousal: 0
+  currentTemperament: 
+  currentMood: 
+  showDebugLogs: 1
+  useAcceleratedTesting: 0
+  usePersistentEmotions: 1
+  randomizeMoodOnStart: 1
+  testingMultiplier: 180
+  responseChance: 100
+  touchGauge: 50
+  restGauge: 50
+  socialGauge: 50
+  hungerGauge: 50
+  touchFulfilled: 70
+  touchNeeded: 30
+  restFulfilled: 70
+  restNeeded: 30
+  socialFulfilled: 70
+  socialNeeded: 30
+  hungerFulfilled: 70
+  hungerNeeded: 30
+  maxSleepDuration: 14400
+  restRegenerationRate: 0.0069444445
+  sceneController: {fileID: 0}
+  emotionController: {fileID: 0}
 --- !u!1 &799816403
 GameObject:
   m_ObjectHideFlags: 0
@@ -25505,7 +25533,7 @@ PrefabInstance:
     - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: emotionModel
       value: 
-      objectReference: {fileID: 799751474}
+      objectReference: {fileID: 0}
     - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: showDebugLogs
       value: 0
