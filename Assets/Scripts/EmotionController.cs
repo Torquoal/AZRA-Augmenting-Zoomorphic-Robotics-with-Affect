@@ -5,32 +5,32 @@ using System.Collections;
 public class EmotionController : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private SceneController sceneController;
-    [SerializeField] private EmotionModel emotionModel;
-    [SerializeField] private TextMeshProUGUI emotionText;
-    [SerializeField] private VoiceDetector voiceDetector;
+    [SerializeField] protected SceneController sceneController;
+    [SerializeField] protected EmotionModel emotionModel;
+    [SerializeField] protected TextMeshProUGUI emotionText;
+    [SerializeField] protected VoiceDetector voiceDetector;
 
     [Header("Debug Settings")]
-    [SerializeField] private bool showDebugText = true;
-    [SerializeField] private string emotionFormat = "Emotion: {0}";
+    [SerializeField] protected bool showDebugText = true;
+    [SerializeField] protected string emotionFormat = "Emotion: {0}";
 
     [Header("Display Settings")]
-    [SerializeField] private float displayDuration = 10f;  // Duration before returning to neutral
-    [SerializeField] private float displayCooldown = 5f;   // Cooldown period before another display can be shown
-    [SerializeField] private float passiveUpdateInterval = 5f; // How often to update passive expression
+    [SerializeField] protected float displayDuration = 10f;  // Duration before returning to neutral
+    [SerializeField] protected float displayCooldown = 5f;   // Cooldown period before another display can be shown
+    [SerializeField] protected float passiveUpdateInterval = 5f; // How often to update passive expression
 
-    private bool hasInitialized = false;
-    private float lastDisplayTime = -999f;
-    private float lastPassiveUpdateTime = 0f;
-    private Coroutine resetCoroutine;
-    private string currentDisplayString = "Neutral";
-    private string currentTriggerEvent = "";
-    private bool isShowingEmotionalDisplay = false;
+    protected bool hasInitialized = false;
+    protected float lastDisplayTime = -999f;
+    protected float lastPassiveUpdateTime = 0f;
+    protected Coroutine resetCoroutine;
+    protected string currentDisplayString = "Neutral";
+    protected string currentTriggerEvent = "";
+    protected bool isShowingEmotionalDisplay = false;
 
     // Helper property to calculate time since last display
-    private float TimeSinceLastDisplay => Time.time - lastDisplayTime;
+    protected float TimeSinceLastDisplay => Time.time - lastDisplayTime;
 
-    private void Start()
+    protected void Start()
     {
         if (sceneController == null)
         {
@@ -60,7 +60,7 @@ public class EmotionController : MonoBehaviour
         UpdateEmotionDisplay();
     }
 
-    private void OnDestroy()
+    protected void OnDestroy()
     {
         if (voiceDetector != null)
         {
@@ -68,7 +68,7 @@ public class EmotionController : MonoBehaviour
         }
     }
 
-    private void HandleLoudSound()
+    protected void HandleLoudSound()
     {
         // Get emotional response from model
         EmotionModel.EmotionalResponseResult response = emotionModel.CalculateEmotionalResponse("loudnoise");
@@ -83,7 +83,7 @@ public class EmotionController : MonoBehaviour
         DisplayEmotionInternal(response.EmotionToDisplay, "loudnoise");
     }
 
-    private void Update()
+    protected void Update()
     {
         // Only update passive expression if not showing an emotional display and not asleep
         if (!isShowingEmotionalDisplay && !emotionModel.IsAsleep && Time.time - lastPassiveUpdateTime >= passiveUpdateInterval)
@@ -93,7 +93,7 @@ public class EmotionController : MonoBehaviour
         }
     }
 
-    private void UpdatePassiveExpression()
+    protected void UpdatePassiveExpression()
     {
         if (!hasInitialized || !sceneController.IsWakeUpComplete()) return;
 
@@ -149,7 +149,7 @@ public class EmotionController : MonoBehaviour
         }
     }
 
-    private void DisplaySleepState()
+    protected void DisplaySleepState()
     {
         if (showDebugText)
             Debug.Log("Displaying sleep state");
@@ -167,7 +167,7 @@ public class EmotionController : MonoBehaviour
         sceneController.HideLightSphere();
     }
 
-    private void ApplySpecialDisplayOverrides(string triggerEvent)
+    protected void ApplySpecialDisplayOverrides(string triggerEvent)
     {
         if (showDebugText)
             Debug.Log($"Checking special display overrides for: {triggerEvent}");
@@ -264,7 +264,7 @@ public class EmotionController : MonoBehaviour
         }
     }
 
-    private IEnumerator AutoResetThoughtBubble()
+    protected IEnumerator AutoResetThoughtBubble()
     {
         yield return new WaitForSeconds(10f); // Wait for 10 seconds
         sceneController.HideThought();
@@ -435,7 +435,7 @@ public class EmotionController : MonoBehaviour
         }
     }
 
-    private void UpdateEmotionDisplay()
+    protected void UpdateEmotionDisplay()
     {
         if (emotionText != null)
         {
@@ -452,7 +452,7 @@ public class EmotionController : MonoBehaviour
         }
     }
 
-    private IEnumerator AutoResetDisplay()
+    protected IEnumerator AutoResetDisplay()
     {
         yield return new WaitForSeconds(displayDuration);
 
@@ -504,7 +504,7 @@ public class EmotionController : MonoBehaviour
         return true;
     }
 
-    private bool CanDisplayEmotion()
+    protected bool CanDisplayEmotion()
     {
         return !isShowingEmotionalDisplay && Time.time - lastDisplayTime >= displayCooldown;
     }

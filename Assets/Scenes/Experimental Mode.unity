@@ -9065,7 +9065,7 @@ GameObject:
   - component: {fileID: 799751467}
   - component: {fileID: 799751468}
   - component: {fileID: 799751470}
-  - component: {fileID: 799751471}
+  - component: {fileID: 799751475}
   - component: {fileID: 799751472}
   - component: {fileID: 799751473}
   - component: {fileID: 799751474}
@@ -9108,7 +9108,7 @@ MonoBehaviour:
   thoughtBubble: {fileID: 1691779974}
   faceController: {fileID: 963561172}
   distanceTracker: {fileID: 799751470}
-  emotionController: {fileID: 799751471}
+  emotionController: {fileID: 0}
   tailAnimations: {fileID: 1112418009}
   strokeDetector: {fileID: 318212778}
   emotionModel: {fileID: 799751474}
@@ -9181,27 +9181,6 @@ MonoBehaviour:
   showDebugText: 0
   distanceFormat: 'Distance: {0:F2}m'
   updateInterval: 0.1
---- !u!114 &799751471
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 799751465}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e077369bfe108e40b370d6c3fb7a476, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneController: {fileID: 799751467}
-  emotionModel: {fileID: 0}
-  emotionText: {fileID: 996060955}
-  voiceDetector: {fileID: 1629618762}
-  showDebugText: 1
-  emotionFormat: 'Emotion: {0}'
-  displayDuration: 10
-  displayCooldown: 5
-  passiveUpdateInterval: 10
 --- !u!114 &799751472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9221,7 +9200,7 @@ MonoBehaviour:
   gaugeValuesText: {fileID: 313650714}
   arCamera: {fileID: 1222378856}
   emotionModel: {fileID: 0}
-  emotionController: {fileID: 799751471}
+  emotionController: {fileID: 0}
   showDebugRay: 0
   debugRayLength: 2
   debugRayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
@@ -9290,34 +9269,27 @@ MonoBehaviour:
   restRegenerationRate: 0.0069444445
   sceneController: {fileID: 0}
   emotionController: {fileID: 0}
-  longTermValence: 10
-  longTermArousal: 0
-  moodValence: 0
-  moodArousal: 0
-  currentTemperament: 
-  currentMood: 
-  showDebugLogs: 1
-  useAcceleratedTesting: 0
-  usePersistentEmotions: 1
-  randomizeMoodOnStart: 1
-  testingMultiplier: 180
-  responseChance: 100
-  touchGauge: 50
-  restGauge: 50
-  socialGauge: 50
-  hungerGauge: 50
-  touchFulfilled: 70
-  touchNeeded: 30
-  restFulfilled: 70
-  restNeeded: 30
-  socialFulfilled: 70
-  socialNeeded: 30
-  hungerFulfilled: 70
-  hungerNeeded: 30
-  maxSleepDuration: 14400
-  restRegenerationRate: 0.0069444445
-  sceneController: {fileID: 0}
-  emotionController: {fileID: 0}
+--- !u!114 &799751475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 799751465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46811026227086d41b22ba352520bada, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneController: {fileID: 799751467}
+  emotionModel: {fileID: 799751474}
+  emotionText: {fileID: 996060955}
+  voiceDetector: {fileID: 1629618762}
+  showDebugText: 1
+  emotionFormat: 'Emotion: {0}'
+  displayDuration: 10
+  displayCooldown: 5
+  passiveUpdateInterval: 5
 --- !u!1 &799816403
 GameObject:
   m_ObjectHideFlags: 0
@@ -25545,7 +25517,7 @@ PrefabInstance:
     - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: emotionController
       value: 
-      objectReference: {fileID: 799751471}
+      objectReference: {fileID: 0}
     - target: {fileID: 7823492866149849621, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: thoughtSprites.Array.size
       value: 18
@@ -25557,7 +25529,7 @@ PrefabInstance:
     - target: {fileID: 8499722750547292698, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: _whenHover.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 799751471}
+      objectReference: {fileID: 0}
     - target: {fileID: 8499722750547292698, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: _whenUnhover.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

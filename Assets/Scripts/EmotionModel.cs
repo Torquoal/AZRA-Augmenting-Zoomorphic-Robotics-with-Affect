@@ -7,34 +7,34 @@ using System.Linq;
 public class EmotionModel : MonoBehaviour
 {
     
-    [SerializeField] [Range(-10, 10)] private float longTermValence = 10f;
-    [SerializeField] [Range(-10, 10)] private float longTermArousal = 0f;
+    [SerializeField] [Range(-10, 10)] protected float longTermValence = 10f;
+    [SerializeField] [Range(-10, 10)] protected float longTermArousal = 0f;
 
-    [SerializeField] [Range(-10, 10)] private float moodValence;
-    [SerializeField] [Range(-10, 10)] private float moodArousal;
+    [SerializeField] [Range(-10, 10)] protected float moodValence;
+    [SerializeField] [Range(-10, 10)] protected float moodArousal;
 
-    private float eventWeight = 0.7f;
-    private float moodWeight = 0.3f;
+    protected float eventWeight = 0.7f;
+    protected float moodWeight = 0.3f;
 
-    private float moodValenceOnWakeup;
-    private float arousalArousalOnWakup;
+    protected float moodValenceOnWakeup;
+    protected float arousalArousalOnWakup;
 
     // Set initial current emotional state
-    [SerializeField] private string currentTemperament;
-    [SerializeField] private string currentMood;
+    [SerializeField] protected string currentTemperament;
+    [SerializeField] protected string currentMood;
     
     [Header("Debug Settings")]
-    [SerializeField] private bool showDebugLogs = true;
-    [SerializeField] private bool useAcceleratedTesting = false;
-    [SerializeField] private bool usePersistentEmotions = true;  // Toggle for persistent emotions
-    [SerializeField] private bool randomizeMoodOnStart = true;  // Toggle for mood randomization
-    [SerializeField] private float testingMultiplier = 180f; // Speed up time for testing
+    [SerializeField] protected bool showDebugLogs = true;
+    [SerializeField] protected bool useAcceleratedTesting = false;
+    [SerializeField] protected bool usePersistentEmotions = true;  // Toggle for persistent emotions
+    [SerializeField] protected bool randomizeMoodOnStart = true;  // Toggle for mood randomization
+    [SerializeField] protected float testingMultiplier = 180f; // Speed up time for testing
 
     [Header("Response Settings")]
-    [SerializeField] [Range(0, 100)] private float responseChance = 100f; // Percentage chance to show emotional response
+    [SerializeField] [Range(0, 100)] protected float responseChance = 100f; // Percentage chance to show emotional response
 
     // Struct to hold the emotional response values
-    private struct EmotionalResponseValues
+    protected struct EmotionalResponseValues
     {
         public float Valence;
         public float Arousal;
@@ -49,7 +49,7 @@ public class EmotionModel : MonoBehaviour
     }
 
     // Base response values for each mood state
-    private Dictionary<string, EmotionalResponseValues> moodBaseValues = new Dictionary<string, EmotionalResponseValues>()
+    protected Dictionary<string, EmotionalResponseValues> moodBaseValues = new Dictionary<string, EmotionalResponseValues>()
     {
         { "Excited", new EmotionalResponseValues { Valence = 8f, Arousal = 8f, Touch = 0f, Rest = 0f, Social = 0f } },
         { "Happy", new EmotionalResponseValues { Valence = 8f, Arousal = 4f, Touch = 0f, Rest = 0f, Social = 0f } },
@@ -63,7 +63,7 @@ public class EmotionModel : MonoBehaviour
     };
 
     // Base response values for each event
-    private Dictionary<string, EmotionalResponseValues> eventBaseValues = new Dictionary<string, EmotionalResponseValues>()
+    protected Dictionary<string, EmotionalResponseValues> eventBaseValues = new Dictionary<string, EmotionalResponseValues>()
     {
         { "HungerNeeded", new EmotionalResponseValues { Valence = -5f, Arousal = 5f, Touch = 0f, Rest = 0f, Social = 0f } },
         { "HungerUnfulfilled", new EmotionalResponseValues { Valence = -10f, Arousal = 5f, Touch = 0f, Rest = 0f, Social = -3f } },
@@ -95,10 +95,10 @@ public class EmotionModel : MonoBehaviour
     };
 
     [Header("Need Values")]
-    [SerializeField] [Range(0, 100)] private float touchGauge = 50f;
-    [SerializeField] [Range(0, 100)] private float restGauge = 50f;
-    [SerializeField] [Range(0, 100)] private float socialGauge = 50f;
-    [SerializeField] [Range(0, 100)] private float hungerGauge = 50f;
+    [SerializeField] [Range(0, 100)] protected float touchGauge = 50f;
+    [SerializeField] [Range(0, 100)] protected float restGauge = 50f;
+    [SerializeField] [Range(0, 100)] protected float socialGauge = 50f;
+    [SerializeField] [Range(0, 100)] protected float hungerGauge = 50f;
 
     // Public properties to expose gauge values
     public float TouchGauge => touchGauge;
@@ -107,53 +107,53 @@ public class EmotionModel : MonoBehaviour
     public float HungerGauge => hungerGauge;
 
     [Header("Need Thresholds")]
-    [SerializeField] [Range(0, 100)] private float touchFulfilled = 70f;
-    [SerializeField] [Range(0, 100)] private float touchNeeded = 30f;
-    [SerializeField] [Range(0, 100)] private float restFulfilled = 70f;
-    [SerializeField] [Range(0, 100)] private float restNeeded = 30f;
-    [SerializeField] [Range(0, 100)] private float socialFulfilled = 70;
-    [SerializeField] [Range(0, 100)] private float socialNeeded = 30f;
-    [SerializeField] [Range(0, 100)] private float hungerFulfilled = 70f;
-    [SerializeField] [Range(0, 100)] private float hungerNeeded = 30f;
+    [SerializeField] [Range(0, 100)] protected float touchFulfilled = 70f;
+    [SerializeField] [Range(0, 100)] protected float touchNeeded = 30f;
+    [SerializeField] [Range(0, 100)] protected float restFulfilled = 70f;
+    [SerializeField] [Range(0, 100)] protected float restNeeded = 30f;
+    [SerializeField] [Range(0, 100)] protected float socialFulfilled = 70;
+    [SerializeField] [Range(0, 100)] protected float socialNeeded = 30f;
+    [SerializeField] [Range(0, 100)] protected float hungerFulfilled = 70f;
+    [SerializeField] [Range(0, 100)] protected float hungerNeeded = 30f;
 
     [Header("Decay Settings")]
-    private float gaugeLogTimer = 0f;
-    private const float GAUGE_LOG_INTERVAL = 5f;
+    protected float gaugeLogTimer = 0f;
+    protected const float GAUGE_LOG_INTERVAL = 5f;
 
     // Accumulated decay values (to handle small changes over time)
-    private float touchDecayAccumulator = 0f;
-    private float restDecayAccumulator = 0f;
-    private float socialDecayAccumulator = 0f;
-    private float hungerDecayAccumulator = 0f;
+    protected float touchDecayAccumulator = 0f;
+    protected float restDecayAccumulator = 0f;
+    protected float socialDecayAccumulator = 0f;
+    protected float hungerDecayAccumulator = 0f;
 
     // Real-time decay rates (points per second)
-    private readonly float touchDecayRate = 100f / (3f * 60f * 60f);    // 100 points / 3 hours
-    private readonly float restDecayRate = 100f / (12f * 60f * 60f);    // 100 points / 12 hours
-    private readonly float socialDecayRate = 100f / (6f * 60f * 60f);   // 100 points / 6 hours
-    private readonly float hungerDecayRate = 100f / (6f * 60f * 60f);   // 100 points / 6 hours
+    protected readonly float touchDecayRate = 100f / (3f * 60f * 60f);    // 100 points / 3 hours
+    protected readonly float restDecayRate = 100f / (12f * 60f * 60f);    // 100 points / 12 hours
+    protected readonly float socialDecayRate = 100f / (6f * 60f * 60f);   // 100 points / 6 hours
+    protected readonly float hungerDecayRate = 100f / (6f * 60f * 60f);   // 100 points / 6 hours
 
     // Constants for PlayerPrefs keys
-    private const string LONG_TERM_VALENCE_KEY = "LongTermValence";
-    private const string LONG_TERM_AROUSAL_KEY = "LongTermArousal";
+    protected const string LONG_TERM_VALENCE_KEY = "LongTermValence";
+    protected const string LONG_TERM_AROUSAL_KEY = "LongTermArousal";
 
     [Header("Sleep Settings")]
-    [SerializeField] private float maxSleepDuration = 4f * 60f * 60f; // 4 hours in seconds
-    [SerializeField] private float restRegenerationRate = 100f / (4f * 60f * 60f); // 100 points / 4 hours
-    [SerializeField] private SceneController sceneController;
-    private bool isAsleep = false;
-    private float sleepStartTime = 0f;
+    [SerializeField] protected float maxSleepDuration = 4f * 60f * 60f; // 4 hours in seconds
+    [SerializeField] protected float restRegenerationRate = 100f / (4f * 60f * 60f); // 100 points / 4 hours
+    [SerializeField] protected SceneController sceneController;
+    protected bool isAsleep = false;
+    protected float sleepStartTime = 0f;
     public bool IsAsleep => isAsleep;
 
     [Header("References")]
-    [SerializeField] private EmotionController emotionController;
+    [SerializeField] protected EmotionController emotionController;
 
     // Debug properties
-    public string LastTriggeredEvent { get; private set; }
-    public string LastDisplayString { get; private set; }
+    public string LastTriggeredEvent { get; protected set; }
+    public string LastDisplayString { get; protected set; }
 
     //test Functions
     [ContextMenu("Test Emotional Model - StrokeFrontToBack")]
-    private void TestStrokeFrontToBack()
+    protected void TestStrokeFrontToBack()
     {
         string triggeredEvent = "StrokeFrontToBack";
         EmotionalResponseResult response = CalculateEmotionalResponse(triggeredEvent);
@@ -161,7 +161,7 @@ public class EmotionModel : MonoBehaviour
     }
 
     [ContextMenu("Test Emotional Model - Touch Fulfilled")]
-    private void TestTouchFulfilled()
+    protected void TestTouchFulfilled()
     {
         string triggeredEvent = "TouchFulfilled";
         EmotionalResponseResult response = CalculateEmotionalResponse(triggeredEvent);
@@ -170,7 +170,7 @@ public class EmotionModel : MonoBehaviour
 
 
 
-    private void Awake()
+    protected void Awake()
     {
         // Load long term values based on persistence setting
         if (usePersistentEmotions && PlayerPrefs.HasKey(LONG_TERM_VALENCE_KEY))
@@ -217,7 +217,7 @@ public class EmotionModel : MonoBehaviour
         arousalArousalOnWakup = moodArousal;
     }
 
-    private void Start()
+    protected void Start()
     {
         // Log initial decay rates
         Debug.Log($"Decay rates per second:\n" +
@@ -227,7 +227,7 @@ public class EmotionModel : MonoBehaviour
                  $"Hunger: {hungerDecayRate:F6}");
     }
 
-    private void Update()
+    protected void Update()
     {
         // Handle sleep state first
         if (isAsleep)
@@ -306,7 +306,7 @@ public class EmotionModel : MonoBehaviour
         }
     }
 
-    private void HandleSleepState()
+    protected void HandleSleepState()
     {
         float timeMultiplier = useAcceleratedTesting ? testingMultiplier : 1f;
         float deltaTime = Time.deltaTime * timeMultiplier;
@@ -323,7 +323,7 @@ public class EmotionModel : MonoBehaviour
         }
     }
 
-    private void StartSleep()
+    protected void StartSleep()
     {
         isAsleep = true;
         sleepStartTime = Time.time;
@@ -342,7 +342,7 @@ public class EmotionModel : MonoBehaviour
         Debug.Log("Robot has woken up naturally");
     }
 
-    private void LogGaugeValues()
+    protected void LogGaugeValues()
     {
         string gaugeStatus = "Current Gauge Values:\n" +
             $"Touch:  {touchGauge,3}/100 (Need: {touchNeeded}, Fulfilled: {touchFulfilled})\n" +
@@ -352,7 +352,7 @@ public class EmotionModel : MonoBehaviour
         Debug.Log(gaugeStatus);
     }
 
-    private void CheckNeedThreshold(string needName, float currentValue, float previousValue, float neededThreshold, float fulfilledThreshold)
+    protected void CheckNeedThreshold(string needName, float currentValue, float previousValue, float neededThreshold, float fulfilledThreshold)
     {
         // Check if value has fallen to zero
         if (currentValue <= 0 && previousValue > 0)
@@ -482,7 +482,7 @@ public class EmotionModel : MonoBehaviour
     affects the robot's mood, allowing for gradual mood changes over time.
     */
 
-    private string classifyEmotionalState(float valence, float arousal)
+    protected string classifyEmotionalState(float valence, float arousal)
     {
 
         string classifiedEmotion = "Neutral";
@@ -528,7 +528,7 @@ public class EmotionModel : MonoBehaviour
         return classifiedEmotion;
     }
 
-    private string emotionalDisplayTable(EmotionalResponseValues response)
+    protected string emotionalDisplayTable(EmotionalResponseValues response)
     {
         string displayString = "Neutral";
         
@@ -639,7 +639,7 @@ public class EmotionModel : MonoBehaviour
         return displayString;
     }
 
-    private void OnApplicationQuit()
+    protected void OnApplicationQuit()
     {
         if (usePersistentEmotions)
         {
@@ -672,7 +672,7 @@ public class EmotionModel : MonoBehaviour
 
     // Method to reset long-term values if needed (for testing)
     [ContextMenu("Reset Long Term Values")]
-    private void ResetLongTermValues()
+    protected void ResetLongTermValues()
     {
         PlayerPrefs.DeleteKey(LONG_TERM_VALENCE_KEY);
         PlayerPrefs.DeleteKey(LONG_TERM_AROUSAL_KEY);

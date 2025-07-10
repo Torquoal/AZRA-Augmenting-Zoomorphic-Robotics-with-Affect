@@ -407,10 +407,16 @@ MonoBehaviour:
   neutralLoopPath: NeutralLoop
   happyLoopPath: HappyLoop
   angryLoopPath: AngryLoop
+  sadLoopPath: SadLoop
+  scaredLoopPath: ScaredLoop
+  surprisedLoopPath: SurprisedLoop
   frameRate: 24
   loopNeutralAnimation: 1
   loopHappyAnimation: 1
   loopAngryAnimation: 1
+  loopSadAnimation: 1
+  loopScaredAnimation: 1
+  loopSurprisedAnimation: 1
 --- !u!1 &2582165827689460544
 GameObject:
   m_ObjectHideFlags: 0
@@ -969,9 +975,13 @@ MonoBehaviour:
   frontTrigger: {fileID: 3040733164489765944}
   backTrigger: {fileID: 1538105242042053043}
   topTrigger: {fileID: 0}
+  leftTrigger: {fileID: 0}
+  rightTrigger: {fileID: 0}
   strokeCooldownTime: 2
   maxTimeBetweenTriggers: 2
   maxSequenceLength: 5
+  requiredHoldTime: 5
+  holdEventCooldown: 10
   showDebugLogs: 1
 --- !u!1 &5634899973659889938
 GameObject:
