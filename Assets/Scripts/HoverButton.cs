@@ -23,6 +23,9 @@ public class HoverButton : MonoBehaviour
     [Header("Emotions")]
     [SerializeField] private List<string> emotions = new List<string> { "Excited", "Happy", "Relaxed", "Energetic", "Tired", "Annoyed", "Sad", "Gloomy" };
 
+    private HashSet<string> usedEmotions = new HashSet<string>();
+
+
     private void OnTriggerEnter(Collider other)
     {
         if (IsHand(other))
@@ -59,11 +62,20 @@ public class HoverButton : MonoBehaviour
     {
         if (emotionController != null && emotions.Count > 0)
         {
-            string selectedEmotion = emotions[Random.Range(0, emotions.Count)];
+            List<string> availableEmotions = emotions.FindAll(e => !usedEmotions.Contains(e));
+            if (availableEmotions.Count == 0)
+            {
+                Debug.Log("HoverButton: All emotions have been used.");
+                return;
+            }
+
+            string selectedEmotion = availableEmotions[Random.Range(0, availableEmotions.Count)];
             Debug.Log($"HoverButton: Hover time reached. Changing mood to '{selectedEmotion}'.");
             emotionController.TryDisplayEmotion(selectedEmotion, "", true);
+            usedEmotions.Add(selectedEmotion);
             moodChanged = true;
             lastChangeTime = Time.time;
+            Debug.Log($"HoverButton: '{usedEmotions}' NOW.");
         }
         else
         {
