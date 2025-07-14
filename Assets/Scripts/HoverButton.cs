@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Collider))]
 public class HoverButton : MonoBehaviour
@@ -18,6 +19,9 @@ public class HoverButton : MonoBehaviour
     private float hoverStartTime = 0f;
     private bool moodChanged = false;
     private float lastChangeTime = -999f;
+
+    [Header("Emotions")]
+    [SerializeField] private List<string> emotions = new List<string> { "Excited", "Happy", "Relaxed", "Energetic", "Tired", "Annoyed", "Sad", "Gloomy" };
 
     private void OnTriggerEnter(Collider other)
     {
@@ -45,25 +49,27 @@ public class HoverButton : MonoBehaviour
         {
             if (Time.time - hoverStartTime >= hoverTime && Time.time - lastChangeTime >= cooldown)
             {
-                Debug.Log("HoverButton: Hover time reached. Changing mood to 'Sad'.");
-                ChangeMoodToSad();
+                ChangeMoodRandomly();
             }
         }
     }
 
-    private void ChangeMoodToSad()
+    private void ChangeMoodRandomly()
     {
-        if (emotionController != null)
+        if (emotionController != null && emotions.Count > 0)
         {
-            emotionController.TryDisplayEmotion("Sad", "", true);
+            string selectedEmotion = emotions[Random.Range(0, emotions.Count)];
+            Debug.Log($"HoverButton: Hover time reached. Changing mood to '{selectedEmotion}'.");
+            emotionController.TryDisplayEmotion(selectedEmotion, "", true);
             moodChanged = true;
             lastChangeTime = Time.time;
         }
         else
         {
-            Debug.LogWarning("HoverButton: EmotionController is not assigned.");
+            Debug.LogWarning("HoverButton: EmotionController is not assigned or emotion list is empty.");
         }
     }
+
 
     private bool IsHand(Collider col)
     {

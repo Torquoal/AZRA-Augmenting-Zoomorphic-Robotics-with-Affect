@@ -9065,7 +9065,6 @@ GameObject:
   - component: {fileID: 799751467}
   - component: {fileID: 799751468}
   - component: {fileID: 799751470}
-  - component: {fileID: 799751475}
   - component: {fileID: 799751472}
   - component: {fileID: 799751473}
   - component: {fileID: 799751474}
@@ -9269,27 +9268,6 @@ MonoBehaviour:
   restRegenerationRate: 0.0069444445
   sceneController: {fileID: 0}
   emotionController: {fileID: 0}
---- !u!114 &799751475
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 799751465}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46811026227086d41b22ba352520bada, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneController: {fileID: 799751467}
-  emotionModel: {fileID: 799751474}
-  emotionText: {fileID: 996060955}
-  voiceDetector: {fileID: 1629618762}
-  showDebugText: 1
-  emotionFormat: 'Emotion: {0}'
-  displayDuration: 10
-  displayCooldown: 5
-  passiveUpdateInterval: 5
 --- !u!1 &799816403
 GameObject:
   m_ObjectHideFlags: 0
@@ -24149,6 +24127,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3edc72c179885504db1102bf82a87d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  emotionController: {fileID: 1998560613}
+  hoverTime: 5
+  cooldown: 0.5
+  leftHandPath: Camera Rig/[BuildingBlock] Interaction/[BuildingBlock] Hand Interactions/LeftHand
+  rightHandPath: Camera Rig/[BuildingBlock] Interaction/[BuildingBlock] Hand Interactions/RightHand
+--- !u!114 &1998560613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998560595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46811026227086d41b22ba352520bada, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneController: {fileID: 799751467}
+  emotionModel: {fileID: 799751474}
+  emotionText: {fileID: 996060955}
+  voiceDetector: {fileID: 1629618762}
+  showDebugText: 1
+  emotionFormat: 'Emotion: {0}'
+  displayDuration: 10
+  displayCooldown: 5
+  passiveUpdateInterval: 5
 --- !u!1 &2008433731
 GameObject:
   m_ObjectHideFlags: 0
@@ -25580,6 +25584,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1827118556748368403, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1998560607}
+    - targetCorrespondingSourceObject: {fileID: 1827118556748368403, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1998560613}
   m_SourcePrefab: {fileID: 100100000, guid: 2297f865da1722043b726ec74af77b13, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
