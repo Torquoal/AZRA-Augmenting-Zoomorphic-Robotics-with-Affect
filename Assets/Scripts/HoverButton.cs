@@ -40,6 +40,7 @@ public class HoverButton : MonoBehaviour
             Debug.Log("HoverButton: Hand exited area.");
             isHovering = false;
             hoverStartTime = 0f;
+            moodChanged = false;
         }
     }
 
