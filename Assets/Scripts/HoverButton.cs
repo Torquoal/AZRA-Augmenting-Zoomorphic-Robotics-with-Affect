@@ -25,6 +25,10 @@ public class HoverButton : MonoBehaviour
 
     private HashSet<string> usedEmotions = new HashSet<string>();
 
+        [Header("Rating Manager")]
+[SerializeField] private RatingManager ratingManager;
+
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -71,6 +75,7 @@ public class HoverButton : MonoBehaviour
 
             string selectedEmotion = availableEmotions[Random.Range(0, availableEmotions.Count)];
             Debug.Log($"HoverButton: Hover time reached. Changing mood to '{selectedEmotion}'.");
+            ratingManager.SetCurrentTask(selectedEmotion, "button");
             emotionController.TryDisplayEmotion(selectedEmotion, "", true);
             usedEmotions.Add(selectedEmotion);
             moodChanged = true;
