@@ -19,20 +19,37 @@ public class HoverButton : MonoBehaviour
     private float hoverStartTime = 0f;
     private bool moodChanged = false;
     private float lastChangeTime = -999f;
-    private HashSet<string> usedEmotions = new HashSet<string>();
 
     [Header("Rating Manager")]
     [SerializeField] private RatingManager ratingManager;
 
     [Header("Stimuli Settings")]
-    [SerializeField] private int totalCategories = 6;
-    [SerializeField] private List<string> emotions = new List<string> { "Excited", "Happy", "Relaxed", "Energetic", "Tired", "Annoyed", "Sad", "Gloomy" };
-    private int currentCategory = 0;
-    private int currentEmotionIndex = 0;
-    private enum StimulusType { Face, Sound }
-    private StimulusType currentStimulusType = StimulusType.Face;
-    private bool presentationFinished = false;
+    // Define your modalities explicitly
+    [SerializeField]
+    private List<string> modalities = new List<string> { "Face", "Sound" };
 
+    // Define your categories explicitly
+    [SerializeField]
+    private List<string> categories = new List<string> 
+    {
+        "Category_1",
+        "Category_2",
+        "Category_3",
+        "Category_4",
+        "Category_5",
+        "Category_6"
+    };
+
+    // Define your emotions explicitly (use exactly these 5 for your experiment)
+    [SerializeField]
+    private List<string> emotions = new List<string> { "Happy", "Sad", "Angry", "Fear", "Surprise" };
+
+    // Indices to track progress
+    private int currentModalityIndex = 0;
+    private int currentCategoryIndex = 0;
+    private int currentEmotionIndex = 0;
+
+    private bool presentationFinished = false;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -66,32 +83,6 @@ public class HoverButton : MonoBehaviour
         }
     }
 
-    // private void ChangeMoodRandomly()
-    // {
-    //     if (emotionController != null && emotions.Count > 0)
-    //     {
-    //         List<string> availableEmotions = emotions.FindAll(e => !usedEmotions.Contains(e));
-    //         if (availableEmotions.Count == 0)
-    //         {
-    //             Debug.Log("HoverButton: All emotions have been used.");
-    //             return;
-    //         }
-
-    //         string selectedEmotion = availableEmotions[Random.Range(0, availableEmotions.Count)];
-    //         Debug.Log($"HoverButton: Hover time reached. Changing mood to '{selectedEmotion}'.");
-    //         ratingManager.SetCurrentTask(selectedEmotion, "button");
-    //         emotionController.TryDisplayEmotion(selectedEmotion, "", true);
-    //         usedEmotions.Add(selectedEmotion);
-    //         moodChanged = true;
-    //         lastChangeTime = Time.time;
-    //         Debug.Log($"HoverButton: '{usedEmotions}' NOW.");
-    //     }
-    //     else
-    //     {
-    //         Debug.LogWarning("HoverButton: EmotionController is not assigned or emotion list is empty.");
-    //     }
-    // }
-
     private void ChangeMoodSequentially()
     {
         if (presentationFinished)
@@ -106,54 +97,50 @@ public class HoverButton : MonoBehaviour
             return;
         }
 
+        string modality = modalities[currentModalityIndex];
+        string category = categories[currentCategoryIndex];
         string emotion = emotions[currentEmotionIndex];
-        string categoryLabel = $"Category_{currentCategory + 1}";
-        string stimulusLabel = currentStimulusType.ToString();
 
-        Debug.Log($"Presenting {stimulusLabel} stimulus for {emotion} in {categoryLabel}");
+        Debug.Log($"Presenting {modality} stimulus for {emotion} in {category}");
 
-        ratingManager.SetCurrentTask(emotion, categoryLabel);
-        emotionController.TryDisplayEmotion(emotion, stimulusLabel, true);
+        // Pass category as the task label
+        ratingManager.SetCurrentTask(emotion, category);
 
-        AdvanceIndex();
+        // Pass emotion and modality to emotionController, so it can load the correct asset
+        
+        string emotionPath = $"Modalities/{modality}/{category}/{emotion}";
+
+        emotionController.TryDisplayEmotion(emotion, emotionPath, true);
+
+        AdvanceIndices();
     }
 
-
-
-
-private void AdvanceIndex()
-{
-    currentEmotionIndex++;
-
-    if (currentEmotionIndex >= emotions.Count)
+    private void AdvanceIndices()
     {
-        currentEmotionIndex = 0;
-        currentCategory++;
+        currentEmotionIndex++;
 
-        if (currentCategory >= totalCategories)
+        if (currentEmotionIndex >= emotions.Count)
         {
-            currentCategory = 0;
+            currentEmotionIndex = 0;
+            currentCategoryIndex++;
 
-            // Switch to next stimulus type
-            if (currentStimulusType == StimulusType.Face)
+            if (currentCategoryIndex >= categories.Count)
             {
-                currentStimulusType = StimulusType.Sound;
-            }
-            else
-            {
-                presentationFinished = true;
-                Debug.Log("All categories and emotions for both Face and Sound have been presented.");
+                currentCategoryIndex = 0;
+                currentModalityIndex++;
+
+                if (currentModalityIndex >= modalities.Count)
+                {
+                    presentationFinished = true;
+                    Debug.Log("All categories and emotions for all modalities have been presented.");
+                    return;
+                }
             }
         }
+
+        moodChanged = true;
+        lastChangeTime = Time.time;
     }
-
-    moodChanged = true;
-    lastChangeTime = Time.time;
-}
-
-
-
-
 
     private bool IsHand(Collider col)
     {
@@ -173,7 +160,6 @@ private void AdvanceIndex()
         return path;
     }
 
-    // Optional reset, in case you want to allow changing mood again later
     public void ResetMood()
     {
         moodChanged = false;
