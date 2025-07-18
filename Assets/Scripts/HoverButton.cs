@@ -4,6 +4,10 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Collider))]
 public class HoverButton : MonoBehaviour
 {
+    [Header("Face Animation Controller")]
+    [SerializeField] private FaceAnimationController faceAnimationController;
+
+
     [Header("Mood Trigger")]
     [SerializeField] private EmotionController emotionController;
 
@@ -26,18 +30,18 @@ public class HoverButton : MonoBehaviour
     [Header("Stimuli Settings")]
     // Define your modalities explicitly
     [SerializeField]
-    private List<string> modalities = new List<string> { "Face", "Sound" };
+    private List<string> modalities = new List<string> { "FacialExpression", "Sound" };
 
     // Define your categories explicitly
     [SerializeField]
     private List<string> categories = new List<string> 
     {
-        "Category_1",
-        "Category_2",
-        "Category_3",
-        "Category_4",
-        "Category_5",
-        "Category_6"
+        "AnthroAbs",
+        "AnthroManga",
+        "MechaEmoji",
+        "MechaScreenFace",
+        "ZoomorphicAbs",
+        "ZoomorphicReal"
     };
 
     // Define your emotions explicitly (use exactly these 5 for your experiment)
@@ -48,6 +52,8 @@ public class HoverButton : MonoBehaviour
     private int currentModalityIndex = 0;
     private int currentCategoryIndex = 0;
     private int currentEmotionIndex = 0;
+
+    protected string extendedPath = "Modalities/FacialExpression/AnthroAbs"; // Default path for animations
 
     private bool presentationFinished = false;
 
@@ -117,17 +123,22 @@ public class HoverButton : MonoBehaviour
 
     private void AdvanceIndices()
     {
+
         currentEmotionIndex++;
 
         if (currentEmotionIndex >= emotions.Count)
         {
             currentEmotionIndex = 0;
             currentCategoryIndex++;
+            SetExtendedPath($"Modalities/{modalities[currentModalityIndex]}/{categories[currentCategoryIndex]}");
+            faceAnimationController.LoadNewAnimation(extendedPath);
 
             if (currentCategoryIndex >= categories.Count)
             {
                 currentCategoryIndex = 0;
                 currentModalityIndex++;
+                SetExtendedPath($"Modalities/{modalities[currentModalityIndex]}/{categories[currentCategoryIndex]}");
+                faceAnimationController.LoadNewAnimation(extendedPath);
 
                 if (currentModalityIndex >= modalities.Count)
                 {
@@ -158,6 +169,19 @@ public class HoverButton : MonoBehaviour
             parent = parent.parent;
         }
         return path;
+    }
+
+
+    [ContextMenu("Get Extended Path")]
+    public string GetExtendedPath()
+    {
+        return extendedPath;
+    }
+
+    public void SetExtendedPath(string path)
+    {
+        Debug.Log($"Setting extended path to: {path}");
+        extendedPath = path;
     }
 
     public void ResetMood()

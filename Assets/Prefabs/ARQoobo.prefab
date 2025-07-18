@@ -297,6 +297,7 @@ MonoBehaviour:
   loopSadAnimation: 1
   loopScaredAnimation: 1
   loopSurprisedAnimation: 1
+  hoverButton: {fileID: 0}
 --- !u!1 &2582165827689460544
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,8 +620,6 @@ GameObject:
   - component: {fileID: 4161851612145261342}
   - component: {fileID: 1802246164096903675}
   - component: {fileID: 6870099575119845685}
-  - component: {fileID: 392689874004159928}
-  - component: {fileID: 8801070927234255904}
   m_Layer: 0
   m_Name: TopColTest
   m_TagString: Untagged
@@ -714,54 +713,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &392689874004159928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3667744282346981913}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3edc72c179885504db1102bf82a87d1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  emotionController: {fileID: 8801070927234255904}
-  hoverTime: 5
-  cooldown: 0.5
-  leftHandPath: Camera Rig/[BuildingBlock] Interaction/[BuildingBlock] Hand Interactions/LeftHand
-  rightHandPath: Camera Rig/[BuildingBlock] Interaction/[BuildingBlock] Hand Interactions/RightHand
-  emotions:
-  - Excited
-  - Happy
-  - Relaxed
-  - Energetic
-  - Tired
-  - Annoyed
-  - Sad
-  - Gloomy
-  ratingManager: {fileID: 0}
---- !u!114 &8801070927234255904
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3667744282346981913}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46811026227086d41b22ba352520bada, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneController: {fileID: 0}
-  emotionModel: {fileID: 0}
-  emotionText: {fileID: 0}
-  voiceDetector: {fileID: 0}
-  showDebugText: 1
-  emotionFormat: 'Emotion: {0}'
-  displayDuration: 10
-  displayCooldown: 5
-  passiveUpdateInterval: 5
 --- !u!1 &3733138650119301825
 GameObject:
   m_ObjectHideFlags: 0

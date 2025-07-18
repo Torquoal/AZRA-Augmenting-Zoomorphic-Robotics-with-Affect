@@ -30,7 +30,13 @@ public class FaceAnimationController : MonoBehaviour
     [SerializeField] private bool loopSadAnimation = true;
     [SerializeField] private bool loopScaredAnimation = true;
     [SerializeField] private bool loopSurprisedAnimation = true;
-    
+
+
+    [Header("Hover Button")]
+    [SerializeField] private HoverButton hoverButton; // Reference to the HoverButton script
+    private string extendedPath = ""; // Default path for animations
+
+
     private Material animatedMaterial;
     private float frameInterval;
     private int currentFrame = 0;
@@ -46,22 +52,24 @@ public class FaceAnimationController : MonoBehaviour
     private void Start()
     {
         frameInterval = 1f / frameRate;
-        LoadAnimationFrames();
-        
+
+        extendedPath = hoverButton.GetExtendedPath();
+        LoadAnimationFrames(extendedPath);
+
         // Create a new material instance
         animatedMaterial = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
         SetupMaterial();
     }
 
-    private void LoadAnimationFrames()
+    private void LoadAnimationFrames(string extendedPath)
     {
         // Load neutral, happy, angry, sad, scared, and surprised animation frames
-        LoadFramesForEmotion(neutralLoopPath, ref neutralFrames);
-        LoadFramesForEmotion(happyLoopPath, ref happyFrames);
-        LoadFramesForEmotion(angryLoopPath, ref angryFrames);
-        LoadFramesForEmotion(sadLoopPath, ref sadFrames);
-        LoadFramesForEmotion(scaredLoopPath, ref scaredFrames);
-        LoadFramesForEmotion(surprisedLoopPath, ref surprisedFrames);
+        LoadFramesForEmotion(extendedPath, neutralLoopPath, ref neutralFrames);
+        LoadFramesForEmotion(extendedPath, happyLoopPath, ref happyFrames);
+        LoadFramesForEmotion(extendedPath, angryLoopPath, ref angryFrames);
+        LoadFramesForEmotion(extendedPath, sadLoopPath, ref sadFrames);
+        LoadFramesForEmotion(extendedPath, scaredLoopPath, ref scaredFrames);
+        LoadFramesForEmotion(extendedPath, surprisedLoopPath, ref surprisedFrames);
 
         // Future emotion frame loading
         /*
@@ -73,19 +81,22 @@ public class FaceAnimationController : MonoBehaviour
         */
     }
 
-    private void LoadFramesForEmotion(string path, ref Texture2D[] frames)
+    private void LoadFramesForEmotion(string extendedPath, string path, ref Texture2D[] frames)
     {
         // Load all textures from the Resources folder
-        Object[] loadedObjects = Resources.LoadAll(path, typeof(Texture2D));
-        
+
+        string fullPath = $"{extendedPath}/{path}";
+        Debug.Log($"LIFE animation frames from: {fullPath}");
+        Object[] loadedObjects = Resources.LoadAll(fullPath, typeof(Texture2D));
+
         // Convert to Texture2D array and sort by name to ensure correct order
         frames = loadedObjects
             .Cast<Texture2D>()
             .OrderBy(tex => tex.name)
             .ToArray();
 
-        Debug.Log($"Loaded {frames.Length} animation frames from {path}");
-        
+        Debug.Log($"Loaded {frames.Length} animation frames from {fullPath}");
+
         if (frames.Length == 0)
         {
             Debug.LogWarning($"No frames found in Resources/{path}");
@@ -99,24 +110,24 @@ public class FaceAnimationController : MonoBehaviour
             // Configure the material for transparency
             animatedMaterial.EnableKeyword("_ALPHABLEND_ON");
             animatedMaterial.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
-            
+
             // Set the material to be transparent
             animatedMaterial.SetFloat("_Surface", 1f); // 1 = Transparent
             animatedMaterial.SetFloat("_Mode", 3); // Transparent mode
-            
+
             // Set up blending
             animatedMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
             animatedMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
             animatedMaterial.SetInt("_ZWrite", 0);
             animatedMaterial.renderQueue = 3000;
-            
+
             // Ensure alpha channel is respected
             animatedMaterial.SetOverrideTag("RenderType", "Transparent");
             animatedMaterial.SetInt("_Cull", (int)UnityEngine.Rendering.CullMode.Back); // Enable back-face culling
-            
+
             // Set color to white with full alpha to not tint the texture
             animatedMaterial.color = new Color(1, 1, 1, 1);
-            
+
             // Set initial frame
             if (neutralFrames != null && neutralFrames.Length > 0)
             {
@@ -217,7 +228,7 @@ public class FaceAnimationController : MonoBehaviour
             {
                 animatedMaterial.mainTexture = frames[currentFrame];
             }
-            
+
             currentFrame++;
             yield return new WaitForSeconds(frameInterval);
         }
@@ -245,4 +256,14 @@ public class FaceAnimationController : MonoBehaviour
             Destroy(animatedMaterial);
         }
     }
+    
+    public void LoadNewAnimation(string newPath)
+    {
+        extendedPath = newPath;
+        LoadAnimationFrames(extendedPath);
+        Debug.Log($"Loaded new animation frames from: {newPath}");
+    }
+
+
+
 } 

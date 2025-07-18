@@ -9426,6 +9426,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1166032153}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &617421799 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1823133348085653002, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+  m_PrefabInstance: {fileID: 1707299874730129972}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cdcf19ba9d0703448a5824fcb1e4fcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &617692101
 GameObject:
   m_ObjectHideFlags: 0
@@ -31582,9 +31593,61 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 392689874004159928, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: ratingManager
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 392689874004159928, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: emotionController
       value: 
-      objectReference: {fileID: 1707299874730129974}
+      objectReference: {fileID: 0}
+    - target: {fileID: 392689874004159928, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: emotions.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 392689874004159928, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: emotions.Array.data[0]
+      value: Happy
+      objectReference: {fileID: 0}
+    - target: {fileID: 392689874004159928, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: emotions.Array.data[1]
+      value: Sad
+      objectReference: {fileID: 0}
+    - target: {fileID: 392689874004159928, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: emotions.Array.data[2]
+      value: Angry
+      objectReference: {fileID: 0}
+    - target: {fileID: 392689874004159928, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: emotions.Array.data[3]
+      value: Fear
+      objectReference: {fileID: 0}
+    - target: {fileID: 392689874004159928, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: emotions.Array.data[4]
+      value: Surprise
+      objectReference: {fileID: 0}
+    - target: {fileID: 392689874004159928, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: categories.Array.data[0]
+      value: Category_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 392689874004159928, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: categories.Array.data[1]
+      value: Category_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 392689874004159928, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: categories.Array.data[2]
+      value: Category_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 392689874004159928, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: categories.Array.data[3]
+      value: Category_4
+      objectReference: {fileID: 0}
+    - target: {fileID: 392689874004159928, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: categories.Array.data[4]
+      value: Category_5
+      objectReference: {fileID: 0}
+    - target: {fileID: 392689874004159928, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: categories.Array.data[5]
+      value: Category_6
+      objectReference: {fileID: 0}
     - target: {fileID: 549248581993410838, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: m_Name
       value: ARQoobo
@@ -31628,6 +31691,34 @@ PrefabInstance:
     - target: {fileID: 924506761198234540, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1823133348085653002, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: hoverButton
+      value: 
+      objectReference: {fileID: 1707299874730129981}
+    - target: {fileID: 1823133348085653002, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: sadLoopPath
+      value: Sad
+      objectReference: {fileID: 0}
+    - target: {fileID: 1823133348085653002, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: angryLoopPath
+      value: Angry
+      objectReference: {fileID: 0}
+    - target: {fileID: 1823133348085653002, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: happyLoopPath
+      value: Happy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1823133348085653002, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: scaredLoopPath
+      value: Scared
+      objectReference: {fileID: 0}
+    - target: {fileID: 1823133348085653002, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: neutralLoopPath
+      value: Neutral
+      objectReference: {fileID: 0}
+    - target: {fileID: 1823133348085653002, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: surprisedLoopPath
+      value: Surprised
       objectReference: {fileID: 0}
     - target: {fileID: 4244827798850561486, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: topTrigger
@@ -31693,8 +31784,7 @@ PrefabInstance:
       propertyPath: _whenUnhover.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 799751467}
-    m_RemovedComponents:
-    - {fileID: 8801070927234255904, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -31704,6 +31794,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3667744282346981913, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1707299874730129974}
+    - targetCorrespondingSourceObject: {fileID: 3667744282346981913, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1707299874730129981}
   m_SourcePrefab: {fileID: 100100000, guid: 2297f865da1722043b726ec74af77b13, type: 3}
 --- !u!1 &1707299874730129973 stripped
 GameObject:
@@ -31726,11 +31819,46 @@ MonoBehaviour:
   emotionModel: {fileID: 799751474}
   emotionText: {fileID: 996060955}
   voiceDetector: {fileID: 1629618762}
-  showDebugText: 1
+  showDebugText: 0
   emotionFormat: 'Emotion: {0}'
   displayDuration: 10
   displayCooldown: 5
   passiveUpdateInterval: 5
+--- !u!114 &1707299874730129981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1707299874730129973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3edc72c179885504db1102bf82a87d1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  faceAnimationController: {fileID: 617421799}
+  emotionController: {fileID: 1707299874730129974}
+  hoverTime: 2
+  cooldown: 0.5
+  leftHandPath: Camera Rig/[BuildingBlock] Interaction/[BuildingBlock] Hand Interactions/LeftHand
+  rightHandPath: Camera Rig/[BuildingBlock] Interaction/[BuildingBlock] Hand Interactions/RightHand
+  ratingManager: {fileID: 1677424676}
+  modalities:
+  - FacialExpression
+  - Sound
+  categories:
+  - AnthroAbs
+  - AnthroManga
+  - MechaEmoji
+  - MechaScreenFace
+  - ZoomorphicAbs
+  - ZoomorphicReal
+  emotions:
+  - Happy
+  - Sad
+  - Angry
+  - Fear
+  - Surprise
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
