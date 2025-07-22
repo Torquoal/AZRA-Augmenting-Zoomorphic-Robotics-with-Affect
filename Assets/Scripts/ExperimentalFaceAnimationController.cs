@@ -8,19 +8,6 @@ public class ExperimentalFaceAnimationController : FaceAnimationController
     [SerializeField] private HoverButton hoverButton; // Reference to the HoverButton script
     private string extendedPath = ""; // Default path for animations
 
-
-    private Material animatedMaterial;
-    private float frameInterval;
-    private int currentFrame = 0;
-    private bool isPlaying = false;
-    private Coroutine animationCoroutine;
-    private Texture2D[] neutralFrames;
-    private Texture2D[] happyFrames;
-    private Texture2D[] angryFrames;
-    private Texture2D[] sadFrames;
-    private Texture2D[] scaredFrames;
-    private Texture2D[] surprisedFrames;
-
     private void Start()
     {
         frameInterval = 1f / frameRate;
@@ -33,7 +20,7 @@ public class ExperimentalFaceAnimationController : FaceAnimationController
         SetupMaterial();
     }
 
-    private void LoadAnimationFrames(string extendedPath)
+    private new void LoadAnimationFrames(string extendedPath)
     {
         // Load neutral, happy, angry, sad, scared, and surprised animation frames
         LoadFramesForEmotion(extendedPath, neutralLoopPath, ref neutralFrames);
@@ -71,7 +58,7 @@ public class ExperimentalFaceAnimationController : FaceAnimationController
 
         if (frames.Length == 0)
         {
-            Debug.LogWarning($"No frames found in Resources/{path}");
+            Debug.LogWarning($"No frames found in Resources/{fullPath}");
         }
     }
 
