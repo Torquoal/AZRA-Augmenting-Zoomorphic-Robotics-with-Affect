@@ -2,66 +2,46 @@ using UnityEngine;
 using System.Collections;
 using System.Linq;
 
-public class FaceAnimationController : MonoBehaviour
+public class ExperimentalFaceAnimationController : FaceAnimationController
 {
-    [Header("Animation Settings")]
-    [SerializeField] protected string neutralLoopPath = "NeutralLoop";  // Path in Resources folder
-    [SerializeField] protected string happyLoopPath = "HappyLoop";      // Path for happy animation
-    [SerializeField] protected string angryLoopPath = "AngryLoop";      // Path for angry animation
-    [SerializeField] protected string sadLoopPath = "SadLoop";        // Path for sad animation
-    [SerializeField] protected string scaredLoopPath = "ScaredLoop";  // Path for scared animation
-    [SerializeField] protected string surprisedLoopPath = "SurprisedLoop"; // Path for surprised animation
-    [SerializeField] protected float frameRate = 24f;      // Animation frame rate
+    [Header("Hover Button")]
+    [SerializeField] private HoverButton hoverButton; // Reference to the HoverButton script
+    private string extendedPath = ""; // Default path for animations
 
-    // Future emotion animation paths
-    /*
-    [Header("Emotion Animation Paths")]
-    [SerializeField] private string happyPath = "HappyAnimation";
-    [SerializeField] private string sadPath = "SadAnimation";
-    [SerializeField] private string angryPath = "AngryAnimation";
-    [SerializeField] private string scaredPath = "ScaredAnimation";
-    [SerializeField] private string surprisedPath = "SurprisedAnimation";
-    */
 
-    [Header("Animation Behavior")]
-    [SerializeField] protected bool loopNeutralAnimation = true;
-    [SerializeField] protected bool loopHappyAnimation = true;
-    [SerializeField] protected bool loopAngryAnimation = true;
-    [SerializeField] protected bool loopSadAnimation = true;
-    [SerializeField] protected bool loopScaredAnimation = true;
-    [SerializeField] protected bool loopSurprisedAnimation = true;
-    
-    protected Material animatedMaterial;
-    protected float frameInterval;
-    protected int currentFrame = 0;
-    protected bool isPlaying = false;
-    protected Coroutine animationCoroutine;
-    protected Texture2D[] neutralFrames;
-    protected Texture2D[] happyFrames;
-    protected Texture2D[] angryFrames;
-    protected Texture2D[] sadFrames;
-    protected Texture2D[] scaredFrames;
-    protected Texture2D[] surprisedFrames;
+    private Material animatedMaterial;
+    private float frameInterval;
+    private int currentFrame = 0;
+    private bool isPlaying = false;
+    private Coroutine animationCoroutine;
+    private Texture2D[] neutralFrames;
+    private Texture2D[] happyFrames;
+    private Texture2D[] angryFrames;
+    private Texture2D[] sadFrames;
+    private Texture2D[] scaredFrames;
+    private Texture2D[] surprisedFrames;
 
     private void Start()
     {
         frameInterval = 1f / frameRate;
-        LoadAnimationFrames();
-        
+
+        extendedPath = hoverButton.GetExtendedPath();
+        LoadAnimationFrames(extendedPath);
+
         // Create a new material instance
         animatedMaterial = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
         SetupMaterial();
     }
 
-    private void LoadAnimationFrames()
+    private void LoadAnimationFrames(string extendedPath)
     {
         // Load neutral, happy, angry, sad, scared, and surprised animation frames
-        LoadFramesForEmotion(neutralLoopPath, ref neutralFrames);
-        LoadFramesForEmotion(happyLoopPath, ref happyFrames);
-        LoadFramesForEmotion(angryLoopPath, ref angryFrames);
-        LoadFramesForEmotion(sadLoopPath, ref sadFrames);
-        LoadFramesForEmotion(scaredLoopPath, ref scaredFrames);
-        LoadFramesForEmotion(surprisedLoopPath, ref surprisedFrames);
+        LoadFramesForEmotion(extendedPath, neutralLoopPath, ref neutralFrames);
+        LoadFramesForEmotion(extendedPath, happyLoopPath, ref happyFrames);
+        LoadFramesForEmotion(extendedPath, angryLoopPath, ref angryFrames);
+        LoadFramesForEmotion(extendedPath, sadLoopPath, ref sadFrames);
+        LoadFramesForEmotion(extendedPath, scaredLoopPath, ref scaredFrames);
+        LoadFramesForEmotion(extendedPath, surprisedLoopPath, ref surprisedFrames);
 
         // Future emotion frame loading
         /*
@@ -73,50 +53,53 @@ public class FaceAnimationController : MonoBehaviour
         */
     }
 
-    private void LoadFramesForEmotion(string path, ref Texture2D[] frames)
+    private new void LoadFramesForEmotion(string extendedPath, string path, ref Texture2D[] frames)
     {
         // Load all textures from the Resources folder
-        Object[] loadedObjects = Resources.LoadAll(path, typeof(Texture2D));
-        
+
+        string fullPath = $"{extendedPath}/{path}";
+        Debug.Log($"LIFE animation frames from: {fullPath}");
+        Object[] loadedObjects = Resources.LoadAll(fullPath, typeof(Texture2D));
+
         // Convert to Texture2D array and sort by name to ensure correct order
         frames = loadedObjects
             .Cast<Texture2D>()
             .OrderBy(tex => tex.name)
             .ToArray();
 
-        Debug.Log($"Loaded {frames.Length} animation frames from {path}");
-        
+        Debug.Log($"Loaded {frames.Length} animation frames from {fullPath}");
+
         if (frames.Length == 0)
         {
             Debug.LogWarning($"No frames found in Resources/{path}");
         }
     }
 
-    private void SetupMaterial()
+    private new void SetupMaterial()
     {
         if (animatedMaterial != null)
         {
             // Configure the material for transparency
             animatedMaterial.EnableKeyword("_ALPHABLEND_ON");
             animatedMaterial.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
-            
+
             // Set the material to be transparent
             animatedMaterial.SetFloat("_Surface", 1f); // 1 = Transparent
             animatedMaterial.SetFloat("_Mode", 3); // Transparent mode
-            
+
             // Set up blending
             animatedMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
             animatedMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
             animatedMaterial.SetInt("_ZWrite", 0);
             animatedMaterial.renderQueue = 3000;
-            
+
             // Ensure alpha channel is respected
             animatedMaterial.SetOverrideTag("RenderType", "Transparent");
             animatedMaterial.SetInt("_Cull", (int)UnityEngine.Rendering.CullMode.Back); // Enable back-face culling
-            
+
             // Set color to white with full alpha to not tint the texture
             animatedMaterial.color = new Color(1, 1, 1, 1);
-            
+
             // Set initial frame
             if (neutralFrames != null && neutralFrames.Length > 0)
             {
@@ -125,12 +108,12 @@ public class FaceAnimationController : MonoBehaviour
         }
     }
 
-    public void StartAnimation()
+    public new void StartAnimation()
     {
         StartAnimation("neutral");
     }
 
-    public void StartAnimation(string emotion)
+    public new void StartAnimation(string emotion)
     {
         // Always stop any current animation first
         StopAnimation();
@@ -183,7 +166,7 @@ public class FaceAnimationController : MonoBehaviour
         }
     }
 
-    public void StopAnimation()
+    public new void StopAnimation()
     {
         if (animationCoroutine != null)
         {
@@ -194,7 +177,7 @@ public class FaceAnimationController : MonoBehaviour
         isPlaying = false;
     }
 
-    private IEnumerator AnimateFrames(Texture2D[] frames, bool loop)
+    private new IEnumerator AnimateFrames(Texture2D[] frames, bool loop)
     {
         while (isPlaying)
         {
@@ -217,18 +200,18 @@ public class FaceAnimationController : MonoBehaviour
             {
                 animatedMaterial.mainTexture = frames[currentFrame];
             }
-            
+
             currentFrame++;
             yield return new WaitForSeconds(frameInterval);
         }
     }
 
-    public Material GetAnimatedMaterial()
+    public new Material GetAnimatedMaterial()
     {
         return animatedMaterial;
     }
 
-    public void SetAlpha(float alpha)
+    public new void SetAlpha(float alpha)
     {
         if (animatedMaterial != null)
         {
@@ -238,11 +221,21 @@ public class FaceAnimationController : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    private new void OnDestroy()
     {
         if (animatedMaterial != null)
         {
             Destroy(animatedMaterial);
         }
     }
+    
+    public new void LoadNewAnimation(string newPath)
+    {
+        extendedPath = newPath;
+        LoadAnimationFrames(extendedPath);
+        Debug.Log($"Loaded new animation frames from: {newPath}");
+    }
+
+
+
 } 

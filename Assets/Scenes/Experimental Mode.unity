@@ -9426,17 +9426,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1166032153}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &617421799 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1823133348085653002, guid: 2297f865da1722043b726ec74af77b13, type: 3}
-  m_PrefabInstance: {fileID: 1707299874730129972}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cdcf19ba9d0703448a5824fcb1e4fcf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &617692101
 GameObject:
   m_ObjectHideFlags: 0
@@ -15098,7 +15087,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6524490002690117367, guid: 2297f865da1722043b726ec74af77b13, type: 3}
   m_PrefabInstance: {fileID: 1707299874730129972}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1678941015}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b4c3b76e29563f347a22c879985d2323, type: 3}
@@ -25411,6 +25400,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 830375250}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1678941015 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6158086314421978599, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+  m_PrefabInstance: {fileID: 1707299874730129972}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1678941020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1678941015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31f534722956a3d4fb8f02fe09a0b9c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  neutralLoopPath: Neutral
+  happyLoopPath: Happy
+  angryLoopPath: Angry
+  sadLoopPath: Sad
+  scaredLoopPath: Scared
+  surprisedLoopPath: Surprised
+  frameRate: 24
+  loopNeutralAnimation: 1
+  loopHappyAnimation: 1
+  loopAngryAnimation: 1
+  loopSadAnimation: 1
+  loopScaredAnimation: 1
+  loopSurprisedAnimation: 1
+  hoverButton: {fileID: 1707299874730129981}
 --- !u!1 &1687088412
 GameObject:
   m_ObjectHideFlags: 0
@@ -31744,6 +31764,10 @@ PrefabInstance:
       propertyPath: sceneController
       value: 
       objectReference: {fileID: 799751467}
+    - target: {fileID: 6524490002690117367, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: faceAnimationController
+      value: 
+      objectReference: {fileID: 1678941020}
     - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: emotionModel
       value: 
@@ -31791,6 +31815,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 549248581993410838, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1112418016}
+    - targetCorrespondingSourceObject: {fileID: 6158086314421978599, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1678941020}
     - targetCorrespondingSourceObject: {fileID: 3667744282346981913, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1707299874730129974}
@@ -31836,7 +31863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3edc72c179885504db1102bf82a87d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  faceAnimationController: {fileID: 617421799}
+  faceAnimationController: {fileID: 0}
   emotionController: {fileID: 1707299874730129974}
   hoverTime: 2
   cooldown: 0.5

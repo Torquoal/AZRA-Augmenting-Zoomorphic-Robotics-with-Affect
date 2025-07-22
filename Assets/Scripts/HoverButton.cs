@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class HoverButton : MonoBehaviour
 {
     [Header("Face Animation Controller")]
-    [SerializeField] private FaceAnimationController faceAnimationController;
+    [SerializeField] private ExperimentalFaceAnimationController faceAnimationController;
 
 
     [Header("Mood Trigger")]

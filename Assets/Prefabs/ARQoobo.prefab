@@ -249,7 +249,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 984611299819365558}
-  - component: {fileID: 1823133348085653002}
   m_Layer: 0
   m_Name: FaceAnimation
   m_TagString: Untagged
@@ -272,32 +271,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8620355210458400226}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1823133348085653002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2333657436634660224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cdcf19ba9d0703448a5824fcb1e4fcf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  neutralLoopPath: NeutralLoop
-  happyLoopPath: HappyLoop
-  angryLoopPath: AngryLoop
-  sadLoopPath: SadLoop
-  scaredLoopPath: ScaredLoop
-  surprisedLoopPath: SurprisedLoop
-  frameRate: 24
-  loopNeutralAnimation: 1
-  loopHappyAnimation: 1
-  loopAngryAnimation: 1
-  loopSadAnimation: 1
-  loopScaredAnimation: 1
-  loopSurprisedAnimation: 1
-  hoverButton: {fileID: 0}
 --- !u!1 &2582165827689460544
 GameObject:
   m_ObjectHideFlags: 0
@@ -670,7 +643,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 587e1b470ff46774081fb41ebdbc0de8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1158,7 +1131,7 @@ MonoBehaviour:
   faceMeshRenderer: {fileID: 7350454063344101041}
   defaultFaceMaterial: {fileID: 2100000, guid: a2e8e5009c1821b4aad6e07ff3b3b7ce, type: 2}
   sceneController: {fileID: 0}
-  faceAnimationController: {fileID: 1823133348085653002}
+  faceAnimationController: {fileID: 0}
   happyFaceMaterial: {fileID: 2100000, guid: 795ca06bdb7fd4b478831b672dc178f1, type: 2}
   sadFaceMaterial: {fileID: 2100000, guid: cd6135aa11350624a8f92a5a3919f81d, type: 2}
   angryFaceMaterial: {fileID: 2100000, guid: d515595deeb608f429b40ae082c31659, type: 2}
