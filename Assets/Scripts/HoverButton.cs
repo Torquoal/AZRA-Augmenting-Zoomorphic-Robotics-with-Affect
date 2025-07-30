@@ -131,6 +131,7 @@ public class HoverButton : MonoBehaviour
             currentEmotionIndex = 0;
             currentCategoryIndex++;
             SetExtendedPath($"Modalities/{modalities[currentModalityIndex]}/{categories[currentCategoryIndex]}");
+            Debug.Log($"Loading new animation for category: {categories[currentCategoryIndex]} at path: {extendedPath}");
             faceAnimationController.LoadNewAnimation(extendedPath);
 
             if (currentCategoryIndex >= categories.Count)

@@ -31863,7 +31863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3edc72c179885504db1102bf82a87d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  faceAnimationController: {fileID: 0}
+  faceAnimationController: {fileID: 1678941020}
   emotionController: {fileID: 1707299874730129974}
   hoverTime: 2
   cooldown: 0.5
