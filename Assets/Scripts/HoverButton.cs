@@ -50,12 +50,54 @@ public class HoverButton : MonoBehaviour
 
     // Indices to track progress
     private int currentModalityIndex = 0;
-    private int currentCategoryIndex = 0;
+    private int currentCategoryIndex = 0; // Start with a different category for each participant
     private int currentEmotionIndex = 0;
 
-    protected string extendedPath = "Modalities/FacialExpression/AnthroAbs"; // Default path for animations
+    protected string extendedPath = ""; // Default path for animations
 
     private bool presentationFinished = false;
+
+    // Add participant number field
+    [Header("Experimental Design")]
+    [SerializeField] private int participantNumber = 1;
+
+    // Latin square orders for each modality
+    private List<int> facialExpressionOrder;
+    private List<int> soundOrder;
+    // Track current position in Latin square for each modality
+    private int[] currentLatinSquarePositions;
+
+    // Initialize Latin square orders based on participant number
+    [ContextMenu("Initialize Latin Square Orders")]
+    private void InitializeLatinSquareOrders()
+    {
+        // Generate balanced Latin square for 6 categories (0-5)
+        // This creates a balanced design where each category appears in each position equally
+        facialExpressionOrder = GenerateBalancedLatinSquare(participantNumber, 6);
+        soundOrder = GenerateBalancedLatinSquare(participantNumber + 6, 6); // Offset for different order
+        
+        Debug.Log($"Participant {participantNumber} - Facial Expression Order: {string.Join(", ", facialExpressionOrder)}");
+        Debug.Log($"Participant {participantNumber} - Sound Order: {string.Join(", ", soundOrder)}");
+
+        // Initialize tracking positions for each modality
+        currentLatinSquarePositions = new int[modalities.Count];
+        for (int i = 0; i < modalities.Count; i++) currentLatinSquarePositions[i] = 0;
+    }
+
+    // Generate a balanced Latin square order for given participant and size
+    private List<int> GenerateBalancedLatinSquare(int participant, int size)
+    {
+        List<int> order = new List<int>();
+        
+        // Base Latin square pattern
+        for (int i = 0; i < size; i++)
+        {
+            int category = (participant + i) % size;
+            order.Add(category);
+        }
+        
+        return order;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -115,7 +157,6 @@ public class HoverButton : MonoBehaviour
         // Pass emotion and modality to emotionController, so it can load the correct asset
         
         string emotionPath = $"Modalities/{modality}/{category}/{emotion}";
-
         emotionController.TryDisplayEmotion(emotion, emotionPath, true);
 
         AdvanceIndices();
@@ -123,23 +164,46 @@ public class HoverButton : MonoBehaviour
 
     private void AdvanceIndices()
     {
+        if (facialExpressionOrder == null || soundOrder == null || currentLatinSquarePositions == null)
+        {
+            InitializeLatinSquareOrders();
+        }
 
+        // Get the current order and position for this modality
+        List<int> currentOrder = (modalities[currentModalityIndex] == "FacialExpression")
+            ? facialExpressionOrder
+            : soundOrder;
+        int position = currentLatinSquarePositions[currentModalityIndex];
+        int categoryIndex = currentOrder[position];
+        string category = categories[categoryIndex];
+        string modality = modalities[currentModalityIndex];
+        string emotion = emotions[currentEmotionIndex];
+
+        string emotionPath = $"Modalities/{modality}/{category}";
+
+        SetExtendedPath(emotionPath);
+        faceAnimationController.LoadNewAnimation(extendedPath);
+
+        Debug.Log($"WANTING TO Presenting {modality} stimulus for {emotion} in {category}");
+
+        // Pass category as the task label
+        ratingManager.SetCurrentTask(emotion, category);
+
+        // Pass emotion and modality to emotionController, so it can load the correct asset
+        // Now advance indices for the next call
         currentEmotionIndex++;
 
         if (currentEmotionIndex >= emotions.Count)
         {
             currentEmotionIndex = 0;
-            currentCategoryIndex++;
-            SetExtendedPath($"Modalities/{modalities[currentModalityIndex]}/{categories[currentCategoryIndex]}");
-            Debug.Log($"Loading new animation for category: {categories[currentCategoryIndex]} at path: {extendedPath}");
+            currentLatinSquarePositions[currentModalityIndex]++;
+            SetExtendedPath(emotionPath);
             faceAnimationController.LoadNewAnimation(extendedPath);
 
-            if (currentCategoryIndex >= categories.Count)
+            if (currentLatinSquarePositions[currentModalityIndex] >= categories.Count)
             {
-                currentCategoryIndex = 0;
+                currentLatinSquarePositions[currentModalityIndex] = 0;
                 currentModalityIndex++;
-                SetExtendedPath($"Modalities/{modalities[currentModalityIndex]}/{categories[currentCategoryIndex]}");
-                faceAnimationController.LoadNewAnimation(extendedPath);
 
                 if (currentModalityIndex >= modalities.Count)
                 {
@@ -189,5 +253,23 @@ public class HoverButton : MonoBehaviour
     {
         moodChanged = false;
         lastChangeTime = -999f;
+    }
+
+    // Demonstration method to show Latin square outputs for different participants
+    [ContextMenu("Demonstrate Latin Square")]
+    public void DemonstrateLatinSquare()
+    {
+        Debug.Log("=== Latin Square Demonstration ===");
+        
+        for (int participant = 1; participant <= 6; participant++)
+        {
+            List<int> facialOrder = GenerateBalancedLatinSquare(participant, 6);
+            List<int> soundOrder = GenerateBalancedLatinSquare(participant + 6, 6);
+            
+            Debug.Log($"Participant {participant}:");
+            Debug.Log($"  Facial Expression Order: {string.Join(", ", facialOrder)}");
+            Debug.Log($"  Sound Order: {string.Join(", ", soundOrder)}");
+            Debug.Log("---");
+        }
     }
 }

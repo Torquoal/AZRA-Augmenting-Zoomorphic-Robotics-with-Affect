@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.XR.Hands;
 using System.Collections.Generic;
 using UnityEngine.XR;
+using UnityEngine.InputSystem;
 
 public class QooboPositioner : MonoBehaviour
 {
