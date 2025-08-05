@@ -4,12 +4,18 @@ using System.Collections;
 
 using UnityEngine.InputSystem;
 
+
+
 public class ExperimentalEmotionController : EmotionController
 {
+    [Header("Passive Expression Settings")]
+    [SerializeField] private bool disablePassiveExpression = false;
+
+
     protected void Update()
     {
         // Only update passive expression if not showing an emotional display and not asleep
-        if (!isShowingEmotionalDisplay && !emotionModel.IsAsleep && Time.time - lastPassiveUpdateTime >= passiveUpdateInterval)
+        if (!disablePassiveExpression && !isShowingEmotionalDisplay && !emotionModel.IsAsleep && Time.time - lastPassiveUpdateTime >= passiveUpdateInterval)
         {
             UpdatePassiveExpression();
             lastPassiveUpdateTime = Time.time;
@@ -23,8 +29,6 @@ public class ExperimentalEmotionController : EmotionController
         }
 
     }
-
-
 
     protected void TriggerEmotionFromButton(string emotion)
     {
@@ -112,7 +116,6 @@ public class ExperimentalEmotionController : EmotionController
             case "neutral":
                 sceneController.HideLightSphere();
                 sceneController.HideThought();
-                UpdatePassiveExpression(); // Return to mood-based expression
                 sceneController.TailsEmotion("happy");
                 break;
 
@@ -128,29 +131,8 @@ public class ExperimentalEmotionController : EmotionController
                 Debug.LogWarning($"Unknown display string: {displayString}, defaulting to neutral");
                 sceneController.HideLightSphere();
                 sceneController.HideThought();
-                UpdatePassiveExpression(); // Return to mood-based expression
                 sceneController.TailsEmotion("happy");
                 break;
-        }
-
-        // Then apply any special overrides based on the trigger event
-        if (!string.IsNullOrEmpty(triggerEvent))
-        {
-            ApplySpecialDisplayOverrides(triggerEvent);
-        }
-
-        // Update display time
-        UpdateEmotionDisplay();
-
-        // Only start the auto-reset for non-sleep emotions and when not asleep
-        if (displayString.ToLower() != "neutral" && displayString.ToLower() != "sleep" && !emotionModel.IsAsleep)
-        {
-            resetCoroutine = StartCoroutine(AutoResetDisplay());
-        }
-        else if (displayString.ToLower() == "neutral")
-        {
-            // For neutral, we clear the emotional display state immediately
-            isShowingEmotionalDisplay = false;
         }
     }
 
@@ -203,7 +185,6 @@ public class ExperimentalEmotionController : EmotionController
             case "neutral":
                 sceneController.HideLightSphere();
                 sceneController.HideThought();
-                UpdatePassiveExpression(); // Return to mood-based expression
                 sceneController.TailsEmotion("happy");
                 break;
 
@@ -219,29 +200,8 @@ public class ExperimentalEmotionController : EmotionController
                 Debug.LogWarning($"Unknown display string: {displayString}, defaulting to neutral");
                 sceneController.HideLightSphere();
                 sceneController.HideThought();
-                UpdatePassiveExpression(); // Return to mood-based expression
                 sceneController.TailsEmotion("happy");
                 break;
-        }
-
-        // Then apply any special overrides based on the trigger event
-        if (!string.IsNullOrEmpty(triggerEvent))
-        {
-            ApplySpecialDisplayOverrides(triggerEvent);
-        }
-
-        // Update display time
-        UpdateEmotionDisplay();
-
-        // Only start the auto-reset for non-sleep emotions and when not asleep
-        if (displayString.ToLower() != "neutral" && displayString.ToLower() != "sleep" && !emotionModel.IsAsleep)
-        {
-            resetCoroutine = StartCoroutine(AutoResetDisplay());
-        }
-        else if (displayString.ToLower() == "neutral")
-        {
-            // For neutral, we clear the emotional display state immediately
-            isShowingEmotionalDisplay = false;
         }
     }
 }

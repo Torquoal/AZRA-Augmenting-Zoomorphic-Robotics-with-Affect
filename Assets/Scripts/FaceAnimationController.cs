@@ -196,7 +196,7 @@ public class FaceAnimationController : MonoBehaviour
 
     private IEnumerator AnimateFrames(Texture2D[] frames, bool loop)
     {
-        while (isPlaying)
+        while (isPlaying) // end when currentfrqme == frame.length
         {
             if (currentFrame >= frames.Length)
             {
@@ -221,6 +221,8 @@ public class FaceAnimationController : MonoBehaviour
             currentFrame++;
             yield return new WaitForSeconds(frameInterval);
         }
+
+        //animatedMaterial.mainTexture = frames[currentFrame]; // Clear texture when animation stops
     }
 
     public Material GetAnimatedMaterial()
