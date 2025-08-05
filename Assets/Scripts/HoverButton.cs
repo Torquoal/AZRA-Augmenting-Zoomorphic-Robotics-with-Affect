@@ -9,7 +9,7 @@ public class HoverButton : MonoBehaviour
 
 
     [Header("Mood Trigger")]
-    [SerializeField] private EmotionController emotionController;
+    [SerializeField] private ExperimentalEmotionController emotionController;
 
     [Header("Hover Timing")]
     [SerializeField] private float hoverTime = 5f;
@@ -157,7 +157,15 @@ public class HoverButton : MonoBehaviour
         // Pass emotion and modality to emotionController, so it can load the correct asset
         
         string emotionPath = $"Modalities/{modality}/{category}/{emotion}";
-        emotionController.TryDisplayEmotion(emotion, emotionPath, true);
+
+        if (modality == "FacialExpression")
+        {
+            emotionController.TryDisplayFace(emotion, emotionPath);
+        }
+        else if (modality == "Sound")
+        {
+            emotionController.TryDisplaySound(emotion, emotionPath);
+        }
 
         AdvanceIndices();
     }

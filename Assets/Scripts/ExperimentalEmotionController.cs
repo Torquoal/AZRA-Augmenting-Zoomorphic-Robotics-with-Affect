@@ -63,6 +63,185 @@ public class ExperimentalEmotionController : EmotionController
         DisplayEmotionInternal(displayString, triggerEvent);
         return true;
     }
+    public void TryDisplayFace(string displayString, string triggerEvent)
+    {
+        if (!hasInitialized || !sceneController.IsWakeUpComplete())
+        {
+            Debug.Log("Cannot display emotion - system not initialized or wake-up not complete");
+            return;
+        }
 
-    
-} 
+        if (showDebugText)
+            Debug.Log($"Emotion Controller: Displaying emotion: {displayString} from trigger: {triggerEvent}");
+
+        currentDisplayString = displayString;
+        currentTriggerEvent = triggerEvent;
+
+        // Cancel any pending reset if we're going to sleep
+        if (displayString.ToLower() == "sleep" || emotionModel.IsAsleep)
+        {
+            if (resetCoroutine != null)
+            {
+                StopCoroutine(resetCoroutine);
+                resetCoroutine = null;
+            }
+        }
+
+        // Handle the emotion display
+        switch (displayString.ToLower())
+        {
+            case "sleep":
+                //sceneController.SetFaceExpression("sleepy");
+                sceneController.ShowThought("sleep");
+                sceneController.HideLightSphere();
+                break;
+
+            case "happy":
+                sceneController.SetFaceExpression("happy");
+                break;
+
+
+            case "surprised":
+                sceneController.SetFaceExpression("surprised");
+                break;
+
+            case "angry":
+                sceneController.SetFaceExpression("angry");
+                break;
+
+            case "neutral":
+                sceneController.HideLightSphere();
+                sceneController.HideThought();
+                UpdatePassiveExpression(); // Return to mood-based expression
+                sceneController.TailsEmotion("happy");
+                break;
+
+            case "sad":
+                sceneController.SetFaceExpression("sad");
+                break;
+
+            case "scared":
+                sceneController.SetFaceExpression("scared");
+                break;
+
+            default:
+                Debug.LogWarning($"Unknown display string: {displayString}, defaulting to neutral");
+                sceneController.HideLightSphere();
+                sceneController.HideThought();
+                UpdatePassiveExpression(); // Return to mood-based expression
+                sceneController.TailsEmotion("happy");
+                break;
+        }
+
+        // Then apply any special overrides based on the trigger event
+        if (!string.IsNullOrEmpty(triggerEvent))
+        {
+            ApplySpecialDisplayOverrides(triggerEvent);
+        }
+
+        // Update display time
+        UpdateEmotionDisplay();
+
+        // Only start the auto-reset for non-sleep emotions and when not asleep
+        if (displayString.ToLower() != "neutral" && displayString.ToLower() != "sleep" && !emotionModel.IsAsleep)
+        {
+            resetCoroutine = StartCoroutine(AutoResetDisplay());
+        }
+        else if (displayString.ToLower() == "neutral")
+        {
+            // For neutral, we clear the emotional display state immediately
+            isShowingEmotionalDisplay = false;
+        }
+    }
+
+    public void TryDisplaySound(string displayString, string triggerEvent)
+    {
+        if (!hasInitialized || !sceneController.IsWakeUpComplete())
+        {
+            Debug.Log("Cannot display emotion - system not initialized or wake-up not complete");
+            return;
+        }
+
+        if (showDebugText)
+            Debug.Log($"Emotion Controller: Displaying emotion: {displayString} from trigger: {triggerEvent}");
+
+        currentDisplayString = displayString;
+        currentTriggerEvent = triggerEvent;
+
+        // Cancel any pending reset if we're going to sleep
+        if (displayString.ToLower() == "sleep" || emotionModel.IsAsleep)
+        {
+            if (resetCoroutine != null)
+            {
+                StopCoroutine(resetCoroutine);
+                resetCoroutine = null;
+            }
+        }
+
+        // Handle the emotion display
+        switch (displayString.ToLower())
+        {
+            case "sleep":
+                //sceneController.SetFaceExpression("sleepy");
+                sceneController.ShowThought("sleep");
+                sceneController.HideLightSphere();
+                break;
+
+            case "happy":
+                sceneController.PlaySound("happy");
+                break;
+
+
+            case "surprised":
+                sceneController.PlaySound("surprised");
+                break;
+
+            case "angry":
+                sceneController.PlaySound("angry");
+                break;
+
+            case "neutral":
+                sceneController.HideLightSphere();
+                sceneController.HideThought();
+                UpdatePassiveExpression(); // Return to mood-based expression
+                sceneController.TailsEmotion("happy");
+                break;
+
+            case "sad":
+                sceneController.PlaySound("sad");
+                break;
+
+            case "scared":
+                sceneController.PlaySound("scared");
+                break;
+
+            default:
+                Debug.LogWarning($"Unknown display string: {displayString}, defaulting to neutral");
+                sceneController.HideLightSphere();
+                sceneController.HideThought();
+                UpdatePassiveExpression(); // Return to mood-based expression
+                sceneController.TailsEmotion("happy");
+                break;
+        }
+
+        // Then apply any special overrides based on the trigger event
+        if (!string.IsNullOrEmpty(triggerEvent))
+        {
+            ApplySpecialDisplayOverrides(triggerEvent);
+        }
+
+        // Update display time
+        UpdateEmotionDisplay();
+
+        // Only start the auto-reset for non-sleep emotions and when not asleep
+        if (displayString.ToLower() != "neutral" && displayString.ToLower() != "sleep" && !emotionModel.IsAsleep)
+        {
+            resetCoroutine = StartCoroutine(AutoResetDisplay());
+        }
+        else if (displayString.ToLower() == "neutral")
+        {
+            // For neutral, we clear the emotional display state immediately
+            isShowingEmotionalDisplay = false;
+        }
+    }
+}
