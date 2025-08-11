@@ -10,6 +10,7 @@ public class HoverButton : MonoBehaviour
 
     [Header("Mood Trigger")]
     [SerializeField] private ExperimentalEmotionController emotionController;
+    // [SerializeField] private FaceController faceController;
 
     [Header("Hover Timing")]
     [SerializeField] private float hoverTime = 5f;
@@ -46,7 +47,7 @@ public class HoverButton : MonoBehaviour
 
     // Define your emotions explicitly (use exactly these 5 for your experiment)
     [SerializeField]
-    private List<string> emotions = new List<string> { "Happy", "Sad", "Angry", "Fear", "Surprise" };
+    private List<string> emotions = new List<string> { "Happy", "Sad", "Angry", "Scared", "Surprised" };
 
     // Indices to track progress
     private int currentModalityIndex = 0;
@@ -56,6 +57,10 @@ public class HoverButton : MonoBehaviour
     protected string extendedPath = ""; // Default path for animations
 
     private bool presentationFinished = false;
+    private bool isAnimationLoaded = false; // Track if animation is loaded initially
+
+    private int RatingDelay = 7; 
+
 
     // Add participant number field
     [Header("Experimental Design")]
@@ -145,32 +150,10 @@ public class HoverButton : MonoBehaviour
             return;
         }
 
-        string modality = modalities[currentModalityIndex];
-        string category = categories[currentCategoryIndex];
-        string emotion = emotions[currentEmotionIndex];
-
-        Debug.Log($"Presenting {modality} stimulus for {emotion} in {category}");
-
-        // Pass category as the task label
-        ratingManager.SetCurrentTask(emotion, category);
-
-        // Pass emotion and modality to emotionController, so it can load the correct asset
-        
-        string emotionPath = $"Modalities/{modality}/{category}/{emotion}";
-
-        if (modality == "FacialExpression")
-        {
-            emotionController.TryDisplayFace(emotion, emotionPath);
-        }
-        else if (modality == "Sound")
-        {
-            emotionController.TryDisplaySound(emotion, emotionPath);
-        }
-
-        AdvanceIndices();
+        AdvanceIndicesAndDisplayFace();
     }
 
-    private void AdvanceIndices()
+    private void AdvanceIndicesAndDisplayFace()
     {
         if (facialExpressionOrder == null || soundOrder == null || currentLatinSquarePositions == null)
         {
@@ -187,26 +170,49 @@ public class HoverButton : MonoBehaviour
         string modality = modalities[currentModalityIndex];
         string emotion = emotions[currentEmotionIndex];
 
+        Debug.Log($"Current2 modality: {modality}, category: {category}, emotion: {emotion}");
+
         string emotionPath = $"Modalities/{modality}/{category}";
 
-        SetExtendedPath(emotionPath);
-        faceAnimationController.LoadNewAnimation(extendedPath);
+        if (isAnimationLoaded == false)   {    
+            SetExtendedPath(emotionPath);
+            faceAnimationController.LoadNewAnimation(extendedPath);
+            isAnimationLoaded = true;
+        }
+
+
+        if (modality == "FacialExpression")
+        {
+            emotionController.TryDisplayFace(emotion, "");
+        }
+        else if (modality == "Sound")
+        {
+            emotionController.TryDisplaySound(emotion, "");
+        }
+
+
+        Debug.Log($"EMOTION6 PATH5 IS {emotionPath}");
+
 
         Debug.Log($"WANTING TO Presenting {modality} stimulus for {emotion} in {category}");
+        Debug.Log($"MODALITIES IS {modality} stimulus for {emotion} in {category} at path {emotionPath}");
 
         // Pass category as the task label
-        ratingManager.SetCurrentTask(emotion, category);
 
+        
+        ratingManager.SetCurrentTask(emotion, category); //check
+  
         // Pass emotion and modality to emotionController, so it can load the correct asset
         // Now advance indices for the next call
         currentEmotionIndex++;
-
         if (currentEmotionIndex >= emotions.Count)
         {
+            
             currentEmotionIndex = 0;
-            currentLatinSquarePositions[currentModalityIndex]++;
-            SetExtendedPath(emotionPath);
-            faceAnimationController.LoadNewAnimation(extendedPath);
+
+            currentLatinSquarePositions[currentModalityIndex]++; //check
+            
+            isAnimationLoaded = false; // Reset for next animation
 
             if (currentLatinSquarePositions[currentModalityIndex] >= categories.Count)
             {
