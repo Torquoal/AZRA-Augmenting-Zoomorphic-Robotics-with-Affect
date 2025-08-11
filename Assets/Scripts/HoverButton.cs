@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 [RequireComponent(typeof(Collider))]
 public class HoverButton : MonoBehaviour
@@ -153,6 +154,12 @@ public class HoverButton : MonoBehaviour
         AdvanceIndicesAndDisplayFace();
     }
 
+    private IEnumerator DelayedRating(string emotion, string category)
+    {
+        yield return new WaitForSeconds(RatingDelay);
+        ratingManager.SetCurrentTask(emotion, category);
+    }
+
     private void AdvanceIndicesAndDisplayFace()
     {
         if (facialExpressionOrder == null || soundOrder == null || currentLatinSquarePositions == null)
@@ -174,7 +181,8 @@ public class HoverButton : MonoBehaviour
 
         string emotionPath = $"Modalities/{modality}/{category}";
 
-        if (isAnimationLoaded == false)   {    
+        if (isAnimationLoaded == false)
+        {
             SetExtendedPath(emotionPath);
             faceAnimationController.LoadNewAnimation(extendedPath);
             isAnimationLoaded = true;
@@ -199,19 +207,20 @@ public class HoverButton : MonoBehaviour
 
         // Pass category as the task label
 
-        
-        ratingManager.SetCurrentTask(emotion, category); //check
-  
+
+        StartCoroutine(DelayedRating(emotion, category));
+        // ratingManager.SetCurrentTask(emotion, category); //check
+
         // Pass emotion and modality to emotionController, so it can load the correct asset
         // Now advance indices for the next call
         currentEmotionIndex++;
         if (currentEmotionIndex >= emotions.Count)
         {
-            
+
             currentEmotionIndex = 0;
 
             currentLatinSquarePositions[currentModalityIndex]++; //check
-            
+
             isAnimationLoaded = false; // Reset for next animation
 
             if (currentLatinSquarePositions[currentModalityIndex] >= categories.Count)

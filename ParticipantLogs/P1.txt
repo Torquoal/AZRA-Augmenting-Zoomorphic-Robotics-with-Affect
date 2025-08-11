@@ -40,3 +40,4 @@ P1, Man, 20, AnthroManga, Surprised, 3, 3, 3
 P1, Man, 20, MechaEmoji, Happy, 3, 3, 3
 P1, Man, 20, AnthroManga, Happy, 0, 0, 0
 P1, Man, 20, AnthroManga, Sad, 3, 3, 2
+P1, Man, 20, AnthroManga, Happy, 0, 0, 2
