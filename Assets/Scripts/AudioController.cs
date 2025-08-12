@@ -3,8 +3,8 @@ using UnityEngine;
 public class AudioController : MonoBehaviour
 {
     [Header("Audio Settings")]
-    [SerializeField] private AudioSource qooboSpeaker;
-    [SerializeField] private AudioClip[] beepSounds;  // Drag your beep sound files here
+    [SerializeField] protected AudioSource qooboSpeaker;
+    [SerializeField] protected AudioClip[] beepSounds;  // Drag your beep sound files here
 
     public void PlaySound(string emotion)
     {

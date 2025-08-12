@@ -29,6 +29,9 @@ public class HoverButton : MonoBehaviour
     [Header("Rating Manager")]
     [SerializeField] private RatingManager ratingManager;
 
+    [Header("Audio Controller")]
+    [SerializeField] private ExperimentalAudioController audiocontroller;
+
     [Header("Stimuli Settings")]
     // Define your modalities explicitly
     [SerializeField]
@@ -181,7 +184,7 @@ public class HoverButton : MonoBehaviour
 
         string emotionPath = $"Modalities/{modality}/{category}";
 
-        if (isAnimationLoaded == false)
+        if (isAnimationLoaded == false && modality == "FacialExpression")
         {
             SetExtendedPath(emotionPath);
             faceAnimationController.LoadNewAnimation(extendedPath);
@@ -195,7 +198,8 @@ public class HoverButton : MonoBehaviour
         }
         else if (modality == "Sound")
         {
-            emotionController.TryDisplaySound(emotion, "");
+            Debug.Log($"Playing sound for emotion: {emotion} in category: {category}, combined is: {emotion + category}");
+            audiocontroller.PlaySound(emotion, category);
         }
 
 
