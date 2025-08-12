@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
 
 [RequireComponent(typeof(Collider))]
 public class HoverButton : MonoBehaviour
@@ -64,6 +65,9 @@ public class HoverButton : MonoBehaviour
     private bool isAnimationLoaded = false; // Track if animation is loaded initially
 
     private int RatingDelay = 7; 
+
+    private List<int> shuffledEmotionOrder = null;
+    private int emotionPosition = 0;
 
 
     // Add participant number field
@@ -170,15 +174,31 @@ public class HoverButton : MonoBehaviour
             InitializeLatinSquareOrders();
         }
 
-        // Get the current order and position for this modality
         List<int> currentOrder = (modalities[currentModalityIndex] == "FacialExpression")
             ? facialExpressionOrder
             : soundOrder;
-        int position = currentLatinSquarePositions[currentModalityIndex];
-        int categoryIndex = currentOrder[position];
+
+        int categoryPosition = currentLatinSquarePositions[currentModalityIndex];
+        int categoryIndex = currentOrder[categoryPosition];
         string category = categories[categoryIndex];
         string modality = modalities[currentModalityIndex];
-        string emotion = emotions[currentEmotionIndex];
+
+        // Initialize or reset shuffledEmotions when starting a new category
+        if (shuffledEmotionOrder == null || emotionPosition >= emotions.Count)
+        {
+            // Create list of emotion indices and shuffle it
+            shuffledEmotionOrder = Enumerable.Range(0, emotions.Count).ToList();
+            ShuffleList(shuffledEmotionOrder);
+
+            emotionPosition = 0; // reset position in shuffled list
+
+            // If you want to reset isAnimationLoaded here as well, do it:
+            isAnimationLoaded = false;
+        }
+
+        // Get the current emotion index from shuffled order
+        int emotionIndex = shuffledEmotionOrder[emotionPosition];
+        string emotion = emotions[emotionIndex];
 
         Debug.Log($"Current2 modality: {modality}, category: {category}, emotion: {emotion}");
 
@@ -191,7 +211,6 @@ public class HoverButton : MonoBehaviour
             isAnimationLoaded = true;
         }
 
-
         if (modality == "FacialExpression")
         {
             emotionController.TryDisplayFace(emotion, "");
@@ -202,30 +221,23 @@ public class HoverButton : MonoBehaviour
             audiocontroller.PlaySound(emotion, category);
         }
 
-
         Debug.Log($"EMOTION6 PATH5 IS {emotionPath}");
-
-
         Debug.Log($"WANTING TO Presenting {modality} stimulus for {emotion} in {category}");
         Debug.Log($"MODALITIES IS {modality} stimulus for {emotion} in {category} at path {emotionPath}");
-
-        // Pass category as the task label
-
 
         StartCoroutine(DelayedRating(emotion, category));
         // ratingManager.SetCurrentTask(emotion, category); //check
 
-        // Pass emotion and modality to emotionController, so it can load the correct asset
-        // Now advance indices for the next call
-        currentEmotionIndex++;
-        if (currentEmotionIndex >= emotions.Count)
+        // Advance to next emotion in shuffled list
+        emotionPosition++;
+
+        // When we reach the end of emotions for this category
+        if (emotionPosition >= emotions.Count)
         {
+            emotionPosition = 0; // reset for next category (though reshuffle happens above)
 
-            currentEmotionIndex = 0;
-
-            currentLatinSquarePositions[currentModalityIndex]++; //check
-
-            isAnimationLoaded = false; // Reset for next animation
+            currentLatinSquarePositions[currentModalityIndex]++; // move to next category
+            isAnimationLoaded = false; // reset animation flag for next category
 
             if (currentLatinSquarePositions[currentModalityIndex] >= categories.Count)
             {
@@ -239,12 +251,28 @@ public class HoverButton : MonoBehaviour
                     return;
                 }
             }
+
+            // Reset shuffled emotions so they get shuffled for the new category on next call
+            shuffledEmotionOrder = null;
         }
 
         moodChanged = true;
         lastChangeTime = Time.time;
     }
 
+    private void ShuffleList<T>(List<T> list)
+    {
+        System.Random rng = new System.Random();
+        int n = list.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = rng.Next(n + 1);
+            T value = list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
+    }
     private bool IsHand(Collider col)
     {
         string fullPath = GetGameObjectPath(col.gameObject);
