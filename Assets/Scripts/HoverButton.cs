@@ -167,11 +167,25 @@ public class HoverButton : MonoBehaviour
         ratingManager.SetCurrentTask(emotion, category);
     }
 
+    private void InitializeModalityOrder()
+    {
+        modalities = new List<string> { "FacialExpression", "Sound" };
+        ShuffleList(modalities); // Randomizes the modality order
+        currentModalityIndex = 0;
+    }
+
+
+
+
+
+
+
     private void AdvanceIndicesAndDisplayFace()
     {
         if (facialExpressionOrder == null || soundOrder == null || currentLatinSquarePositions == null)
         {
             InitializeLatinSquareOrders();
+            InitializeModalityOrder(); // <- new line to randomize modalities
         }
 
         List<int> currentOrder = (modalities[currentModalityIndex] == "FacialExpression")
