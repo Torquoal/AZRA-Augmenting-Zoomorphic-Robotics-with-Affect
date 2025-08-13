@@ -176,49 +176,51 @@ public class HoverButton : MonoBehaviour
 
 
 
-
-
-
-
-    private void AdvanceIndicesAndDisplayFace()
+    private void InitializeIfNeeded()
     {
         if (facialExpressionOrder == null || soundOrder == null || currentLatinSquarePositions == null)
         {
             InitializeLatinSquareOrders();
-            InitializeModalityOrder(); // <- new line to randomize modalities
+            InitializeModalityOrder(); // Your addition to randomize modality order
         }
+    }
 
-        List<int> currentOrder = (modalities[currentModalityIndex] == "FacialExpression")
+    private string GetCurrentModality()
+    {
+        return modalities[currentModalityIndex];
+    }
+
+    private List<int> GetCurrentOrder()
+    {
+        return (GetCurrentModality() == "FacialExpression")
             ? facialExpressionOrder
             : soundOrder;
+    }
 
+    private string GetCurrentCategory()
+    {
         int categoryPosition = currentLatinSquarePositions[currentModalityIndex];
-        int categoryIndex = currentOrder[categoryPosition];
-        string category = categories[categoryIndex];
-        string modality = modalities[currentModalityIndex];
+        int categoryIndex = GetCurrentOrder()[categoryPosition];
+        return categories[categoryIndex];
+    }
 
-        // Initialize or reset shuffledEmotions when starting a new category
+    private string GetNextEmotion()
+    {
         if (shuffledEmotionOrder == null || emotionPosition >= emotions.Count)
         {
-            // Create list of emotion indices and shuffle it
             shuffledEmotionOrder = Enumerable.Range(0, emotions.Count).ToList();
             ShuffleList(shuffledEmotionOrder);
-
-            emotionPosition = 0; // reset position in shuffled list
-
-            // If you want to reset isAnimationLoaded here as well, do it:
+            emotionPosition = 0;
             isAnimationLoaded = false;
         }
 
-        // Get the current emotion index from shuffled order
         int emotionIndex = shuffledEmotionOrder[emotionPosition];
-        string emotion = emotions[emotionIndex];
+        return emotions[emotionIndex];
+    }
 
-        Debug.Log($"Current2 modality: {modality}, category: {category}, emotion: {emotion}");
-
-        string emotionPath = $"Modalities/{modality}/{category}";
-
-        if (isAnimationLoaded == false && modality == "FacialExpression")
+    private void HandleStimulusPresentation(string modality, string emotion, string category, string emotionPath)
+    {
+        if (!isAnimationLoaded && modality == "FacialExpression")
         {
             SetExtendedPath(emotionPath);
             faceAnimationController.LoadNewAnimation(extendedPath);
@@ -231,27 +233,22 @@ public class HoverButton : MonoBehaviour
         }
         else if (modality == "Sound")
         {
-            Debug.Log($"Playing sound for emotion: {emotion} in category: {category}, combined is: {emotion + category}");
+            Debug.Log($"Playing sound for emotion: {emotion} in category: {category}");
             audiocontroller.PlaySound(emotion, category);
         }
+    }
 
-        Debug.Log($"EMOTION6 PATH5 IS {emotionPath}");
-        Debug.Log($"WANTING TO Presenting {modality} stimulus for {emotion} in {category}");
-        Debug.Log($"MODALITIES IS {modality} stimulus for {emotion} in {category} at path {emotionPath}");
 
-        StartCoroutine(DelayedRating(emotion, category));
-        // ratingManager.SetCurrentTask(emotion, category); //check
-
-        // Advance to next emotion in shuffled list
+    private void AdvanceStateIfNeeded()
+    {
         emotionPosition++;
 
-        // When we reach the end of emotions for this category
         if (emotionPosition >= emotions.Count)
         {
-            emotionPosition = 0; // reset for next category (though reshuffle happens above)
-
-            currentLatinSquarePositions[currentModalityIndex]++; // move to next category
-            isAnimationLoaded = false; // reset animation flag for next category
+            emotionPosition = 0;
+            shuffledEmotionOrder = null;
+            currentLatinSquarePositions[currentModalityIndex]++;
+            isAnimationLoaded = false;
 
             if (currentLatinSquarePositions[currentModalityIndex] >= categories.Count)
             {
@@ -262,17 +259,35 @@ public class HoverButton : MonoBehaviour
                 {
                     presentationFinished = true;
                     Debug.Log("All categories and emotions for all modalities have been presented.");
-                    return;
                 }
             }
-
-            // Reset shuffled emotions so they get shuffled for the new category on next call
-            shuffledEmotionOrder = null;
         }
+    }
+    private void AdvanceIndicesAndDisplayFace()
+    {
+        InitializeIfNeeded();
+
+        string modality = GetCurrentModality();
+        string category = GetCurrentCategory();
+        string emotion = GetNextEmotion();
+
+        string emotionPath = $"Modalities/{modality}/{category}";
+        Debug.Log($"Presenting {modality} stimulus for {emotion} in {category} at path {emotionPath}");
+
+        HandleStimulusPresentation(modality, emotion, category, emotionPath);
+        StartCoroutine(DelayedRating(emotion, category));
+
+        AdvanceStateIfNeeded();
 
         moodChanged = true;
         lastChangeTime = Time.time;
     }
+
+
+
+
+
+
 
     private void ShuffleList<T>(List<T> list)
     {
