@@ -11,7 +11,7 @@ public class BreakMessage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        thisObject.SetActive(true);
+        thisObject.SetActive(false);
     }
 
     // Update is called once per frame

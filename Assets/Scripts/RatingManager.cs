@@ -20,6 +20,9 @@ public class RatingManager : MonoBehaviour
     public GameObject thisObject;
     public bool taskRunning = false;
 
+    [Header("Break Message")]
+    [SerializeField] private BreakMessage breakMessage;
+
 
 
     // Start is called before the first frame update
@@ -60,7 +63,7 @@ public class RatingManager : MonoBehaviour
                             emotionShown + ", " +
                             emotionPercieved.value + ", " +
                             emotionEffectiveness.value + ", " +
-                            empathyFelt.value + 
+                            empathyFelt.value +
                             "\n");
 
         // Reset the Likert Scales to neutral 
@@ -70,5 +73,6 @@ public class RatingManager : MonoBehaviour
 
         thisObject.SetActive(false);
         taskRunning = false;
+        breakMessage.ShowMessage();
     }
 }
