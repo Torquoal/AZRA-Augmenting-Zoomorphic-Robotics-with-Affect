@@ -45,3 +45,16 @@ P1, Man, 20, AnthroManga, Happy, 0, 1, 2
 P1, Man, 20, AnthroManga, Happy, 0, 1, 2
 P1, Man, 20, AnthroManga, Sad, 0, 1, 1
 P1, Man, 20, AnthroManga, Happy, 0, 1, 1
+P1, Man, 20, AnthroManga, Happy, 1, 5, 2
+P1, Man, 20, AnthroManga, Surprised, 2, 5, 3
+P1, Man, 20, AnthroManga, Angry, 3, 4, 4
+P1, Man, 20, AnthroManga, Sad, 2, 5, 4
+P1, Man, 20, AnthroManga, Scared, 5, 2, 1
+P1, Man, 20, MechaEmoji, Sad, 4, 4, 2
+P1, Man, 20, AnthroManga, Surprised, 0, 1, 1
+P1, Man, 20, AnthroManga, Angry, 0, 1, 1
+P1, Man, 20, AnthroManga, Sad, 3, 3, 3
+P1, Man, 20, AnthroManga, Surprised, 3, 3, 3
+P1, Man, 20, AnthroManga, Happy, 3, 3, 3
+P1, Man, 20, AnthroManga, Scared, 3, 3, 3
+P1, Man, 20, Sound, AnthroManga, Sad, 2, 3, 3

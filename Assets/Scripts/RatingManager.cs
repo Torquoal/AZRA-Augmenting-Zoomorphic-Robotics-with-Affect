@@ -9,17 +9,20 @@ using TMPro;
 public class RatingManager : MonoBehaviour
 {
     // define the UI objects we draw values from or update.
-    public int participantID;
+    protected int participantID;
     public int age;
     public string gender;
     public Slider emotionPercieved;
     public Slider emotionEffectiveness;
     public Slider empathyFelt;
     private string emotionShown;
+    private string categoryUsed;
     private string modalityUsed;
     public GameObject thisObject;
     public bool taskRunning = false;
 
+    private int emotionCount;
+    private int counter = 0;
     [Header("Break Message")]
     [SerializeField] private BreakMessage breakMessage;
 
@@ -34,13 +37,14 @@ public class RatingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
 
-    public void SetCurrentTask(string emotion, string modality)
+    public void SetCurrentTask(string emotion, string category, string modality)
     {
         emotionShown = emotion;
+        categoryUsed = category;
         modalityUsed = modality;
         thisObject.SetActive(true);
     }
@@ -57,9 +61,9 @@ public class RatingManager : MonoBehaviour
         // Append PartID, gender, rating, the image and newline to the log file in CSV format
         File.AppendAllText("ParticipantLogs/" + filename + ".txt", // save as txt file, import to excel as CSV
                             filename + ", " +
-                            gender + ", " +
                             age.ToString() + ", " +
                             modalityUsed + ", " +
+                            categoryUsed + ", " +
                             emotionShown + ", " +
                             emotionPercieved.value + ", " +
                             emotionEffectiveness.value + ", " +
@@ -73,6 +77,24 @@ public class RatingManager : MonoBehaviour
 
         thisObject.SetActive(false);
         taskRunning = false;
-        breakMessage.ShowMessage();
+        counter++;
+        if (counter >= emotionCount)
+        {
+            breakMessage.ShowMessage();
+            counter = 0; // Reset counter after showing break message
+        }
+
     }
+
+
+    public void SetParticipantID(int id)
+    {
+        participantID = id;
+    }
+
+    public void SetEmotionCount(int amount)
+    {
+        emotionCount = amount;
+    }
+
 }

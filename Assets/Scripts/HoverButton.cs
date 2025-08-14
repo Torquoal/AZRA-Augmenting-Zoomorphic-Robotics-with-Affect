@@ -12,7 +12,7 @@ public class HoverButton : MonoBehaviour
 
     [Header("Mood Trigger")]
     [SerializeField] private ExperimentalEmotionController emotionController;
-    // [SerializeField] private FaceController faceController;
+    [SerializeField] private FaceController faceController;
 
     [Header("Hover Timing")]
     [SerializeField] private float hoverTime = 5f;
@@ -161,10 +161,10 @@ public class HoverButton : MonoBehaviour
         AdvanceIndicesAndDisplayFace();
     }
 
-    private IEnumerator DelayedRating(string emotion, string category)
+    private IEnumerator DelayedRating(string emotion, string category, string modality)
     {
         yield return new WaitForSeconds(RatingDelay);
-        ratingManager.SetCurrentTask(emotion, category);
+        ratingManager.SetCurrentTask(emotion, category, modality);
     }
 
     private void InitializeModalityOrder()
@@ -229,10 +229,20 @@ public class HoverButton : MonoBehaviour
 
         if (modality == "FacialExpression")
         {
+            // Make face visible for facial expression modality
+            if (faceController != null)
+            {
+                faceController.SetFaceVisibility(1f);
+            }
             emotionController.TryDisplayFace(emotion, "");
         }
         else if (modality == "Sound")
         {
+            // Make face invisible for sound modality
+            if (faceController != null)
+            {
+                faceController.SetFaceVisibility(0f);
+            }
             Debug.Log($"Playing sound for emotion: {emotion} in category: {category}");
             audiocontroller.PlaySound(emotion, category);
         }
@@ -255,6 +265,15 @@ public class HoverButton : MonoBehaviour
                 currentLatinSquarePositions[currentModalityIndex] = 0;
                 currentModalityIndex++;
 
+                // Ensure face is hidden when switching to sound modality
+                if (currentModalityIndex < modalities.Count && modalities[currentModalityIndex] == "Sound")
+                {
+                    if (faceController != null)
+                    {
+                        faceController.SetFaceVisibility(0f);
+                    }
+                }
+
                 if (currentModalityIndex >= modalities.Count)
                 {
                     presentationFinished = true;
@@ -275,7 +294,7 @@ public class HoverButton : MonoBehaviour
         Debug.Log($"Presenting {modality} stimulus for {emotion} in {category} at path {emotionPath}");
 
         HandleStimulusPresentation(modality, emotion, category, emotionPath);
-        StartCoroutine(DelayedRating(emotion, category));
+        StartCoroutine(DelayedRating(emotion, category, modality));
 
         AdvanceStateIfNeeded();
 
@@ -284,6 +303,17 @@ public class HoverButton : MonoBehaviour
     }
 
 
+    void Start()
+    {
+        ratingManager.SetParticipantID(participantNumber);
+        ratingManager.SetEmotionCount(emotions.Count);
+        
+        // Make face invisible after wakeup to avoid white screen
+        if (faceController != null)
+        {
+            faceController.SetFaceVisibility(0f);
+        }
+    }
 
 
 

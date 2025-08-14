@@ -281,7 +281,7 @@ public class SceneController : MonoBehaviour
         // Set neutral face at start (invisible)
         if (faceController != null)
         {
-            faceController.SetFaceExpression("neutral");
+            // faceController.SetFaceExpression("neutral"); // disabled this line to set face invisible
             faceController.SetFaceVisibility(0f); // Ensure face starts invisible
         }
 
@@ -297,7 +297,7 @@ public class SceneController : MonoBehaviour
         // Start face fade in
         if (faceController != null)
         {
-            faceController.StartFadeIn();
+            // faceController.StartFadeIn();
         }
 
         yield return new WaitForSeconds(2f);
