@@ -154,25 +154,29 @@ public class QooboPositioner : MonoBehaviour
             return;
         }
 
-        // Calculate the position below and forward of the palm based on palm's orientation
-        Vector3 downDirection = rightPalmRotation * Vector3.down;
-        Vector3 forwardDirection = rightPalmRotation * Vector3.forward;
+        // Calculate the position on the back of the hand based on palm's orientation
+        Vector3 backDirection = rightPalmRotation * Vector3.back; // Back of hand direction
+        Vector3 upDirection = rightPalmRotation * Vector3.up; // Up direction relative to hand
+        Vector3 rightDirection = rightPalmRotation * Vector3.right; // Right direction relative to hand
         
-        // Apply both vertical and forward offsets
-        Vector3 targetPos = rightPalmPosition + (downDirection * Mathf.Abs(handHeightOffset)) + 
-                                              (forwardDirection * handForwardOffset);
+        // Apply offset to place Qoobo on the back of the hand, slightly further back and to the right
+        Vector3 targetPos = rightPalmPosition + (backDirection * (handForwardOffset + 0.02f)) + 
+                                              (upDirection * Mathf.Abs(handHeightOffset)) +
+                                              (rightDirection * 0.02f);
         
         Vector3 oldPosition = qooboMesh.transform.position;
         
         // Instant position update
         qooboMesh.transform.position = targetPos;
 
-        // Instant rotation update
-        Vector3 palmForward = rightPalmRotation * Vector3.forward;
-        palmForward.y = 0; // Zero out vertical component
-        if (palmForward != Vector3.zero)
+        // Instant rotation update - make Qoobo face the back of the hand
+        Vector3 palmBack = rightPalmRotation * Vector3.back; // Back of hand direction
+        palmBack.y = 0; // Zero out vertical component
+        if (palmBack != Vector3.zero)
         {
-            qooboMesh.transform.rotation = Quaternion.LookRotation(palmForward, Vector3.up);
+            // Apply -90-degree correction to align Qoobo's face properly with the back of the hand
+            Quaternion baseRotation = Quaternion.LookRotation(palmBack, Vector3.up);
+            qooboMesh.transform.rotation = baseRotation * Quaternion.Euler(0, -90, 0);
         }
 
         Debug.Log($"Position updated - Old: {oldPosition}, New: {targetPos}, Movement delta: {Vector3.Distance(oldPosition, targetPos)}");

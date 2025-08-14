@@ -61,7 +61,6 @@ public class RatingManager : MonoBehaviour
         // Append PartID, gender, rating, the image and newline to the log file in CSV format
         File.AppendAllText("ParticipantLogs/" + filename + ".txt", // save as txt file, import to excel as CSV
                             filename + ", " +
-                            age.ToString() + ", " +
                             modalityUsed + ", " +
                             categoryUsed + ", " +
                             emotionShown + ", " +
