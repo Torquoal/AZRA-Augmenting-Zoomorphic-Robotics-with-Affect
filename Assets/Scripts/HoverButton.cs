@@ -9,7 +9,6 @@ public class HoverButton : MonoBehaviour
     [Header("Face Animation Controller")]
     [SerializeField] private ExperimentalFaceAnimationController faceAnimationController;
 
-
     [Header("Mood Trigger")]
     [SerializeField] private ExperimentalEmotionController emotionController;
     [SerializeField] private FaceController faceController;
@@ -33,14 +32,12 @@ public class HoverButton : MonoBehaviour
     [Header("Audio Controller")]
     [SerializeField] private ExperimentalAudioController audiocontroller;
 
-    [Header("Stimuli Settings")]
-    // Define your modalities explicitly
+    [Header("Experiment Settings")]
+    [SerializeField] private string selectedModality = "FacialExpression"; // Choose: "FacialExpression" or "Sound"
+    
+    // Define your categories explicitly - different for each modality
     [SerializeField]
-    private List<string> modalities = new List<string> { "FacialExpression", "Sound" };
-
-    // Define your categories explicitly
-    [SerializeField]
-    private List<string> categories = new List<string> 
+    private List<string> faceCategories = new List<string> 
     {
         "AnthroAbs",
         "AnthroManga",
@@ -50,12 +47,21 @@ public class HoverButton : MonoBehaviour
         "ZoomorphicReal"
     };
 
+    [SerializeField]
+    private List<string> soundCategories = new List<string> 
+    {
+        "HumanNoises",
+        "Animalese",
+        "Beeps",
+        "CatNoises",
+        "Musical"
+    };
+
     // Define your emotions explicitly (use exactly these 5 for your experiment)
     [SerializeField]
     private List<string> emotions = new List<string> { "Happy", "Sad", "Angry", "Scared", "Surprised" };
 
     // Indices to track progress
-    private int currentModalityIndex = 0;
     private int currentCategoryIndex = 0; // Start with a different category for each participant
     private int currentEmotionIndex = 0;
 
@@ -69,32 +75,41 @@ public class HoverButton : MonoBehaviour
     private List<int> shuffledEmotionOrder = null;
     private int emotionPosition = 0;
 
-
     // Add participant number field
     [Header("Experimental Design")]
     [SerializeField] private int participantNumber = 1;
 
-    // Latin square orders for each modality
-    private List<int> facialExpressionOrder;
-    private List<int> soundOrder;
-    // Track current position in Latin square for each modality
-    private int[] currentLatinSquarePositions;
+    // Latin square order for the selected modality
+    private List<int> categoryOrder;
+    // Track current position in Latin square
+    private int currentLatinSquarePosition;
 
-    // Initialize Latin square orders based on participant number
-    [ContextMenu("Initialize Latin Square Orders")]
-    private void InitializeLatinSquareOrders()
+    // Initialize Latin square order based on participant number
+    [ContextMenu("Initialize Latin Square Order")]
+    private void InitializeLatinSquareOrder()
     {
-        // Generate balanced Latin square for 6 categories (0-5)
-        // This creates a balanced design where each category appears in each position equally
-        facialExpressionOrder = GenerateBalancedLatinSquare(participantNumber, 6);
-        soundOrder = GenerateBalancedLatinSquare(participantNumber + 6, 6); // Offset for different order
+        // Get the appropriate category count for the selected modality
+        int categoryCount = GetCurrentCategoryCount();
         
-        Debug.Log($"Participant {participantNumber} - Facial Expression Order: {string.Join(", ", facialExpressionOrder)}");
-        Debug.Log($"Participant {participantNumber} - Sound Order: {string.Join(", ", soundOrder)}");
+        // Generate balanced Latin square for the appropriate number of categories
+        categoryOrder = GenerateBalancedLatinSquare(participantNumber, categoryCount);
+        
+        Debug.Log($"Participant {participantNumber} - {selectedModality} Category Order: {string.Join(", ", categoryOrder)}");
 
-        // Initialize tracking positions for each modality
-        currentLatinSquarePositions = new int[modalities.Count];
-        for (int i = 0; i < modalities.Count; i++) currentLatinSquarePositions[i] = 0;
+        // Initialize tracking position
+        currentLatinSquarePosition = 0;
+    }
+
+    // Get the current category count based on selected modality
+    private int GetCurrentCategoryCount()
+    {
+        return (selectedModality == "FacialExpression") ? faceCategories.Count : soundCategories.Count;
+    }
+
+    // Get the current category list based on selected modality
+    private List<string> GetCurrentCategoryList()
+    {
+        return (selectedModality == "FacialExpression") ? faceCategories : soundCategories;
     }
 
     // Generate a balanced Latin square order for given participant and size
@@ -158,7 +173,7 @@ public class HoverButton : MonoBehaviour
             return;
         }
 
-        AdvanceIndicesAndDisplayFace();
+        AdvanceIndicesAndDisplayStimulus();
     }
 
     private IEnumerator DelayedRating(string emotion, string category, string modality)
@@ -167,41 +182,18 @@ public class HoverButton : MonoBehaviour
         ratingManager.SetCurrentTask(emotion, category, modality);
     }
 
-    private void InitializeModalityOrder()
-    {
-        modalities = new List<string> { "FacialExpression", "Sound" };
-        ShuffleList(modalities); // Randomizes the modality order
-        currentModalityIndex = 0;
-    }
-
-
-
     private void InitializeIfNeeded()
     {
-        if (facialExpressionOrder == null || soundOrder == null || currentLatinSquarePositions == null)
+        if (categoryOrder == null)
         {
-            InitializeLatinSquareOrders();
-            InitializeModalityOrder(); // Your addition to randomize modality order
+            InitializeLatinSquareOrder();
         }
-    }
-
-    private string GetCurrentModality()
-    {
-        return modalities[currentModalityIndex];
-    }
-
-    private List<int> GetCurrentOrder()
-    {
-        return (GetCurrentModality() == "FacialExpression")
-            ? facialExpressionOrder
-            : soundOrder;
     }
 
     private string GetCurrentCategory()
     {
-        int categoryPosition = currentLatinSquarePositions[currentModalityIndex];
-        int categoryIndex = GetCurrentOrder()[categoryPosition];
-        return categories[categoryIndex];
+        int categoryIndex = categoryOrder[currentLatinSquarePosition];
+        return GetCurrentCategoryList()[categoryIndex];
     }
 
     private string GetNextEmotion()
@@ -218,17 +210,21 @@ public class HoverButton : MonoBehaviour
         return emotions[emotionIndex];
     }
 
-    private void HandleStimulusPresentation(string modality, string emotion, string category, string emotionPath)
+    private void HandleStimulusPresentation(string emotion, string category)
     {
-        if (!isAnimationLoaded && modality == "FacialExpression")
+        if (!isAnimationLoaded && selectedModality == "FacialExpression")
         {
+            string emotionPath = $"Modalities/{selectedModality}/{category}";
             SetExtendedPath(emotionPath);
             faceAnimationController.LoadNewAnimation(extendedPath);
             isAnimationLoaded = true;
         }
 
-        if (modality == "FacialExpression")
+        if (selectedModality == "FacialExpression")
         {
+
+            Debug.Log($"Displaying facial expression for emotion: {emotion} in category: {category} selectedModality: {selectedModality}");
+
             // Make face visible for facial expression modality
             if (faceController != null)
             {
@@ -236,7 +232,7 @@ public class HoverButton : MonoBehaviour
             }
             emotionController.TryDisplayFace(emotion, "");
         }
-        else if (modality == "Sound")
+        else if (selectedModality == "Sound")
         {
             // Make face invisible for sound modality
             if (faceController != null)
@@ -248,7 +244,6 @@ public class HoverButton : MonoBehaviour
         }
     }
 
-
     private void AdvanceStateIfNeeded()
     {
         emotionPosition++;
@@ -257,51 +252,34 @@ public class HoverButton : MonoBehaviour
         {
             emotionPosition = 0;
             shuffledEmotionOrder = null;
-            currentLatinSquarePositions[currentModalityIndex]++;
+            currentLatinSquarePosition++;
             isAnimationLoaded = false;
 
-            if (currentLatinSquarePositions[currentModalityIndex] >= categories.Count)
+            if (currentLatinSquarePosition >= GetCurrentCategoryCount())
             {
-                currentLatinSquarePositions[currentModalityIndex] = 0;
-                currentModalityIndex++;
-
-                // Ensure face is hidden when switching to sound modality
-                if (currentModalityIndex < modalities.Count && modalities[currentModalityIndex] == "Sound")
-                {
-                    if (faceController != null)
-                    {
-                        faceController.SetFaceVisibility(0f);
-                    }
-                }
-
-                if (currentModalityIndex >= modalities.Count)
-                {
-                    presentationFinished = true;
-                    Debug.Log("All categories and emotions for all modalities have been presented.");
-                }
+                presentationFinished = true;
+                Debug.Log($"All categories and emotions for {selectedModality} modality have been presented.");
             }
         }
     }
-    private void AdvanceIndicesAndDisplayFace()
+
+    private void AdvanceIndicesAndDisplayStimulus()
     {
         InitializeIfNeeded();
 
-        string modality = GetCurrentModality();
         string category = GetCurrentCategory();
         string emotion = GetNextEmotion();
 
-        string emotionPath = $"Modalities/{modality}/{category}";
-        Debug.Log($"Presenting {modality} stimulus for {emotion} in {category} at path {emotionPath}");
+        Debug.Log($"Presenting {selectedModality} stimulus for {emotion} in {category}");
 
-        HandleStimulusPresentation(modality, emotion, category, emotionPath);
-        StartCoroutine(DelayedRating(emotion, category, modality));
+        HandleStimulusPresentation(emotion, category);
+        StartCoroutine(DelayedRating(emotion, category, selectedModality));
 
         AdvanceStateIfNeeded();
 
         moodChanged = true;
         lastChangeTime = Time.time;
     }
-
 
     void Start()
     {
@@ -314,10 +292,6 @@ public class HoverButton : MonoBehaviour
             faceController.SetFaceVisibility(0f);
         }
     }
-
-
-
-
 
     private void ShuffleList<T>(List<T> list)
     {
@@ -332,6 +306,7 @@ public class HoverButton : MonoBehaviour
             list[n] = value;
         }
     }
+
     private bool IsHand(Collider col)
     {
         string fullPath = GetGameObjectPath(col.gameObject);
@@ -349,7 +324,6 @@ public class HoverButton : MonoBehaviour
         }
         return path;
     }
-
 
     [ContextMenu("Get Extended Path")]
     public string GetExtendedPath()
@@ -375,14 +349,20 @@ public class HoverButton : MonoBehaviour
     {
         Debug.Log("=== Latin Square Demonstration ===");
         
+        // Show for both modalities
+        string[] modalities = { "FacialExpression", "Sound" };
+        
         for (int participant = 1; participant <= 6; participant++)
         {
-            List<int> facialOrder = GenerateBalancedLatinSquare(participant, 6);
-            List<int> soundOrder = GenerateBalancedLatinSquare(participant + 6, 6);
-            
             Debug.Log($"Participant {participant}:");
-            Debug.Log($"  Facial Expression Order: {string.Join(", ", facialOrder)}");
-            Debug.Log($"  Sound Order: {string.Join(", ", soundOrder)}");
+            
+            foreach (string modality in modalities)
+            {
+                int categoryCount = (modality == "FacialExpression") ? faceCategories.Count : soundCategories.Count;
+                List<int> categoryOrder = GenerateBalancedLatinSquare(participant, categoryCount);
+                
+                Debug.Log($"  {modality} Category Order ({categoryCount} categories): {string.Join(", ", categoryOrder)}");
+            }
             Debug.Log("---");
         }
     }

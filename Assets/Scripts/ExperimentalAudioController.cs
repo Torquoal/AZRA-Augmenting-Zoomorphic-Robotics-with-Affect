@@ -6,16 +6,16 @@ using UnityEngine;
 
 public class ExperimentalAudioController : AudioController
 {
-    [Header("AnthroManga Sounds")]
-    [SerializeField] private AudioClip[] anthroMangaBeepSounds;  // Drag your AnthroManga beep sound files here
-    [Header("MechaEmoji Sounds")]
-    [SerializeField] private AudioClip[] mechaEmojiBeepSounds;  // Drag your MechaEmoji beep sound files here
-    [Header("MechaScreenFace Sounds")]
-    [SerializeField] private AudioClip[] mechaScreenFaceBeepSounds;
-    [Header("ZoomorphicAbs Sounds")]
-    [SerializeField] private AudioClip[] zoomorphicAbsBeepSounds;
-    [Header("ZoomorphicReal Sounds")]
-    [SerializeField] private AudioClip[] zoomorphicRealBeepSounds;
+    [Header("Musical Sounds")]
+    [SerializeField] private AudioClip[] musical;  
+    [Header("Human Sounds")]
+    [SerializeField] private AudioClip[] humanNoises; 
+    [Header("Beeps Sounds")]
+    [SerializeField] private AudioClip[] beeps;
+    [Header("Animalese Sounds")]
+    [SerializeField] private AudioClip[] animalese;
+    [Header("Cat Sounds")]
+    [SerializeField] private AudioClip[] catNoises;
 
 
     public void PlaySound(string emotion, string category)
@@ -37,38 +37,38 @@ public class ExperimentalAudioController : AudioController
         {
             switch (category)
             {
-                case "AnthroManga":
-                    if (anthroMangaBeepSounds != null && index < anthroMangaBeepSounds.Length)
+                case "Musical":
+                    if (musical != null && index < musical.Length)
                     {
-                        qooboSpeaker.clip = anthroMangaBeepSounds[index];
+                        qooboSpeaker.clip = musical[index];
                         qooboSpeaker.Play();
                     }
                     break;
-                case "MechaEmoji":
-                    if (mechaEmojiBeepSounds != null && index < mechaEmojiBeepSounds.Length)
+                case "HumanNoises":
+                    if (humanNoises != null && index < humanNoises.Length)
                     {
-                        qooboSpeaker.clip = mechaEmojiBeepSounds[index];
+                        qooboSpeaker.clip = humanNoises[index];
                         qooboSpeaker.Play();
                     }
                     break;
-                case "MechaScreenFace":
-                    if (mechaScreenFaceBeepSounds != null && index < mechaScreenFaceBeepSounds.Length)
+                case "Beeps":
+                    if (beeps != null && index < beeps.Length)
                     {
-                        qooboSpeaker.clip = mechaScreenFaceBeepSounds[index];
+                        qooboSpeaker.clip = beeps[index];
                         qooboSpeaker.Play();
                     }
                     break;
-                case "ZoomorphicAbs":
-                    if (zoomorphicAbsBeepSounds != null && index < zoomorphicAbsBeepSounds.Length)
+                case "Animalese":
+                    if (animalese != null && index < animalese.Length)
                     {
-                        qooboSpeaker.clip = zoomorphicAbsBeepSounds[index];
+                        qooboSpeaker.clip = animalese[index];
                         qooboSpeaker.Play();
                     }
                     break;
-                case "ZoomorphicReal":
-                    if (zoomorphicRealBeepSounds != null && index < zoomorphicRealBeepSounds.Length)
+                case "CatNoises":
+                    if (catNoises != null && index < catNoises.Length)
                     {
-                        qooboSpeaker.clip = zoomorphicRealBeepSounds[index];
+                        qooboSpeaker.clip = catNoises[index];
                         qooboSpeaker.Play();
                     }
                     break;

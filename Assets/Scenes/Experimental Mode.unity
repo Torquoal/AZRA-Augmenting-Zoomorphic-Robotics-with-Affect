@@ -33440,16 +33440,20 @@ MonoBehaviour:
   rightHandPath: Camera Rig/[BuildingBlock] Interaction/[BuildingBlock] Hand Interactions/RightHand
   ratingManager: {fileID: 1677424676}
   audiocontroller: {fileID: 799751475}
-  modalities:
-  - FacialExpression
-  - Sound
-  categories:
+  selectedModality: Sound
+  faceCategories:
   - AnthroAbs
   - AnthroManga
   - MechaEmoji
   - MechaScreenFace
   - ZoomorphicAbs
   - ZoomorphicReal
+  soundCategories:
+  - HumanNoises
+  - Animalese
+  - Beeps
+  - CatNoises
+  - Musical
   emotions:
   - Happy
   - Sad
