@@ -58,3 +58,5 @@ P1, Man, 20, AnthroManga, Surprised, 3, 3, 3
 P1, Man, 20, AnthroManga, Happy, 3, 3, 3
 P1, Man, 20, AnthroManga, Scared, 3, 3, 3
 P1, Man, 20, Sound, AnthroManga, Sad, 2, 3, 3
+P1, FacialExpression, AnthroManga, Scared, 0, 1, 1
+P1, FacialExpression, AnthroManga, Angry, 3, 3, 3

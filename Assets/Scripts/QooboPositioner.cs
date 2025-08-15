@@ -160,9 +160,9 @@ public class QooboPositioner : MonoBehaviour
         Vector3 rightDirection = rightPalmRotation * Vector3.right; // Right direction relative to hand
         
         // Apply offset to place Qoobo on the back of the hand, slightly further back and to the right
-        Vector3 targetPos = rightPalmPosition + (backDirection * (handForwardOffset + 0.02f)) + 
+        Vector3 targetPos = rightPalmPosition + (backDirection * (handForwardOffset - 0.05f)) + 
                                               (upDirection * Mathf.Abs(handHeightOffset)) +
-                                              (rightDirection * 0.02f);
+                                              (rightDirection * 0f);
         
         Vector3 oldPosition = qooboMesh.transform.position;
         

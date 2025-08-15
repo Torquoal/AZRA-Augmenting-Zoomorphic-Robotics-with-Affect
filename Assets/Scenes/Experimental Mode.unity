@@ -33433,6 +33433,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   faceAnimationController: {fileID: 1678941020}
   emotionController: {fileID: 1707299874730129974}
+  faceController: {fileID: 963561172}
   hoverTime: 2
   cooldown: 0.5
   leftHandPath: Camera Rig/[BuildingBlock] Interaction/[BuildingBlock] Hand Interactions/LeftHand
