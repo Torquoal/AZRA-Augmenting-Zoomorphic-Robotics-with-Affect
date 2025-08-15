@@ -10,8 +10,6 @@ public class RatingManager : MonoBehaviour
 {
     // define the UI objects we draw values from or update.
     protected int participantID;
-    public int age;
-    public string gender;
     public Slider emotionPercieved;
     public Slider emotionEffectiveness;
     public Slider empathyFelt;

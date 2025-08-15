@@ -4710,8 +4710,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Very              Somewhat     Neither    Somewhat          Very
 
-    Inneffective 
-    Ineffective                      Effective            Effective'
+    Unclear           
+    UnClear                            Clear               Clear'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -12537,31 +12537,31 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d315387e6e68d9645953cca6fe917d82, type: 3}
   - {fileID: 8300000, guid: 5631fb845ba95634793d2c8ccba4183c, type: 3}
   - {fileID: 8300000, guid: 92dc81b416347d5468820e8e35cb2c41, type: 3}
-  anthroMangaBeepSounds:
+  musical:
   - {fileID: 8300000, guid: 17235d3fce2f73045a31f6655d67a5be, type: 3}
   - {fileID: 8300000, guid: 0718de6eef1208c438673192b6f46215, type: 3}
   - {fileID: 8300000, guid: 4d3945a7d8ead0d47a5dadacb6f2b261, type: 3}
   - {fileID: 8300000, guid: f5ae7fe1b48414a4fa3551dadcc24a87, type: 3}
   - {fileID: 8300000, guid: 6d471b85f4b0e234cb0996f4fe8a9b2a, type: 3}
-  mechaEmojiBeepSounds:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  mechaScreenFaceBeepSounds:
+  humanNoises:
+  - {fileID: 8300000, guid: 394e6d4e170576341a4493e8581057db, type: 3}
+  - {fileID: 8300000, guid: 7550a255a14ad874e8f7f015445c141f, type: 3}
+  - {fileID: 8300000, guid: d908765cf5ae1184689a55d87d910987, type: 3}
+  - {fileID: 8300000, guid: 9d7a61c8401dd82439c5023f802ad3b3, type: 3}
+  - {fileID: 8300000, guid: 63f71f803dfc5a54b80ecc57b7cc006e, type: 3}
+  beeps:
   - {fileID: 8300000, guid: 25f9c959a91d98c4386da6f75b04eb2d, type: 3}
   - {fileID: 8300000, guid: 4b10fa4974166074f904a6435640acdb, type: 3}
   - {fileID: 8300000, guid: 132e8628eb9209d4dbf11a20ac100436, type: 3}
   - {fileID: 8300000, guid: d315387e6e68d9645953cca6fe917d82, type: 3}
   - {fileID: 8300000, guid: 5631fb845ba95634793d2c8ccba4183c, type: 3}
-  zoomorphicAbsBeepSounds:
+  animalese:
   - {fileID: 8300000, guid: fd621f11ef46ea944b2b3a0727d9902e, type: 3}
   - {fileID: 8300000, guid: c887a4e23a99aca45bef6038fb0a412a, type: 3}
   - {fileID: 8300000, guid: 2c77eda9977fcce49ae47b27054c1733, type: 3}
   - {fileID: 8300000, guid: a0656ec9d6123aa4f862773d56c666be, type: 3}
   - {fileID: 8300000, guid: 6302197e2f4746e48a1528513042eeec, type: 3}
-  zoomorphicRealBeepSounds:
+  catNoises:
   - {fileID: 8300000, guid: 9305bac00c9b40f41a90ed235c320e74, type: 3}
   - {fileID: 8300000, guid: 4f423ab9e63af2b49a9d829d26d72788, type: 3}
   - {fileID: 8300000, guid: d537f50401a8a824c828771dea0de606, type: 3}
@@ -26368,8 +26368,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91d1c78d1cecf6d4b9ae085d9a0677fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  age: 20
-  gender: Man
   emotionPercieved: {fileID: 814041719}
   emotionEffectiveness: {fileID: 2125323972}
   empathyFelt: {fileID: 1737823206}
@@ -33440,7 +33438,7 @@ MonoBehaviour:
   rightHandPath: Camera Rig/[BuildingBlock] Interaction/[BuildingBlock] Hand Interactions/RightHand
   ratingManager: {fileID: 1677424676}
   audiocontroller: {fileID: 799751475}
-  selectedModality: Sound
+  selectedModality: FacialExpression
   faceCategories:
   - AnthroAbs
   - AnthroManga
