@@ -13,6 +13,7 @@ public class RatingManager : MonoBehaviour
     public Slider emotionPercieved;
     public Slider emotionEffectiveness;
     public Slider empathyFelt;
+    public Slider appropriatenessRating;
     private string emotionShown;
     private string categoryUsed;
     private string modalityUsed;
@@ -66,13 +67,15 @@ public class RatingManager : MonoBehaviour
                             emotionShown + ", " +
                             emotionPercieved.value + ", " +
                             emotionEffectiveness.value + ", " +
-                            empathyFelt.value +
+                            empathyFelt.value + ", " +
+                            appropriatenessRating.value +
                             "\n");
 
         // Reset the Likert Scales to neutral 
         emotionPercieved.value = 3;
         emotionEffectiveness.value = 3;
         empathyFelt.value = 3;
+        appropriatenessRating.value = 3;
 
         thisObject.SetActive(false);
         taskRunning = false;
