@@ -30,3 +30,4 @@ P91, Sound, HumanNoises, Sad, 3, 3, 3, 3
 P91, Sound, Animalese, Sad, 3, 3, 3, 3
 P91, Sound, HumanNoises, Happy, 0, 1, 1, 1
 P91, Sound, HumanNoises, Sad, 3, 3, 3, 3
+P91, Sound, HumanNoises, Happy, 0, 1, 1, 1
