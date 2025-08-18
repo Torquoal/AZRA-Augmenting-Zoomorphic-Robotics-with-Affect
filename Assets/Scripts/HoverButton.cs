@@ -92,7 +92,7 @@ public class HoverButton : MonoBehaviour
         int categoryCount = GetCurrentCategoryCount();
         
         // Generate balanced Latin square for the appropriate number of categories
-        categoryOrder = GenerateBalancedLatinSquare(participantNumber, categoryCount);
+        categoryOrder = GenerateBalancedLatinSquare(Mathf.Max(0, participantNumber - 1), categoryCount);
         
         Debug.Log($"Participant {participantNumber} - {selectedModality} Category Order: {string.Join(", ", categoryOrder)}");
 
@@ -115,15 +115,31 @@ public class HoverButton : MonoBehaviour
     // Generate a balanced Latin square order for given participant and size
     private List<int> GenerateBalancedLatinSquare(int participant, int size)
     {
-        List<int> order = new List<int>();
-        
-        // Base Latin square pattern
-        for (int i = 0; i < size; i++)
+        List<int> order = new List<int>(size);
+        int j = 0;
+        int h = 0;
+        for (int i = 0; i < size; ++i)
         {
-            int category = (participant + i) % size;
-            order.Add(category);
+            int val;
+            if (i < 2 || i % 2 != 0)
+            {
+                val = j++;
+            }
+            else
+            {
+                val = size - h - 1;
+                ++h;
+            }
+
+            int idx = (val + participant) % size;
+            order.Add(idx);
         }
-        
+
+        if (size % 2 != 0 && participant % 2 != 0)
+        {
+            order.Reverse();
+        }
+
         return order;
     }
 
@@ -365,7 +381,7 @@ public class HoverButton : MonoBehaviour
             foreach (string modality in modalities)
             {
                 int categoryCount = (modality == "FacialExpression") ? faceCategories.Count : soundCategories.Count;
-                List<int> categoryOrder = GenerateBalancedLatinSquare(participant, categoryCount);
+                List<int> categoryOrder = GenerateBalancedLatinSquare(participant - 1, categoryCount);
                 
                 Debug.Log($"  {modality} Category Order ({categoryCount} categories): {string.Join(", ", categoryOrder)}");
             }
