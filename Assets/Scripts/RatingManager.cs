@@ -23,7 +23,8 @@ public class RatingManager : MonoBehaviour
     private int counter = 0;
     [Header("Break Message")]
     [SerializeField] private BreakMessage breakMessage;
-
+    [Header("Face Controller")]
+    [SerializeField] private FaceController faceController;
 
 
     // Start is called before the first frame update
@@ -44,6 +45,7 @@ public class RatingManager : MonoBehaviour
         emotionShown = emotion;
         categoryUsed = category;
         modalityUsed = modality;
+        taskRunning = true;
         thisObject.SetActive(true);
     }
 
@@ -75,8 +77,10 @@ public class RatingManager : MonoBehaviour
         thisObject.SetActive(false);
         taskRunning = false;
         counter++;
+        Debug.Log("Counter: " + counter);
         if (counter >= emotionCount)
         {
+            faceController.SetFaceVisibility(0f); // Hide face after the last emotion
             breakMessage.ShowMessage();
             counter = 0; // Reset counter after showing break message
         }

@@ -150,7 +150,7 @@ public class HoverButton : MonoBehaviour
 
     private void Update()
     {
-        if (isHovering && !moodChanged)
+        if (isHovering && !moodChanged && (ratingManager == null || !ratingManager.taskRunning))
         {
             if (Time.time - hoverStartTime >= hoverTime && Time.time - lastChangeTime >= cooldown)
             {
@@ -170,6 +170,12 @@ public class HoverButton : MonoBehaviour
         if (emotionController == null || ratingManager == null)
         {
             Debug.LogWarning("EmotionController or RatingManager is missing.");
+            return;
+        }
+
+        if (ratingManager.taskRunning)
+        {
+            Debug.Log("Rating UI active; deferring mood change.");
             return;
         }
 
@@ -340,7 +346,7 @@ public class HoverButton : MonoBehaviour
     public void ResetMood()
     {
         moodChanged = false;
-        lastChangeTime = -999f;
+        lastChangeTime = -999f; 
     }
 
     // Demonstration method to show Latin square outputs for different participants

@@ -4711,7 +4711,7 @@ MonoBehaviour:
   m_text: 'Very              Somewhat     Neither    Somewhat          Very
 
     Unclear           
-    UnClear                            Clear               Clear'
+    Unclear                            Clear               Clear'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -18963,7 +18963,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1181708168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26305,7 +26305,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1677424668}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.17364825, z: 0, w: 0.9848078}
   m_LocalPosition: {x: 0, y: 0, z: -1.11}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
@@ -26313,7 +26313,7 @@ RectTransform:
   - {fileID: 1018253900}
   - {fileID: 893410652}
   m_Father: {fileID: 1112418021}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -20, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -3.74, y: 0.63}
@@ -27697,7 +27697,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1765088558}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.20791169, z: 0, w: 0.9781476}
   m_LocalPosition: {x: 0, y: 0, z: -1.0800008}
   m_LocalScale: {x: 2.1276596, y: 2.1276596, z: 2.1276596}
   m_ConstrainProportionsScale: 1
@@ -27705,7 +27705,7 @@ RectTransform:
   - {fileID: 2045485920}
   - {fileID: 1625893332}
   m_Father: {fileID: 1112418021}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -24, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -3.3999999, y: -0.10999915}
@@ -33458,7 +33458,7 @@ MonoBehaviour:
   - Angry
   - Scared
   - Surprised
-  participantNumber: 1
+  participantNumber: 98
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
