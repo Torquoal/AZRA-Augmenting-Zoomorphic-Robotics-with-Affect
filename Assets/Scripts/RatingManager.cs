@@ -84,7 +84,7 @@ public class RatingManager : MonoBehaviour
         if (counter >= emotionCount)
         {
             faceController.SetFaceVisibility(0f); // Hide face after the last emotion
-            breakMessage.ShowMessage();
+            // breakMessage.ShowMessage();
             counter = 0; // Reset counter after showing break message
         }
 

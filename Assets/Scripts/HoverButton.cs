@@ -32,6 +32,9 @@ public class HoverButton : MonoBehaviour
     [Header("Audio Controller")]
     [SerializeField] private ExperimentalAudioController audiocontroller;
 
+    [Header("Scene Controller")]
+    [SerializeField] private SceneController sceneController;
+
     [Header("Experiment Settings")]
     [SerializeField] private string selectedModality = "FacialExpression"; // Choose: "FacialExpression" or "Sound"
     
@@ -166,7 +169,7 @@ public class HoverButton : MonoBehaviour
 
     private void Update()
     {
-        if (isHovering && !moodChanged && (ratingManager == null || !ratingManager.taskRunning))
+        if (isHovering && !moodChanged && (ratingManager == null || !ratingManager.taskRunning) && sceneController.IsWakeUpComplete())
         {
             if (Time.time - hoverStartTime >= hoverTime && Time.time - lastChangeTime >= cooldown)
             {
