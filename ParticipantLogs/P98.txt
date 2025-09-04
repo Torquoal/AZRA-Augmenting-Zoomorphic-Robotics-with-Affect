@@ -1,5 +1,0 @@
-P98, FacialExpression, MechaEmoji, Happy, 0, 1, 1
-P98, FacialExpression, MechaEmoji, Sad, 3, 3, 3
-P98, FacialExpression, MechaEmoji, Surprised, 3, 3, 3
-P98, FacialExpression, MechaEmoji, Scared, 3, 3, 3
-P98, FacialExpression, MechaEmoji, Angry, 3, 3, 3
