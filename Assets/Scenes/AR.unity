@@ -9069,6 +9069,7 @@ GameObject:
   - component: {fileID: 799751472}
   - component: {fileID: 799751473}
   - component: {fileID: 799751474}
+  - component: {fileID: 799751475}
   m_Layer: 0
   m_Name: ScriptHost
   m_TagString: Untagged
@@ -9127,9 +9128,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 688ccd7e2cf023848a89a995c7ead34f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inspectorNote: 'Hand Height offsets
+
+
+    Qoobo = 0.12
+
+    Petit Qoobo = 0.1
+
+    Qoobito
+    = 0.03?'
   qooboMesh: {fileID: 1112417998}
   sceneController: {fileID: 799751467}
-  handHeightOffset: 0.1
+  handHeightOffset: 0.12
   handForwardOffset: 0.05
   pinchThreshold: 0.02
   showDebugLogs: 0
@@ -9290,6 +9300,33 @@ MonoBehaviour:
   restRegenerationRate: 0.0069444445
   sceneController: {fileID: 799751467}
   emotionController: {fileID: 799751471}
+--- !u!114 &799751475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 799751465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4b80c8a3594a6d42b5f1a9f600fda02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  robotRoot: {fileID: 1112418015}
+  sizeProfile: 1
+  customScaleOverride: 1
+  useCustomScale: 0
+  useTargetLocalScale: 1
+  petitTargetLocalScale: 0.094
+  qooboTargetLocalScale: 0.1316
+  qoobitoTargetLocalScale: 0.035
+  petitXRotationDegrees: 0
+  qooboXRotationDegrees: 5
+  qoobitoXRotationDegrees: 0
+  applyOnStart: 1
+  logChanges: 1
+  livePreviewInPlayMode: 1
+  useAbsoluteScaling: 1
 --- !u!1 &799816403
 GameObject:
   m_ObjectHideFlags: 0
@@ -13769,6 +13806,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d130b992e98e3864f992ff80e6b12db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1112418015 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 924506761198234540, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+  m_PrefabInstance: {fileID: 1707299874730129972}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1113239358
 GameObject:
   m_ObjectHideFlags: 0
@@ -25482,6 +25524,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2449197411445232501, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.735
+      objectReference: {fileID: 0}
     - target: {fileID: 4244827798850561486, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: topTrigger
       value: 
@@ -25497,6 +25543,10 @@ PrefabInstance:
     - target: {fileID: 4244827798850561486, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: maxTimeBetweenTriggers
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5409088292132645188, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.642
       objectReference: {fileID: 0}
     - target: {fileID: 6524490002690117367, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: sceneController

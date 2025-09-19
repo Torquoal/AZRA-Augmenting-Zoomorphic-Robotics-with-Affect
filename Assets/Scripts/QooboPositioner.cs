@@ -6,9 +6,13 @@ using UnityEngine.InputSystem;
 
 public class QooboPositioner : MonoBehaviour
 {
+    [Header("Notes")]
+    [TextArea(2, 5)]
+    [SerializeField] private string inspectorNote = "Add any notes/instructions here. This box shows at the top of the inspector.";
+
     [Header("References")]
-    [SerializeField] private GameObject qooboMesh;
-    [SerializeField] private SceneController sceneController;
+    [SerializeField] [Tooltip("Top-level visual/prefab root for the AR Qoobo.")] private GameObject qooboMesh;
+    [SerializeField] [Tooltip("Reference to SceneController to trigger wake-up sequence on placement.")] private SceneController sceneController;
     
     [Header("Settings")]
     [SerializeField] private float handHeightOffset = -0.1f; // Offset BELOW hand position (negative value)
@@ -167,12 +171,15 @@ public class QooboPositioner : MonoBehaviour
         // Instant position update
         qooboMesh.transform.position = targetPos;
 
-        // Instant rotation update
+        // Instant rotation update - preserve existing X/Z tilt, apply only yaw from palm
         Vector3 palmForward = rightPalmRotation * Vector3.forward;
-        palmForward.y = 0; // Zero out vertical component
+        palmForward.y = 0; // Zero out vertical component for yaw
         if (palmForward != Vector3.zero)
         {
-            qooboMesh.transform.rotation = Quaternion.LookRotation(palmForward, Vector3.up);
+            Quaternion yawRotation = Quaternion.LookRotation(palmForward, Vector3.up);
+            Vector3 currentEuler = qooboMesh.transform.eulerAngles;
+            float yaw = yawRotation.eulerAngles.y;
+            qooboMesh.transform.rotation = Quaternion.Euler(currentEuler.x, yaw, currentEuler.z);
         }
 
         Debug.Log($"Position updated - Old: {oldPosition}, New: {targetPos}, Movement delta: {Vector3.Distance(oldPosition, targetPos)}");

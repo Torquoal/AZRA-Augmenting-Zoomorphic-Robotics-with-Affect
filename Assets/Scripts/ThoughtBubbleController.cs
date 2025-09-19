@@ -31,6 +31,7 @@ public class ThoughtBubbleController : MonoBehaviour
     private Vector3 mainBubbleBasePos;
     private Vector3 smallBubble1BasePos;
     private Vector3 smallBubble2BasePos;
+    private Vector3 initialLocalScale;
 
     void Start()
     {
@@ -72,6 +73,7 @@ public class ThoughtBubbleController : MonoBehaviour
         mainBubbleBasePos = mainBubble.transform.localPosition;
         smallBubble1BasePos = smallBubble1.transform.localPosition;
         smallBubble2BasePos = smallBubble2.transform.localPosition;
+        initialLocalScale = transform.localScale;
 
         Debug.Log($"Initial positions stored: Main={mainBubbleBasePos}, Small1={smallBubble1BasePos}, Small2={smallBubble2BasePos}");
 
@@ -262,6 +264,12 @@ public class ThoughtBubbleController : MonoBehaviour
             smallBubble1.transform.localPosition = smallBubble1BasePos;
             smallBubble2.transform.localPosition = smallBubble2BasePos;
         }
+    }
+
+    // Scale API used by RobotScaleConfig
+    public void SetScale(float scale)
+    {
+        transform.localScale = initialLocalScale * scale;
     }
 
     // Convenience methods for showing specific thoughts
