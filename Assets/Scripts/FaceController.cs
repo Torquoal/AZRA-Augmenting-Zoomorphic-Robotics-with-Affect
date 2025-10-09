@@ -10,6 +10,15 @@ public class FaceController : MonoBehaviour
     [SerializeField] private SceneController sceneController;
     [SerializeField] private FaceAnimationController faceAnimationController;
 
+	[Header("Face Follow Settings")]
+	[SerializeField] private bool enableCameraFollow = false;
+	[SerializeField] private float maxYawOffsetDegrees = 10f; // Clamp [-10, 10]
+	[SerializeField] private float followSmoothingSeconds = 2f; // Time to reach target
+	[SerializeField] private Transform bodyRoot; // Optional body root; defaults to this.transform.parent
+
+	private float currentYawOffset;
+	private float yawVelocity;
+
     [Header("Face Materials")]
     [SerializeField] private Material happyFaceMaterial;
     [SerializeField] private Material sadFaceMaterial;
@@ -42,7 +51,11 @@ public class FaceController : MonoBehaviour
         }
 
         // Rotate the face object 180 degrees around Y axis
-        transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
+		transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
+		if (bodyRoot == null && transform.parent != null)
+		{
+			bodyRoot = transform.parent;
+		}
 
         CreateCurvedFaceMesh();
         SetupMaterialProperties();
@@ -54,6 +67,31 @@ public class FaceController : MonoBehaviour
         
         Debug.Log($"Face mesh created with settings: Scale={scaleFactor}, Height={faceHeight}, Diameter={faceDiameter}, Curvature={curvatureAngle}");
     }
+
+	private void Update()
+	{
+		if (!enableCameraFollow) return;
+		if (bodyRoot == null) return;
+
+		var cam = Camera.main;
+		if (cam == null) return;
+
+		// Project camera and body forward onto horizontal plane
+		Vector3 bodyForward = bodyRoot.forward; bodyForward.y = 0f; bodyForward.Normalize();
+		if (bodyForward == Vector3.zero) return;
+		Vector3 camForward = cam.transform.position - bodyRoot.position; // vector from body to camera
+		camForward.y = 0f; camForward.Normalize();
+		if (camForward == Vector3.zero) return;
+
+		// Signed angle: positive when camera is to the body's left around up axis
+		float signedAngle = Vector3.SignedAngle(bodyForward, camForward, Vector3.up);
+		float targetOffset = Mathf.Clamp(-signedAngle, -maxYawOffsetDegrees, maxYawOffsetDegrees);
+
+		currentYawOffset = Mathf.SmoothDampAngle(currentYawOffset, targetOffset, ref yawVelocity, Mathf.Max(0.01f, followSmoothingSeconds));
+
+		// Base orientation is 180°; add offset around local Y
+		transform.localRotation = Quaternion.Euler(0f, 180f + currentYawOffset, 0f);
+	}
 
     private void SetupMaterialProperties()
     {

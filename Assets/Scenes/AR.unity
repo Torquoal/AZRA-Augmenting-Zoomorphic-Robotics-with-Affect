@@ -25549,9 +25549,21 @@ PrefabInstance:
       value: 0.642
       objectReference: {fileID: 0}
     - target: {fileID: 6524490002690117367, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: bodyRoot
+      value: 
+      objectReference: {fileID: 1112418015}
+    - target: {fileID: 6524490002690117367, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: sceneController
       value: 
       objectReference: {fileID: 799751467}
+    - target: {fileID: 6524490002690117367, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: enableCameraFollow
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6524490002690117367, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: maxYawOffsetDegrees
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: emotionModel
       value: 
