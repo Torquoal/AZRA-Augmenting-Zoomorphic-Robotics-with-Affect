@@ -7,6 +7,7 @@ public class VoiceDetector : MonoBehaviour
     [SerializeField] private EmotionController emotionController;
     [SerializeField] private EmotionModel emotionModel;
     [SerializeField] private SceneController sceneController;
+    [SerializeField] private GhostModeController ghostModeController;
     [System.Serializable]
     public class WordGroup
     {
@@ -21,40 +22,7 @@ public class VoiceDetector : MonoBehaviour
     [SerializeField] private bool showDebugLogs = false;  // Debug log toggle
 
     [Header("Voice Recognition")]
-    [SerializeField] private List<WordGroup> wordGroups = new List<WordGroup>() {
-        new WordGroup { 
-            groupName = "Name", 
-            variations = new List<string> { "qoobo", "coobo", "kubo", "cubo", "koobo", "robot"}
-        },
-        new WordGroup {
-            groupName = "Happy",
-            variations = new List<string> { "happy", "happiness", "joy", "joyful", "glad" }
-        },
-        new WordGroup {
-            groupName = "Sad",
-            variations = new List<string> { "sad", "sadness", "unhappy", "sorrow", "sorrowful" }
-        },
-        new WordGroup {
-            groupName = "Angry",
-            variations = new List<string> { "angry", "anger", "mad", "furious", "rage" }
-        },
-        new WordGroup {
-            groupName = "Greeting",
-            variations = new List<string> { "hello", "hi", "hey", "greetings", "how are you doing", "good morning", "good afternoon", "good evening" }
-        },
-        new WordGroup {
-            groupName = "Farewell",
-            variations = new List<string> { "goodbye", "bye", "farewell", "see you" }
-        },
-        new WordGroup {
-            groupName = "Praise",
-            variations = new List<string> { "good boy", "good kitty", "good robot", "nice", "well done" }
-        },
-        new WordGroup {
-            groupName = "Food",
-            variations = new List<string> { "food", "hungary", "hungry", "eat", "eating", "ate", "ate it", "ate it all", "ate it all the time" }
-        }
-    };
+    [SerializeField] private List<WordGroup> wordGroups = new List<WordGroup>();
 
     [Header("Volume Detection")]
     [SerializeField] [Range(0f, 1f)] private float loudnessThreshold = 0.5f;
@@ -74,6 +42,9 @@ public class VoiceDetector : MonoBehaviour
 
     private void Start()
     {
+        // Initialize word groups if empty
+        InitializeWordGroups();
+        
         // Initialize Vosk
         vosk = new VoskRecognizer();
         vosk.SetDebugLogging(showDebugLogs);  // Pass debug setting to VoskRecognizer
@@ -84,6 +55,62 @@ public class VoiceDetector : MonoBehaviour
         }
 
         InitializeMicrophone();
+    }
+
+    private void OnValidate()
+    {
+        // This runs in the editor when values change
+        if (wordGroups.Count == 0)
+        {
+            InitializeWordGroups();
+        }
+    }
+
+    private void InitializeWordGroups()
+    {
+        if (wordGroups.Count == 0)
+        {
+            wordGroups.Add(new WordGroup { 
+                groupName = "Name", 
+                variations = new List<string> { "qoobo", "coobo", "kubo", "cubo", "koobo", "robot"}
+            });
+            wordGroups.Add(new WordGroup {
+                groupName = "Happy",
+                variations = new List<string> { "happy", "happiness", "joy", "joyful", "glad" }
+            });
+            wordGroups.Add(new WordGroup {
+                groupName = "Sad",
+                variations = new List<string> { "sad", "sadness", "unhappy", "sorrow", "sorrowful" }
+            });
+            wordGroups.Add(new WordGroup {
+                groupName = "Angry",
+                variations = new List<string> { "angry", "anger", "mad", "furious", "rage" }
+            });
+            wordGroups.Add(new WordGroup {
+                groupName = "Greeting",
+                variations = new List<string> { "hello", "hi", "hey", "greetings", "how are you doing", "good morning", "good afternoon", "good evening" }
+            });
+            wordGroups.Add(new WordGroup {
+                groupName = "Farewell",
+                variations = new List<string> { "goodbye", "bye", "farewell", "see you" }
+            });
+            wordGroups.Add(new WordGroup {
+                groupName = "Praise",
+                variations = new List<string> { "good boy", "good kitty", "good robot", "nice", "well done" }
+            });
+            wordGroups.Add(new WordGroup {
+                groupName = "Food",
+                variations = new List<string> { "food", "hungary", "hungry", "eat", "eating", "ate", "ate it", "ate it all", "ate it all the time" }
+            });
+            wordGroups.Add(new WordGroup {
+                groupName = "Walk",
+                variations = new List<string> { "walk", "work", "walking", "come", "follow", "follow me", "come with me" }
+            });
+            wordGroups.Add(new WordGroup {
+                groupName = "Rest",
+                variations = new List<string> { "rest", "resting", "stay", "stop", "go back", "return", "sit" }
+            });
+        }
     }
 
     private void InitializeMicrophone()
@@ -303,10 +330,28 @@ public class VoiceDetector : MonoBehaviour
                 response = emotionModel.CalculateEmotionalResponse("FoodHeard");
                 emotionController.TryDisplayEmotion(response.EmotionToDisplay, response.TriggerEvent);
                 break;
+
+            case "Walk":
+                if (showDebugLogs)
+                    Debug.Log("Detected: Walk command!");
+                if (ghostModeController != null && !ghostModeController.IsGhost)
+                {
+                    ghostModeController.ToggleGhostMode();
+                }
+                break;
+
+            case "Rest":
+                if (showDebugLogs)
+                    Debug.Log("Detected: Rest command!");
+                if (ghostModeController != null && ghostModeController.IsGhost)
+                {
+                    ghostModeController.ToggleGhostMode();
+                }
+                break;
                 
             case "Touch":
                 if (showDebugLogs)
-                    Debug.Log("Detected: Food word!");
+                    Debug.Log("Detected: Touch word!");
                 response = emotionModel.CalculateEmotionalResponse("TouchHeard");
                 emotionController.TryDisplayEmotion(response.EmotionToDisplay, response.TriggerEvent);
                 break;

@@ -28,14 +28,15 @@ public class FaceController : MonoBehaviour
     [SerializeField] private Material neutralFaceMaterial;
     [SerializeField] private Material sleepyFaceMaterial;
 
-    [Header("Face Display Settings")]
-    [SerializeField] private float faceOffset = 0.01f; // Distance in front of Qoobo mesh
-    [SerializeField] private float faceDiameter = 0.214f; // Diameter of the Qoobo from top view
-    [SerializeField] private float faceHeight = 0.15f; // Vertical size of the face
-    [SerializeField] private float curvatureAngle = 60f; // How much the face curves around
-    [SerializeField] private int curveResolution = 20; // Number of segments for the curve
-    [SerializeField] private float scaleFactor = 2f; // Overall scale multiplier
-    [SerializeField] private float fadeInDuration = 2f;
+	[Header("Face Display Settings")]
+	[SerializeField] private float faceOffset = 0.01f; // Distance in front of Qoobo mesh
+	[SerializeField] private float faceDiameter = 0.214f; // Diameter of the Qoobo from top view
+	[SerializeField] private float faceHeight = 0.15f; // Vertical size of the face
+	[SerializeField] private float curvatureAngle = 60f; // How much the face curves around
+	[SerializeField] private int curveResolution = 20; // Number of segments for the curve
+	[SerializeField] private float scaleFactor = 2f; // Overall scale multiplier
+	[SerializeField] private float fadeInDuration = 2f;
+
 
     private Material currentMaterial;
     private float currentAlpha = 0f;
@@ -222,6 +223,7 @@ public class FaceController : MonoBehaviour
         // Verify mesh creation
         Debug.Log($"Mesh created with {vertices.Length} vertices, bounds: {mesh.bounds}");
     }
+
 
     public void SetFaceExpression(string expression)
     {

@@ -4443,6 +4443,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1205026364}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!137 &341229972 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8216394501642908818, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+  m_PrefabInstance: {fileID: 1707299874730129972}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &348954588
 GameObject:
   m_ObjectHideFlags: 0
@@ -9070,6 +9075,7 @@ GameObject:
   - component: {fileID: 799751473}
   - component: {fileID: 799751474}
   - component: {fileID: 799751475}
+  - component: {fileID: 799751476}
   m_Layer: 0
   m_Name: ScriptHost
   m_TagString: Untagged
@@ -9327,6 +9333,35 @@ MonoBehaviour:
   logChanges: 1
   livePreviewInPlayMode: 1
   useAbsoluteScaling: 1
+--- !u!114 &799751476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 799751465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecbe13171260506479229d37a22db55b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arQooboRoot: {fileID: 1112418015}
+  bodyRenderers:
+  - {fileID: 341229972}
+  followTarget: {fileID: 0}
+  startInGhostMode: 0
+  allowKeyboardToggle: 1
+  toggleKeyFallback: 21
+  ghostScaleFactor: 0.5
+  riseHeight: 0.3
+  transitionDuration: 1.5
+  bodyAlphaGhost: 0.5
+  bodyAlphaNormal: 1
+  preferredDistance: 0.5
+  maxDriftSpeed: 1
+  turnSpeedDegPerSec: 240
+  followSmoothing: 0.15
+  heightOffset: 0
 --- !u!1 &799816403
 GameObject:
   m_ObjectHideFlags: 0
@@ -12965,7 +13000,7 @@ MonoBehaviour:
   useRecommendedMSAALevel: 1
   _monoscopic: 0
   _sharpenType: 0
-  enableDynamicResolution: 0
+  enableDynamicResolution: 1
   minDynamicResolutionScale: 1
   maxDynamicResolutionScale: 1
   quest2MinDynamicResolutionScale: 0.7
@@ -25569,8 +25604,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 799751474}
     - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: monitorVolume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: showDebugLogs
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: sceneController
@@ -25580,6 +25619,186 @@ PrefabInstance:
       propertyPath: emotionController
       value: 
       objectReference: {fileID: 799751471}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: ghostModeController
+      value: 
+      objectReference: {fileID: 799751476}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[8].groupName
+      value: Walk
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[9].groupName
+      value: Rest
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[0].variations.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[1].variations.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[2].variations.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[4].variations.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[5].variations.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[6].variations.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[7].variations.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[8].variations.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[9].variations.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[0].variations.Array.data[5]
+      value: robot
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[2].variations.Array.data[3]
+      value: sorrow
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[2].variations.Array.data[4]
+      value: sorrowful
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[3].variations.Array.data[3]
+      value: furious
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[3].variations.Array.data[4]
+      value: rage
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[4].variations.Array.data[4]
+      value: how are you doing
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[4].variations.Array.data[5]
+      value: good morning
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[4].variations.Array.data[6]
+      value: good afternoon
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[4].variations.Array.data[7]
+      value: good evening
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[7].variations.Array.data[0]
+      value: food
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[7].variations.Array.data[1]
+      value: hungary
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[7].variations.Array.data[2]
+      value: hungry
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[7].variations.Array.data[3]
+      value: eat
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[7].variations.Array.data[4]
+      value: eating
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[7].variations.Array.data[5]
+      value: ate
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[7].variations.Array.data[6]
+      value: ate it
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[7].variations.Array.data[7]
+      value: ate it all
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[7].variations.Array.data[8]
+      value: ate it all the time
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[8].variations.Array.data[0]
+      value: walk
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[8].variations.Array.data[1]
+      value: work
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[8].variations.Array.data[2]
+      value: walking
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[8].variations.Array.data[3]
+      value: come
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[8].variations.Array.data[4]
+      value: follow
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[8].variations.Array.data[5]
+      value: follow me
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[8].variations.Array.data[6]
+      value: come with me
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[9].variations.Array.data[0]
+      value: rest
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[9].variations.Array.data[1]
+      value: resting
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[9].variations.Array.data[2]
+      value: stay
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[9].variations.Array.data[3]
+      value: stop
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[9].variations.Array.data[4]
+      value: go back
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[9].variations.Array.data[5]
+      value: return
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: wordGroups.Array.data[9].variations.Array.data[6]
+      value: sit
+      objectReference: {fileID: 0}
     - target: {fileID: 7823492866149849621, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: thoughtSprites.Array.size
       value: 18
