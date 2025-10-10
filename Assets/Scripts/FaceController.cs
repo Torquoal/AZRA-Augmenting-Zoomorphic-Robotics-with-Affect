@@ -27,6 +27,7 @@ public class FaceController : MonoBehaviour
     [SerializeField] private Material surprisedFaceMaterial;
     [SerializeField] private Material neutralFaceMaterial;
     [SerializeField] private Material sleepyFaceMaterial;
+    [SerializeField] private Material eatingFaceMaterial;
 
 	[Header("Face Display Settings")]
 	[SerializeField] private float faceOffset = 0.01f; // Distance in front of Qoobo mesh
@@ -112,7 +113,8 @@ public class FaceController : MonoBehaviour
             scaredFaceMaterial, 
             surprisedFaceMaterial, 
             neutralFaceMaterial, 
-            sleepyFaceMaterial
+            sleepyFaceMaterial,
+            eatingFaceMaterial
         };
 
         // Configure each material
@@ -289,6 +291,9 @@ public class FaceController : MonoBehaviour
                 break;
             case "sleepy":
                 targetMaterial = sleepyFaceMaterial;
+                break;
+            case "eating":
+                targetMaterial = eatingFaceMaterial;
                 break;
             case "neutral":
                 if (faceAnimationController != null)

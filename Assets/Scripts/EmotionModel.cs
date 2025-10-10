@@ -92,6 +92,7 @@ public class EmotionModel : MonoBehaviour
         { "LookingAway", new EmotionalResponseValues { Valence = -6f, Arousal = -2f, Touch = 0f, Rest = 0f, Social = -4f } },
         { "LookingTowards", new EmotionalResponseValues { Valence = 4f, Arousal = 3f, Touch = 0f, Rest = 0f, Social = 4f } },
         { "BeingHeld", new EmotionalResponseValues { Valence = 8f, Arousal = -3f, Touch = 10f, Rest = 2f, Social = 8f } },
+        { "Feeding", new EmotionalResponseValues { Valence = 6f, Arousal = 3f, Touch = 0f, Rest = 2f, Social = 4f } },
     };
 
     [Header("Need Values")]
@@ -105,6 +106,14 @@ public class EmotionModel : MonoBehaviour
     public float RestGauge => restGauge;
     public float SocialGauge => socialGauge;
     public float HungerGauge => hungerGauge;
+
+    // Method to increment hunger gauge (for feeding interactions)
+    public void IncrementHungerGauge(float amount)
+    {
+        hungerGauge = Mathf.Clamp(hungerGauge + amount, 0f, 100f);
+        if (showDebugLogs)
+            Debug.Log($"EmotionModel: Incremented hunger gauge by {amount}. New value: {hungerGauge}");
+    }
 
     [Header("Need Thresholds")]
     [SerializeField] [Range(0, 100)] private float touchFulfilled = 70f;

@@ -255,6 +255,14 @@ public class EmotionController : MonoBehaviour
             case "lookingtowards":
                 sceneController.ShowThought("looking");
                 break;
+            case "feeding":
+                sceneController.ShowThought("hungry");
+                // Increment hunger gauge when fed
+                if (emotionModel != null)
+                {
+                    emotionModel.IncrementHungerGauge(30f);
+                }
+                break;
         }
 
         // Only start auto-reset if not asleep
@@ -502,6 +510,14 @@ public class EmotionController : MonoBehaviour
 
         DisplayEmotionInternal(displayString, triggerEvent);
         return true;
+    }
+
+    // Method to allow external systems to control the emotional display flag
+    public void SetEmotionalDisplayFlag(bool isDisplaying)
+    {
+        isShowingEmotionalDisplay = isDisplaying;
+        if (showDebugText)
+            Debug.Log($"Emotional display flag set to: {isDisplaying}");
     }
 
     private bool CanDisplayEmotion()
