@@ -34,6 +34,8 @@ public class FeedingController : MonoBehaviour
     private bool isEatingSequence = false;
     private Coroutine eatingCoroutine;
     private XRHandSubsystem handSubsystem;
+    private float lastProximityCheck = -1f; // Initialize to -1 so first check happens immediately
+    private const float PROXIMITY_CHECK_INTERVAL = 0.2f; // Check every 200ms (5 FPS)
 
     // Donut states
     private enum DonutState { Full, Partial, MostlyEaten, Gone }

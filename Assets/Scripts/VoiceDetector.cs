@@ -39,6 +39,8 @@ public class VoiceDetector : MonoBehaviour
     private VoskRecognizer vosk;
     private AudioSource monitorSource;
     private int lastProcessedPosition = 0;
+    private float lastAudioUpdate = -1f; // Initialize to -1 so first update happens immediately
+    private const float AUDIO_UPDATE_INTERVAL = 0.1f; // Update every 100ms (10 FPS)
 
     private void Start()
     {

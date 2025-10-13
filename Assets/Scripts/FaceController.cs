@@ -67,6 +67,7 @@ public class FaceController : MonoBehaviour
         faceMeshRenderer.enabled = false;  // Disable renderer completely
         SetFaceExpression("neutral"); // Start with neutral expression but invisible
         
+        
         Debug.Log($"Face mesh created with settings: Scale={scaleFactor}, Height={faceHeight}, Diameter={faceDiameter}, Curvature={curvatureAngle}");
     }
 

@@ -9214,7 +9214,7 @@ MonoBehaviour:
   emotionModel: {fileID: 799751474}
   emotionText: {fileID: 996060955}
   voiceDetector: {fileID: 1629618762}
-  showDebugText: 1
+  showDebugText: 0
   emotionFormat: 'Emotion: {0}'
   displayDuration: 10
   displayCooldown: 5
@@ -9285,7 +9285,7 @@ MonoBehaviour:
   moodArousal: 2.02
   currentTemperament: 
   currentMood: 
-  showDebugLogs: 1
+  showDebugLogs: 0
   useAcceleratedTesting: 0
   usePersistentEmotions: 0
   randomizeMoodOnStart: 0
@@ -9381,14 +9381,7 @@ MonoBehaviour:
   emotionModel: {fileID: 799751474}
   emotionController: {fileID: 799751471}
   sceneController: {fileID: 799751467}
-  fullDonutPrefab: {fileID: 2515097265950547257, guid: b3bd573497f2b154eac18b806686fb04, type: 3}
-  partialDonutPrefab: {fileID: 4827432008640997017, guid: 6c3e58dd0c53d6447b600d613c8f03ed, type: 3}
-  mostlyEatenDonutPrefab: {fileID: 281323959799370788, guid: 7cb07f6d6ff14ed4da08f2779bf34288, type: 3}
-  useSimpleSphereDonut: 1
   foodSphere: {fileID: 1105933743}
-  fullDonutScale: 1
-  partialDonutScale: 0.7
-  mostlyEatenDonutScale: 0.4
   fullDonutOnSphere: {fileID: 1027745178}
   partialDonutOnSphere: {fileID: 1131028198}
   mostlyEatenDonutOnSphere: {fileID: 2146942590}
@@ -9396,7 +9389,7 @@ MonoBehaviour:
   biteInterval: 1
   biteSoundName: peep
   eatingFaceExpression: eating
-  showDebugLogs: 1
+  showDebugLogs: 0
 --- !u!1 &799816403
 GameObject:
   m_ObjectHideFlags: 0
@@ -26130,6 +26123,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 667722119}
     - target: {fileID: 4244827798850561486, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: showDebugLogs
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4244827798850561486, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: maxTimeBetweenTriggers
       value: 1
       objectReference: {fileID: 0}
@@ -26151,7 +26148,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6524490002690117367, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: maxYawOffsetDegrees
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: emotionModel

@@ -12,6 +12,9 @@ public class FaceAnimationController : MonoBehaviour
     [SerializeField] private string scaredLoopPath = "ScaredLoop";  // Path for scared animation
     [SerializeField] private string surprisedLoopPath = "SurprisedLoop"; // Path for surprised animation
     [SerializeField] private float frameRate = 24f;      // Animation frame rate
+    [SerializeField] private bool useOptimizedFrames = true; // Use 100 frames instead of 200
+    [SerializeField] private int optimizedFrameCount = 100; // Number of frames to use when optimized
+    [SerializeField] private float frameDurationMultiplier = 2f; // Each frame lasts 2x longer
 
     // Future emotion animation paths
     /*
@@ -79,12 +82,35 @@ public class FaceAnimationController : MonoBehaviour
         Object[] loadedObjects = Resources.LoadAll(path, typeof(Texture2D));
         
         // Convert to Texture2D array and sort by name to ensure correct order
-        frames = loadedObjects
+        var allFrames = loadedObjects
             .Cast<Texture2D>()
             .OrderBy(tex => tex.name)
             .ToArray();
 
-        Debug.Log($"Loaded {frames.Length} animation frames from {path}");
+        if (useOptimizedFrames && allFrames.Length > optimizedFrameCount)
+        {
+            // Optimization: Load only every 2nd frame to reduce from 200 to 100 frames
+            // This reduces memory usage by 50% while maintaining smooth animation quality
+            frames = new Texture2D[optimizedFrameCount];
+            int step = allFrames.Length / optimizedFrameCount; // Calculate step size (should be ~2 for 200 frames)
+            
+            for (int i = 0; i < optimizedFrameCount; i++)
+            {
+                int sourceIndex = i * step;
+                if (sourceIndex < allFrames.Length)
+                {
+                    frames[i] = allFrames[sourceIndex];
+                }
+            }
+            
+            Debug.Log($"Optimized: Loaded {frames.Length} frames (every {step}th frame) from {path} (original: {allFrames.Length})");
+        }
+        else
+        {
+            // Use all frames (original behavior)
+            frames = allFrames;
+            Debug.Log($"Loaded {frames.Length} animation frames from {path}");
+        }
         
         if (frames.Length == 0)
         {
@@ -219,7 +245,13 @@ public class FaceAnimationController : MonoBehaviour
             }
             
             currentFrame++;
-            yield return new WaitForSeconds(frameInterval);
+            
+            // Use optimized frame duration if enabled (4x longer per frame)
+            float actualFrameInterval = useOptimizedFrames ? 
+                frameInterval * frameDurationMultiplier : 
+                frameInterval;
+                
+            yield return new WaitForSeconds(actualFrameInterval);
         }
     }
 

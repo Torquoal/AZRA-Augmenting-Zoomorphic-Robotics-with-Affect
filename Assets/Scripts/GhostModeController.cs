@@ -32,6 +32,8 @@ public class GhostModeController : MonoBehaviour
 	private Vector3 originalPosition;
 	private Quaternion originalRotation;
 	private Vector3 originalScale;
+	private float lastFollowUpdate = -1f; // Initialize to -1 so first update happens immediately
+	private const float FOLLOW_UPDATE_INTERVAL = 0.033f; // Update every 33ms (30 FPS)
 
 	// Public property to check ghost state
 	public bool IsGhost => isGhost;
