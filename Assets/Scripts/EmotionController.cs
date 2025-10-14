@@ -9,6 +9,7 @@ public class EmotionController : MonoBehaviour
     [SerializeField] private EmotionModel emotionModel;
     [SerializeField] private TextMeshProUGUI emotionText;
     [SerializeField] private VoiceDetector voiceDetector;
+    [SerializeField] private StudyLogger studyLogger;
 
     [Header("Debug Settings")]
     [SerializeField] private bool showDebugText = true;
@@ -289,6 +290,17 @@ public class EmotionController : MonoBehaviour
 
         if (showDebugText)
             Debug.Log($"Emotion Controller: Displaying emotion: {displayString} from trigger: {triggerEvent}");
+
+        // Log to study logger
+        if (studyLogger != null)
+        {
+            Debug.Log($"EmotionController: Calling StudyLogger.LogEmotionalResponse - triggerEvent: {triggerEvent}, displayString: {displayString}");
+            studyLogger.LogEmotionalResponse(triggerEvent, displayString);
+        }
+        else
+        {
+            Debug.LogWarning("EmotionController: StudyLogger reference is null!");
+        }
 
         currentDisplayString = displayString;
         currentTriggerEvent = triggerEvent;

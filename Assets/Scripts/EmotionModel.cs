@@ -102,6 +102,9 @@ public class EmotionModel : MonoBehaviour
     [SerializeField] [Range(0, 100)] private float hungerGauge = 50f;
 
     // Public properties to expose gauge values
+    
+    public float CurrentValence => moodValence;
+    public float CurrentArousal => moodArousal;
     public float TouchGauge => touchGauge;
     public float RestGauge => restGauge;
     public float SocialGauge => socialGauge;

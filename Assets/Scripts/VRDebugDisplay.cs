@@ -102,10 +102,20 @@ public class VRDebugDisplay : MonoBehaviour
         if (!string.IsNullOrEmpty(filterText) && !logString.ToLower().Contains(filterText.ToLower()))
             return;
         
-        // Create formatted log entry
+        // Create formatted log entry with color coding
         string timestamp = showTimestamp ? System.DateTime.Now.ToString("HH:mm:ss") : "";
         string logType = showLogType ? $"[{type}]" : "";
         string entry = $"{timestamp} {logType} {logString}";
+        
+        // Add color coding for warnings and errors
+        if (type == LogType.Warning)
+        {
+            entry = $"<color=orange>{entry}</color>";
+        }
+        else if (type == LogType.Error || type == LogType.Exception)
+        {
+            entry = $"<color=red>{entry}</color>";
+        }
         
         // Add to log entries
         logEntries.Add(entry);
