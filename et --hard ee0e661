@@ -1,0 +1,41 @@
+[33m10d88e8[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: reset: moving to 10d88e8
+[33mee0e661[m HEAD@{1}: commit: Backup before Oculus plugin removal test - current working state with feeding fixes
+[33m10d88e8[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{2}: commit: working on optimisations
+[33m7739cff[m HEAD@{3}: commit: Added feeding
+[33m0d744bc[m HEAD@{4}: commit: added ghost follow mode
+[33m99baff4[m HEAD@{5}: commit: face drifting
+[33mb2ad0f2[m HEAD@{6}: commit: Qoobo Resizer script added
+[33m11d8776[m HEAD@{7}: pull: Fast-forward
+[33m7e3ae20[m HEAD@{8}: checkout: moving from Intern to main
+[33md9ccdb9[m[33m ([m[1;31morigin/Intern[m[33m, [m[1;32mIntern[m[33m)[m HEAD@{9}: commit: final com
+[33md0a1f05[m HEAD@{10}: commit: added Participant Logs to .gitignore to prevent commiting participant data to git
+[33mbf5a186[m HEAD@{11}: commit (amend): removed previous test logs
+[33mb5a37ac[m HEAD@{12}: commit: removed previous test logs and updated .gitignore to prevent sending participant logs
+[33m110f9c7[m HEAD@{13}: commit: reverted back to qoobo positioner back to hand on top
+[33m03e820c[m HEAD@{14}: commit: shortened musical sounds and added new slider in ratingManager as well as other small adjustments
+[33mb1a6727[m HEAD@{15}: commit: corrected balanced latin squre to match with expected output
+[33m9b43916[m HEAD@{16}: commit: uploaded AnthroAbs faces, added lock to prevent the face from changing when ratingManager is showing, at end of category no longer shows face
+[33m89222f2[m HEAD@{17}: commit: removed age and gender form ratingManager, and updated Experimental Mode
+[33m779078a[m HEAD@{18}: commit: updated experimental mode debug logs to align more with experiment
+[33mba769ca[m HEAD@{19}: commit: added MAV sounds to project
+[33mc5b64d5[m HEAD@{20}: commit: added ZoomorphicReal faces
+[33maf2189b[m HEAD@{21}: commit: updated qoobo repositioner
+[33m6ffa90d[m HEAD@{22}: commit: adjusted qoobo repositioner to work with back of palm
+[33mbb08c4f[m HEAD@{23}: commit: updated so no face panel is visible when sound or experiment not started, made rating scale and condition break smaller, condition break now only occurs between categories
+[33m476aed8[m HEAD@{24}: commit: refactored HoverButton for better code readability and following better practices
+[33m9ccc120[m HEAD@{25}: commit: added randomization to the sounds and faces
+[33m1e5e81f[m HEAD@{26}: commit: updated breeakMessage and RatingManager to work together
+[33m8098308[m HEAD@{27}: commit: added randomization mdality expression and started work on break message
+[33m1253349[m HEAD@{28}: commit: added sounds and more faces fixed the modality switching, Pilot Test almost ready
+[33m56a6fee[m HEAD@{29}: commit: added delay for the rating manager and updated the display of it to match the questions asked in the research
+[33mef490fe[m HEAD@{30}: commit: added ears for zoomorphic real and changed from jpgs to pngs and setup for a delay for the RatingManager
+[33m3c713b0[m HEAD@{31}: commit: Added a way to disable passive expression, removed looping for face animations
+[33m35e3e46[m HEAD@{32}: commit: split sounds and face expressions apart and also added initial faces for Qoobo in experimental mode #6 #7
+[33m25a1b88[m HEAD@{33}: commit: Initial commit for Latin Square Matrix #14
+[33m1052bb7[m HEAD@{34}: commit: added test version of MechaScreenFace
+[33mbb42588[m HEAD@{35}: commit: Fixed bug where ExperimentalMode couldnt display face (#8)
+[33m4b6b402[m HEAD@{36}: commit: Created ExperimentalFaceAnimationController and readded the original FaceAnimation Controller, Implemented scaling and cube hitboxes in original scene (#8)
+[33m7789f1f[m HEAD@{37}: commit: Updated Faces and Sounds to be played when Categories and Modalities updates this is done using a new variable extendedPath in FaceAnimationController and HoverButton #7 #6
+[33m67f2595[m HEAD@{38}: commit: updated HoverButton to start to implement modalities and categories (#7 #6)
+[33m59c35d3[m HEAD@{39}: commit: Updated folders and started implementing cube hitboxes for Qoobo (#2 #6)
+[33m90d3217[m HEAD@{40}: commit: created base folders that will be used to store FacialExpressions/Sounds (#2)
