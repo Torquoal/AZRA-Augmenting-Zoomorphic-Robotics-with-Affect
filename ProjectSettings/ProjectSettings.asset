@@ -12,12 +12,12 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
-  productName: AZRAM MR
+  companyName: Shaun Macdonald
+  productName: AZRA
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
-  m_ShowUnitySplashScreen: 0
+  m_ShowUnitySplashScreen: 1
   m_ShowUnitySplashLogo: 1
   m_SplashScreenOverlayOpacity: 1
   m_SplashScreenAnimation: 1
@@ -40,7 +40,7 @@ PlayerSettings:
     width: 1
     height: 1
   m_SplashScreenLogos: []
-  m_VirtualRealitySplashScreen: {fileID: 0}
+  m_VirtualRealitySplashScreen: {fileID: 2800000, guid: e1a9251304ada6d4090a841195499d0f, type: 3}
   m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1024
   defaultScreenHeight: 768
@@ -140,7 +140,12 @@ PlayerSettings:
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
   bundleVersion: 1.0.0
-  preloadedAssets: []
+  preloadedAssets:
+  - {fileID: 11400000, guid: 5d3f41d2881f1464d973295ecb631f06, type: 2}
+  - {fileID: -8196854396901781169, guid: 1a4c68ca72a83449f938d669337cb305, type: 2}
+  - {fileID: 11400000, guid: 56a98106ce58f09459a9990007b50acb, type: 2}
+  - {fileID: -64324148185763206, guid: a9a6963505ddf7f4d886008c6dc86122, type: 2}
+  - {fileID: 11400000, guid: f8a442de0c8906f4d9c00184993fc289, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -161,7 +166,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.unity.template.mixedreality
+    Android: com.shaunmacdonald.azra
     Standalone: com.unity.template.mr
   buildNumber:
     Standalone: 0
@@ -284,7 +289,14 @@ PlayerSettings:
   AndroidMinifyDebug: 0
   AndroidValidateAppBundleSize: 1
   AndroidAppBundleSizeToValidate: 150
-  m_BuildTargetIcons: []
+  m_BuildTargetIcons:
+  - m_BuildTarget: 
+    m_Icons:
+    - serializedVersion: 2
+      m_Icon: {fileID: 2800000, guid: e1a9251304ada6d4090a841195499d0f, type: 3}
+      m_Width: 128
+      m_Height: 128
+      m_Kind: 0
   m_BuildTargetPlatformIcons:
   - m_BuildTarget: Android
     m_Icons:

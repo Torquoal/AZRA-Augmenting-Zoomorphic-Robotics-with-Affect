@@ -51,7 +51,29 @@ public class FeedingController : MonoBehaviour
             handSubsystem = handSubsystems[0];
         }
         
+        // Check for existing donut in scene
+        CheckForExistingDonut();
+        
         if (showDebugLogs) Debug.Log("FeedingController started - simplified version");
+    }
+    
+    void CheckForExistingDonut()
+    {
+        // Look for existing donut in scene
+        if (foodSphere != null && foodSphere.activeInHierarchy)
+        {
+            currentDonut = foodSphere;
+            if (showDebugLogs) Debug.Log("FeedingController: Found existing donut in scene - " + currentDonut.name);
+        }
+        else
+        {
+            if (showDebugLogs) Debug.Log("FeedingController: No existing donut found, press D to spawn one");
+        }
+    }
+    
+    public void OnDetectExistingButtonClicked()
+    {
+        CheckForExistingDonut();
     }
 
     void Update()
