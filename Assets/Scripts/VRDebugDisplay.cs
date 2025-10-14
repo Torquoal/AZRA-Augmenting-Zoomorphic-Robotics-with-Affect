@@ -50,34 +50,40 @@ public class VRDebugDisplay : MonoBehaviour
         debugText.text = "VR Debug Log Initialized...\n";
         debugText.color = Color.white;
         
-        // Set up scroll rect
+        // Set up scroll rect (optional - can be null)
         if (scrollRect != null)
         {
-            scrollRect.verticalScrollbar.value = 1f; // Start at top
+            if (scrollRect.verticalScrollbar != null)
+            {
+                scrollRect.verticalScrollbar.value = 1f; // Start at top
+                Debug.Log("VRDebugDisplay: ScrollRect found and configured");
+            }
+            else
+            {
+                Debug.LogWarning("VRDebugDisplay: ScrollRect found but no vertical scrollbar");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("VRDebugDisplay: No ScrollRect assigned - display will work without scrolling");
         }
         
         // Subscribe to Unity's log events
         if (enableLogCapture)
         {
             Application.logMessageReceived += OnLogMessageReceived;
+            Debug.Log("VRDebugDisplay: Log capture enabled and subscribed");
+        }
+        else
+        {
+            Debug.LogWarning("VRDebugDisplay: Log capture is disabled!");
         }
         
         isInitialized = true;
         Debug.Log("VRDebugDisplay: Debug display initialized successfully");
         
-        // Test the display immediately
-        StartCoroutine(TestDisplayAfterDelay());
     }
     
-    System.Collections.IEnumerator TestDisplayAfterDelay()
-    {
-        yield return new WaitForSeconds(1f);
-        Debug.Log("VRDebugDisplay: Test message 1 - This should appear in the debug panel");
-        yield return new WaitForSeconds(1f);
-        Debug.LogWarning("VRDebugDisplay: Test warning - This should also appear");
-        yield return new WaitForSeconds(1f);
-        Debug.LogError("VRDebugDisplay: Test error - This should also appear");
-    }
     
     void OnDestroy()
     {
@@ -110,8 +116,11 @@ public class VRDebugDisplay : MonoBehaviour
             logEntries.RemoveAt(0);
         }
         
-        // Update display
+        // Force immediate update
         UpdateDisplay();
+        
+        // Debug to console to verify it's working
+        Debug.Log($"VRDebugDisplay: Captured log - {entry}");
     }
     
     bool ShouldShowLogType(LogType type)
@@ -151,7 +160,7 @@ public class VRDebugDisplay : MonoBehaviour
         
         debugText.text = logBuilder.ToString();
         
-        // Auto scroll to bottom
+        // Auto scroll to bottom (only if scroll rect exists)
         if (autoScroll && scrollRect != null)
         {
             StartCoroutine(ScrollToBottom());
@@ -161,7 +170,7 @@ public class VRDebugDisplay : MonoBehaviour
     System.Collections.IEnumerator ScrollToBottom()
     {
         yield return new WaitForEndOfFrame();
-        if (scrollRect != null)
+        if (scrollRect != null && scrollRect.verticalScrollbar != null)
         {
             scrollRect.verticalScrollbar.value = 0f;
         }
@@ -218,6 +227,18 @@ public class VRDebugDisplay : MonoBehaviour
         Debug.Log("VRDebugDisplay: Test log message");
         Debug.LogWarning("VRDebugDisplay: Test warning message");
         Debug.LogError("VRDebugDisplay: Test error message");
+    }
+    
+    [ContextMenu("Manual Test Display")]
+    public void ManualTestDisplay()
+    {
+        // Manually add test messages to bypass log capture
+        logEntries.Add("Manual Test: This is a manual test message");
+        logEntries.Add("Manual Test: This should appear in the debug panel");
+        logEntries.Add("Manual Test: If you see this, the display is working");
+        
+        UpdateDisplay();
+        Debug.Log("VRDebugDisplay: Manual test messages added");
     }
     
     [ContextMenu("Clear All Logs")]
