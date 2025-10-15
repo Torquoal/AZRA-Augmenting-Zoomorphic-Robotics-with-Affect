@@ -25,7 +25,6 @@ public class FeedingController : MonoBehaviour
     [SerializeField] private float proximityThreshold = 0.15f; // Configurable proximity distance
     [SerializeField] private float biteInterval = 1.5f; // Time between bites
     [SerializeField] private string biteSoundName = "peep"; // Sound to play for each bite
-    [SerializeField] private string eatingFaceExpression = "eating"; // Face expression during eating
 
     [Header("Debug")]
     [SerializeField] private bool showDebugLogs = true;
@@ -34,8 +33,6 @@ public class FeedingController : MonoBehaviour
     private bool isEatingSequence = false;
     private Coroutine eatingCoroutine;
     private XRHandSubsystem handSubsystem;
-    private float lastProximityCheck = -1f; // Initialize to -1 so first check happens immediately
-    private const float PROXIMITY_CHECK_INTERVAL = 0.2f; // Check every 200ms (5 FPS)
 
     // Donut states
     private enum DonutState { Full, Partial, MostlyEaten, Gone }
@@ -94,13 +91,24 @@ public class FeedingController : MonoBehaviour
 
     public void SpawnDonut()
     {
-        if (currentDonut != null)
+        if (foodSphere == null)
         {
-            Debug.LogWarning("Donut already exists! Remove current donut first.");
+            Debug.LogError("Food sphere not assigned! Please assign the 'Food' sphere in the inspector.");
             return;
         }
 
-        // Spawn donut above the robot (more visible)
+        // Create new donut if none exists, otherwise move existing one
+        if (currentDonut == null)
+        {
+            currentDonut = Instantiate(foodSphere);
+            if (showDebugLogs) Debug.Log("Feed: Created new donut");
+        }
+        else
+        {
+            if (showDebugLogs) Debug.Log("Donut already exists - moving to new position");
+        }
+
+        // Calculate spawn position
         Vector3 spawnPosition;
         if (robotBodyGameObject != null)
         {
@@ -113,12 +121,6 @@ public class FeedingController : MonoBehaviour
             // Fallback: spawn in front of camera
             spawnPosition = Camera.main.transform.position + Camera.main.transform.forward * 0.3f;
             if (showDebugLogs) Debug.Log($"Feed: Using camera fallback position: {spawnPosition}");
-        }
-        
-        if (foodSphere == null)
-        {
-            Debug.LogError("Food sphere not assigned! Please assign the 'Food' sphere in the inspector.");
-            return;
         }
 
         if (showDebugLogs) Debug.Log($"Feed: Food sphere found: {foodSphere.name}, active: {foodSphere.activeInHierarchy}");
@@ -135,9 +137,9 @@ public class FeedingController : MonoBehaviour
             }
         }
 
-        // Move existing sphere to right hand position
-        foodSphere.transform.position = rightHandPosition;
-        foodSphere.SetActive(true);
+        // Move donut to right hand position
+        currentDonut.transform.position = rightHandPosition;
+        currentDonut.SetActive(true);
         
         // Activate the full donut model if available
         if (fullDonutOnSphere != null)

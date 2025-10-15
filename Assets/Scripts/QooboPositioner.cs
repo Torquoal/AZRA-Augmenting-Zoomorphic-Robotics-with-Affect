@@ -6,9 +6,6 @@ using UnityEngine.InputSystem;
 
 public class QooboPositioner : MonoBehaviour
 {
-    [Header("Notes")]
-    [TextArea(2, 5)]
-    [SerializeField] private string inspectorNote = "Add any notes/instructions here. This box shows at the top of the inspector.";
 
     [Header("References")]
     [SerializeField] [Tooltip("Top-level visual/prefab root for the AR Qoobo.")] private GameObject qooboMesh;

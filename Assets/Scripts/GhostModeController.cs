@@ -17,8 +17,6 @@ public class GhostModeController : MonoBehaviour
 	[SerializeField] private float ghostScaleFactor = 0.5f; // shrink to 50%
 	[SerializeField] private float riseHeight = 0.3f; // meters upward on enter
 	[SerializeField] private float transitionDuration = 1.5f; // seconds for enter/exit
-	[SerializeField] private float bodyAlphaGhost = 0.5f; // semi-transparent in ghost mode
-	[SerializeField] private float bodyAlphaNormal = 0.0f; // fully transparent when returned
 
 	[Header("Follow Settings")] 
 	[SerializeField] private float preferredDistance = 0.5f; // meters from target
@@ -32,8 +30,6 @@ public class GhostModeController : MonoBehaviour
 	private Vector3 originalPosition;
 	private Quaternion originalRotation;
 	private Vector3 originalScale;
-	private float lastFollowUpdate = -1f; // Initialize to -1 so first update happens immediately
-	private const float FOLLOW_UPDATE_INTERVAL = 0.033f; // Update every 33ms (30 FPS)
 
 	// Public property to check ghost state
 	public bool IsGhost => isGhost;

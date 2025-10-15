@@ -3,185 +3,171 @@ using UnityEngine;
 public class MenuFollowSystem : MonoBehaviour
 {
     [Header("Follow Settings")]
-    [SerializeField] private Transform targetTransform; // The menu canvas or container
-    [SerializeField] private float followDistance = 0.5f; // Distance from user
-    [SerializeField] private float followHeight = 0.1f; // Height offset from user
-    [SerializeField] private float followSpeed = 2.0f; // How fast the menu follows
-    [SerializeField] private float rotationSpeed = 1.0f; // How fast the menu rotates to face user
+    [SerializeField] private float followDistance = 1.5f; // meters from user
+    [SerializeField] private float followHeight = 0.0f; // height offset relative to user
+    [SerializeField] private float followSmoothing = 0.05f; // how smoothly the menu follows (slower)
+    [SerializeField] private float maxFollowSpeed = 1.0f; // maximum follow speed (slower)
+    [SerializeField] private bool faceUser = true; // whether menu should face the user
+    [SerializeField] private float rotationSmoothing = 0.05f; // how smoothly the menu rotates (slower)
+    [SerializeField] private float leftOffset = 0.5f; // how far to the left of the user
     
     [Header("Positioning")]
-    [SerializeField] private Vector3 leftOffset = new Vector3(-0.3f, 0f, 0.2f); // Offset to left side
-    [SerializeField] private bool smoothFollow = true; // Smooth movement vs instant
-    [SerializeField] private float maxDistance = 2.0f; // Max distance before teleporting
+    [SerializeField] private Vector3 preferredOffset = new Vector3(0, 0, 0); // preferred position relative to user
+    [SerializeField] private bool usePreferredOffset = false; // use offset instead of distance
     
     [Header("Debug")]
     [SerializeField] private bool showDebugLogs = true;
-    [SerializeField] private float debugInterval = 2.0f;
     
-    private Transform userTransform; // User's headset position
+    private Transform userTransform;
     private Vector3 targetPosition;
     private Quaternion targetRotation;
-    private float lastDebugTime = 0f;
+    private bool isFollowing = false;
     
     void Start()
     {
-        // Find the user's headset (usually the main camera)
-        userTransform = Camera.main.transform;
-        
-        if (userTransform == null)
+        // Find the main camera (user's head)
+        Camera mainCamera = Camera.main;
+        if (mainCamera != null)
         {
-            Debug.LogError("MenuFollowSystem: No main camera found! Make sure your camera is tagged as MainCamera.");
-            enabled = false;
-            return;
+            userTransform = mainCamera.transform;
+            if (showDebugLogs) Debug.Log("MenuFollowSystem: Found user camera");
+        }
+        else
+        {
+            Debug.LogError("MenuFollowSystem: No main camera found!");
         }
         
-        if (targetTransform == null)
-        {
-            targetTransform = transform;
-            Debug.LogWarning("MenuFollowSystem: No target transform assigned, using this GameObject's transform.");
-        }
-        
-        // Set initial position
-        UpdateTargetPosition();
-        targetTransform.position = targetPosition;
-        targetTransform.rotation = targetRotation;
-        
-        if (showDebugLogs)
-        {
-            Debug.Log("MenuFollowSystem: Started following user");
-        }
+        // Start following immediately
+        isFollowing = true;
     }
     
     void Update()
     {
-        if (userTransform == null) return;
-        
-        // Update target position and rotation
-        UpdateTargetPosition();
-        
-        // Move the menu
-        if (smoothFollow)
+        if (isFollowing && userTransform != null)
         {
-            // Smooth movement
-            targetTransform.position = Vector3.Lerp(targetTransform.position, targetPosition, followSpeed * Time.deltaTime);
-            targetTransform.rotation = Quaternion.Lerp(targetTransform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            UpdateMenuPosition();
+        }
+    }
+    
+    void UpdateMenuPosition()
+    {
+        // Calculate target position
+        if (usePreferredOffset)
+        {
+            // Use offset relative to user
+            targetPosition = userTransform.position + userTransform.TransformDirection(preferredOffset);
         }
         else
         {
-            // Instant movement
-            targetTransform.position = targetPosition;
-            targetTransform.rotation = targetRotation;
+            // Use distance-based positioning to the left of user
+            Vector3 userForward = userTransform.forward;
+            Vector3 userRight = userTransform.right;
+            userForward.y = 0; // Keep menu at user's height level
+            userRight.y = 0;
+            userForward.Normalize();
+            userRight.Normalize();
+            
+            // Position to the left and slightly in front of user
+            targetPosition = userTransform.position + userRight * -leftOffset + userForward * followDistance;
+            targetPosition.y += followHeight;
         }
         
-        // Check if menu is too far away and teleport if needed
-        float distanceToUser = Vector3.Distance(targetTransform.position, userTransform.position);
-        if (distanceToUser > maxDistance)
+        // Calculate target rotation (face user if enabled)
+        if (faceUser)
         {
-            if (showDebugLogs)
+            Vector3 directionToUser = (userTransform.position - transform.position).normalized;
+            directionToUser.y = 0; // Keep menu upright
+            if (directionToUser != Vector3.zero)
             {
-                Debug.Log($"MenuFollowSystem: Menu too far away ({distanceToUser:F2}m), teleporting to user");
+                // Reverse the direction so menu faces user (not away from user)
+                targetRotation = Quaternion.LookRotation(-directionToUser);
             }
-            targetTransform.position = targetPosition;
-            targetTransform.rotation = targetRotation;
+        }
+        else
+        {
+            targetRotation = transform.rotation; // Keep current rotation
         }
         
-        // Debug logging
-        if (showDebugLogs && Time.time - lastDebugTime >= debugInterval)
+        // Smoothly move to target position
+        Vector3 currentPosition = transform.position;
+        Vector3 newPosition = Vector3.Lerp(currentPosition, targetPosition, followSmoothing);
+        
+        // Limit movement speed
+        Vector3 movement = newPosition - currentPosition;
+        if (movement.magnitude > maxFollowSpeed * Time.deltaTime)
         {
-            Debug.Log($"MenuFollowSystem: Distance to user: {distanceToUser:F2}m, Target: {targetPosition}");
-            lastDebugTime = Time.time;
+            movement = movement.normalized * maxFollowSpeed * Time.deltaTime;
+            newPosition = currentPosition + movement;
         }
-    }
-    
-    void UpdateTargetPosition()
-    {
-        if (userTransform == null) return;
         
-        // Calculate position to the left of the user
-        Vector3 userForward = userTransform.forward;
-        Vector3 userRight = userTransform.right;
-        Vector3 userUp = userTransform.up;
+        transform.position = newPosition;
         
-        // Position to the left side of the user
-        Vector3 leftSidePosition = userTransform.position + 
-                                   (userRight * leftOffset.x) + 
-                                   (userUp * (leftOffset.y + followHeight)) + 
-                                   (userForward * leftOffset.z);
-        
-        targetPosition = leftSidePosition;
-        
-        // Make the menu face the user
-        Vector3 directionToUser = (userTransform.position - targetPosition).normalized;
-        directionToUser.y = 0; // Keep menu level
-        if (directionToUser != Vector3.zero)
+        // Smoothly rotate to target rotation
+        if (faceUser)
         {
-            targetRotation = Quaternion.LookRotation(directionToUser);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSmoothing);
+        }
+        
+        if (showDebugLogs && Time.time % 3f < 0.1f) // Log every 3 seconds
+        {
+            Debug.Log($"MenuFollowSystem: Menu at {transform.position}, User at {userTransform.position}, Distance: {Vector3.Distance(transform.position, userTransform.position):F2}m");
         }
     }
     
-    [ContextMenu("Teleport Menu to User")]
-    public void TeleportMenuToUser()
+    // Public methods to control following
+    public void StartFollowing()
     {
-        if (userTransform == null) return;
-        
-        UpdateTargetPosition();
-        targetTransform.position = targetPosition;
-        targetTransform.rotation = targetRotation;
-        
-        if (showDebugLogs)
-        {
-            Debug.Log("MenuFollowSystem: Teleported menu to user");
-        }
+        isFollowing = true;
+        if (showDebugLogs) Debug.Log("MenuFollowSystem: Started following user");
     }
     
-    [ContextMenu("Toggle Smooth Follow")]
-    public void ToggleSmoothFollow()
+    public void StopFollowing()
     {
-        smoothFollow = !smoothFollow;
-        Debug.Log($"MenuFollowSystem: Smooth follow {(smoothFollow ? "enabled" : "disabled")}");
+        isFollowing = false;
+        if (showDebugLogs) Debug.Log("MenuFollowSystem: Stopped following user");
     }
     
-    [ContextMenu("Reset Menu Position")]
-    public void ResetMenuPosition()
+    public void ToggleFollowing()
     {
-        if (userTransform == null) return;
-        
-        // Reset to a default position in front of the user
-        Vector3 defaultPosition = userTransform.position + userTransform.forward * 0.5f + userTransform.up * 0.1f;
-        targetTransform.position = defaultPosition;
-        targetTransform.rotation = Quaternion.LookRotation(userTransform.forward);
-        
-        if (showDebugLogs)
-        {
-            Debug.Log("MenuFollowSystem: Reset menu to default position");
-        }
+        isFollowing = !isFollowing;
+        if (showDebugLogs) Debug.Log($"MenuFollowSystem: Following {(isFollowing ? "started" : "stopped")}");
     }
     
-    // Public methods for external control
-    public void SetFollowDistance(float distance)
+    // Teleport menu to user's side
+    public void TeleportToUser()
     {
-        followDistance = distance;
-        if (showDebugLogs)
+        if (userTransform != null)
         {
-            Debug.Log($"MenuFollowSystem: Follow distance set to {distance}");
-        }
-    }
-    
-    public void SetFollowSpeed(float speed)
-    {
-        followSpeed = speed;
-        if (showDebugLogs)
-        {
-            Debug.Log($"MenuFollowSystem: Follow speed set to {speed}");
-        }
-    }
-    
-    public void SetLeftOffset(Vector3 offset)
-    {
-        leftOffset = offset;
-        if (showDebugLogs)
-        {
-            Debug.Log($"MenuFollowSystem: Left offset set to {offset}");
+            if (usePreferredOffset)
+            {
+                transform.position = userTransform.position + userTransform.TransformDirection(preferredOffset);
+            }
+            else
+            {
+                Vector3 userForward = userTransform.forward;
+                Vector3 userRight = userTransform.right;
+                userForward.y = 0;
+                userRight.y = 0;
+                userForward.Normalize();
+                userRight.Normalize();
+                
+                Vector3 newPosition = userTransform.position + userRight * -leftOffset + userForward * followDistance;
+                newPosition.y += followHeight;
+                transform.position = newPosition;
+            }
+            
+            if (faceUser)
+            {
+                Vector3 directionToUser = (userTransform.position - transform.position).normalized;
+                directionToUser.y = 0;
+                if (directionToUser != Vector3.zero)
+                {
+                    // Reverse the direction so menu faces user (not away from user)
+                    transform.rotation = Quaternion.LookRotation(-directionToUser);
+                }
+            }
+            
+            if (showDebugLogs) Debug.Log("MenuFollowSystem: Teleported to user");
         }
     }
 }
