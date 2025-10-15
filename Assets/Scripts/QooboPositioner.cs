@@ -112,11 +112,11 @@ public class QooboPositioner : MonoBehaviour
                         Debug.Log($"Pinch detected - Updating position (isPositioned: {isPositioned}, isRepositioning: {isRepositioning})");
                         UpdateQooboPosition();
                         hasPinchPositioned = true; // Set the flag after first successful pinch positioning
-                        Debug.Log("Pinch positioning has been used - further positioning only available via spacebar");
+                       //Debug.Log("Pinch positioning has been used - further positioning only available via spacebar");
                     }
                     else
                     {
-                        Debug.Log("Pinch detected but wake-up sequence is complete - ignoring");
+                        //Debug.Log("Pinch detected but wake-up sequence is complete - ignoring");
                     }
                 }
                 else
@@ -126,7 +126,7 @@ public class QooboPositioner : MonoBehaviour
             }
             else if (isPinching && hasPinchPositioned)
             {
-                Debug.Log("Pinch detected but pinch positioning has already been used - use spacebar to reposition");
+                //Debug.Log("Pinch detected but pinch positioning has already been used - use spacebar to reposition");
             }
         }
     }

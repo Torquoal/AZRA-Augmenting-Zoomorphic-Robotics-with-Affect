@@ -42,7 +42,11 @@ public class ColliderButtonSystem : MonoBehaviour
         Debug.Log("ColliderButtonSystem: Starting...");
         SetupColliderButtons();
         Debug.Log("ColliderButtonSystem: Setup complete");
-        // Force recompilation
+        
+        // Test hand positions immediately
+        Vector3 leftHand = GetHandPosition(true);
+        Vector3 rightHand = GetHandPosition(false);
+        Debug.Log($"ColliderButtonSystem: Initial hand positions - Left: {leftHand}, Right: {rightHand}");
     }
     
     void SetupColliderButtons()
@@ -117,6 +121,10 @@ public class ColliderButtonSystem : MonoBehaviour
         // Throttled hand checking for performance
         if (Time.time - lastHandCheckTime >= handCheckInterval)
         {
+            if (showDebugLogs && Time.time % 5f < 0.1f) // Log every 5 seconds
+            {
+                Debug.Log("ColliderButtonSystem: Update running, checking hand interactions...");
+            }
             CheckHandButtonInteractions();
             lastHandCheckTime = Time.time;
         }
@@ -127,6 +135,11 @@ public class ColliderButtonSystem : MonoBehaviour
         // Get hand positions (using the same approach as stroke detection)
         Vector3 leftHandPos = GetHandPosition(true);
         Vector3 rightHandPos = GetHandPosition(false);
+        
+        if (showDebugLogs && Time.time % 3f < 0.1f) // Log every 3 seconds
+        {
+            Debug.Log($"ColliderButtonSystem: Checking interactions - Left: {leftHandPos}, Right: {rightHandPos}");
+        }
         
         // Check if hands have moved significantly
         float leftHandMovement = Vector3.Distance(leftHandPos, lastLeftHandPos);
