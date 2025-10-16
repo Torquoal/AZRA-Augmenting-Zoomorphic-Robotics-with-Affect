@@ -10,8 +10,8 @@ public class MetricsMenuController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI responseCooldownLabelText;
     
     [Header("Settings")]
-    [SerializeField] private float minCooldown = 0.5f;
-    [SerializeField] private float maxCooldown = 5.0f;
+    [SerializeField] private float minCooldown = 1.0f;
+    [SerializeField] private float maxCooldown = 10.0f;
     [SerializeField] private float defaultCooldown = 2.0f;
     
     [Header("Target Script")]
