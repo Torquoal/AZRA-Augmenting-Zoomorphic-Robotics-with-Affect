@@ -9,13 +9,20 @@ public class MetricsMenuController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI responseCooldownValueText;
     [SerializeField] private TextMeshProUGUI responseCooldownLabelText;
     
+    [Header("Emotional State Buttons")]
+    [SerializeField] private Button happyButton;
+    [SerializeField] private Button neutralButton;
+    [SerializeField] private Button annoyedButton;
+    [SerializeField] private Button sadButton;
+    
     [Header("Settings")]
     [SerializeField] private float minCooldown = 1.0f;
     [SerializeField] private float maxCooldown = 10.0f;
     [SerializeField] private float defaultCooldown = 2.0f;
     
-    [Header("Target Script")]
+    [Header("Target Scripts")]
     [SerializeField] private EmotionController emotionController;
+    [SerializeField] private EmotionModel emotionModel;
     
     private float currentCooldown;
     
@@ -45,6 +52,62 @@ public class MetricsMenuController : MonoBehaviour
         }
         
         UpdateDisplay();
+        
+        // Setup emotional state buttons
+        SetupEmotionalStateButtons();
+    }
+    
+    void SetupEmotionalStateButtons()
+    {
+        if (happyButton != null)
+        {
+            happyButton.onClick.AddListener(() => SetEmotionalState("Happy"));
+        }
+        
+        if (neutralButton != null)
+        {
+            neutralButton.onClick.AddListener(() => SetEmotionalState("Neutral"));
+        }
+        
+        if (annoyedButton != null)
+        {
+            annoyedButton.onClick.AddListener(() => SetEmotionalState("Annoyed"));
+        }
+        
+        if (sadButton != null)
+        {
+            sadButton.onClick.AddListener(() => SetEmotionalState("Sad"));
+        }
+    }
+    
+    void SetEmotionalState(string state)
+    {
+        if (emotionModel != null)
+        {
+            switch (state)
+            {
+                case "Happy":
+                    emotionModel.SetHappyState();
+                    Debug.Log("MetricsMenu: Set robot to Happy state (V: 6, A: 0)");
+                    break;
+                case "Neutral":
+                    emotionModel.SetNeutralState();
+                    Debug.Log("MetricsMenu: Set robot to Neutral state (V: 0, A: 0)");
+                    break;
+                case "Annoyed":
+                    emotionModel.SetAnnoyedState();
+                    Debug.Log("MetricsMenu: Set robot to Annoyed state (V: -6, A: 6)");
+                    break;
+                case "Sad":
+                    emotionModel.SetSadState();
+                    Debug.Log("MetricsMenu: Set robot to Sad state (V: -6, A: 0)");
+                    break;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("MetricsMenu: EmotionModel not assigned - cannot set emotional state");
+        }
     }
     
     float GetEmotionControllerCooldown()

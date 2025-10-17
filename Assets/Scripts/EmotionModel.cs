@@ -708,4 +708,37 @@ public class EmotionModel : MonoBehaviour
     {
         return moodArousal;
     }
+    
+    // Methods to set emotional state for configuration menu
+    public void SetEmotionalState(float valence, float arousal)
+    {
+        moodValence = Mathf.Clamp(valence, -10f, 10f);
+        moodArousal = Mathf.Clamp(arousal, -10f, 10f);
+        currentMood = classifyEmotionalState(moodValence, moodArousal);
+        
+        if (showDebugLogs)
+        {
+            Debug.Log($"EmotionModel: Set emotional state to {currentMood} (V: {moodValence}, A: {moodArousal})");
+        }
+    }
+    
+    public void SetHappyState()
+    {
+        SetEmotionalState(6f, 0f);
+    }
+    
+    public void SetNeutralState()
+    {
+        SetEmotionalState(0f, 0f);
+    }
+    
+    public void SetAnnoyedState()
+    {
+        SetEmotionalState(-6f, 6f);
+    }
+    
+    public void SetSadState()
+    {
+        SetEmotionalState(-6f, 0f);
+    }
 } 

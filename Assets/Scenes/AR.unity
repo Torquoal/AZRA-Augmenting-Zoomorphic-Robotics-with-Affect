@@ -1966,6 +1966,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 830375250}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &127155240
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 127155241}
+  m_Layer: 0
+  m_Name: ===================== (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &127155241
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 127155240}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.31860334, y: -2.5601623, z: 9.750673}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &127278400
 GameObject:
   m_ObjectHideFlags: 0
@@ -11742,6 +11773,7 @@ GameObject:
   - component: {fileID: 799751475}
   - component: {fileID: 799751476}
   - component: {fileID: 799751477}
+  - component: {fileID: 799751478}
   m_Layer: 0
   m_Name: ScriptHost
   m_TagString: Untagged
@@ -12044,6 +12076,18 @@ MonoBehaviour:
   biteInterval: 1
   biteSoundName: peep
   showDebugLogs: 0
+--- !u!114 &799751478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 799751465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9308c7133b5331944b0f7fd3ef4d7c70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &799816403
 GameObject:
   m_ObjectHideFlags: 0
@@ -13997,12 +14041,12 @@ GameObject:
   - component: {fileID: 863903008}
   - component: {fileID: 863903009}
   m_Layer: 5
-  m_Name: LogCanvas
+  m_Name: DebugLogCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &863903003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19701,7 +19745,7 @@ GameObject:
   - component: {fileID: 1181708169}
   - component: {fileID: 1181708168}
   m_Layer: 5
-  m_Name: DebugCanvas
+  m_Name: TelemetryCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25287,8 +25331,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 14.310974, y: -14.587006}
-  m_SizeDelta: {x: -682.561, y: -553.031}
+  m_AnchoredPosition: {x: 11.195007, y: -1.8510132}
+  m_SizeDelta: {x: -749.896, y: -486.235}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1583218744
 MonoBehaviour:
@@ -25303,7 +25347,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.06666667}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.22352941}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -34607,9 +34651,10 @@ SceneRoots:
   - {fileID: 1086202901}
   - {fileID: 799712505}
   - {fileID: 1707299874730129972}
+  - {fileID: 1105933747}
+  - {fileID: 127155241}
   - {fileID: 1181708171}
   - {fileID: 863903007}
-  - {fileID: 1105933747}
   - {fileID: 1908810519}
   - {fileID: 1943569798}
   - {fileID: 1342066093}
