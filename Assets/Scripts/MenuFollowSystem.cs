@@ -171,5 +171,12 @@ public class MenuFollowSystem : MonoBehaviour
             
             if (showDebugLogs) Debug.Log("MenuFollowSystem: Teleported to user");
         }
+        
+        // Activate the menu when teleporting
+        if (!gameObject.activeInHierarchy)
+        {
+            gameObject.SetActive(true);
+            if (showDebugLogs) Debug.Log("MenuFollowSystem: Activated menu");
+        }
     }
 }
