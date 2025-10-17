@@ -14428,7 +14428,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugText: {fileID: 812623487}
   scrollRect: {fileID: 373064559}
-  maxLogLines: 30
+  maxLogLines: 40
   autoScroll: 1
   fontSize: 8
   showTimestamp: 1
@@ -14451,8 +14451,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1893308d754ce8418318a6ee926e926, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logCanvas: {fileID: 863903002}
-  showDebugLogs: 1
 --- !u!1 &864201416
 GameObject:
   m_ObjectHideFlags: 0
@@ -17966,7 +17964,7 @@ MonoBehaviour:
   useRecommendedMSAALevel: 1
   _monoscopic: 0
   _sharpenType: 0
-  enableDynamicResolution: 0
+  enableDynamicResolution: 1
   minDynamicResolutionScale: 1
   maxDynamicResolutionScale: 1
   quest2MinDynamicResolutionScale: 0.7
@@ -22602,7 +22600,7 @@ MonoBehaviour:
   waitForManualRecenter: 1
   qooboPositioner: {fileID: 799751468}
   menuFollowSystem: {fileID: 1908810521}
-  showDebugLogs: 1
+  showDebugLogs: 0
 --- !u!114 &1342066090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31468,7 +31466,7 @@ MonoBehaviour:
   rotationSmoothing: 0.1
   preferredOffset: {x: 0, y: 0, z: 0}
   usePreferredOffset: 0
-  showDebugLogs: 1
+  showDebugLogs: 0
 --- !u!1 &1909380746
 GameObject:
   m_ObjectHideFlags: 0
@@ -32335,7 +32333,7 @@ MonoBehaviour:
   rotationSmoothing: 0.1
   preferredOffset: {x: 0, y: 0, z: 0}
   usePreferredOffset: 0
-  showDebugLogs: 1
+  showDebugLogs: 0
 --- !u!114 &1943569794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35839,6 +35837,10 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: emotionModel
       value: 
       objectReference: {fileID: 799751474}
@@ -35848,7 +35850,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: showDebugLogs
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6674485458001461790, guid: 2297f865da1722043b726ec74af77b13, type: 3}
       propertyPath: sceneController

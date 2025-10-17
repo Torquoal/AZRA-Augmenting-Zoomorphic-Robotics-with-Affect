@@ -39,14 +39,29 @@ public class VoskRecognizer
     {
         try
         {
-            string modelPath = System.IO.Path.Combine(Application.streamingAssetsPath, "VoskModel");
+            // IMPORTANT: Vosk Model Setup for Android/Quest
+            // On Android platforms (including Quest), StreamingAssets files are inside the APK and cannot be accessed
+            // by native libraries like Vosk. The model files must be manually copied to the persistent data path.
+            // 
+            // Setup Instructions:
+            // 1. Build and deploy your app to Quest
+            // 2. Run the app and check the debug log for the persistent data path
+            // 3. Manually copy the VoskModel folder from Assets/StreamingAssets/VoskModel/ to the persistent data path
+            // 4. The path will be something like: /storage/emulated/0/Android/data/com.yourcompany.yourapp/files/VoskModel
+            // 5. Copy the entire folder structure including all subdirectories (am, conf, graph, ivector)
+            
+            string targetModelPath = System.IO.Path.Combine(Application.persistentDataPath, "VoskModel");
+            
             if (showDebugLogs)
-                Debug.Log($"VoskRecognizer: Loading model from {modelPath}");
+            {
+                Debug.Log($"VoskRecognizer: Loading model from {targetModelPath}");
+            }
 
-            model = vosk_model_new(modelPath);
+            model = vosk_model_new(targetModelPath);
             if (model == IntPtr.Zero)
             {
-                Debug.LogError("VoskRecognizer: Failed to create model");
+                Debug.LogError($"VoskRecognizer: Failed to create model from path: {targetModelPath}");
+                Debug.LogError("VoskRecognizer: Make sure the VoskModel folder has been manually copied to the persistent data path.");
                 return false;
             }
 
@@ -141,4 +156,4 @@ public class VoskRecognizer
             isInitialized = false;
         }
     }
-} 
+}
