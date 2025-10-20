@@ -32,6 +32,7 @@ public class EmotionModel : MonoBehaviour
 
     [Header("Response Settings")]
     [SerializeField] [Range(0, 100)] private float responseChance = 100f; // Percentage chance to show emotional response
+    [SerializeField] [Range(0, 10)] private float stochasticVariability = 1f; // Random variation added to emotional responses (0-50% of emotional range)
 
     // Struct to hold the emotional response values
     private struct EmotionalResponseValues
@@ -548,6 +549,11 @@ public class EmotionModel : MonoBehaviour
         touchGauge += response.Touch;
         restGauge += response.Rest;
         socialGauge += response.Social;
+		// Clamp gauges to valid range
+		touchGauge = Mathf.Clamp(touchGauge, 0f, 100f);
+		restGauge = Mathf.Clamp(restGauge, 0f, 100f);
+		socialGauge = Mathf.Clamp(socialGauge, 0f, 100f);
+		hungerGauge = Mathf.Clamp(hungerGauge, 0f, 100f);
 
         if (showDebugLogs){
             Debug.Log("Added to Gauges: Touch: " + response.Touch + 
@@ -555,9 +561,9 @@ public class EmotionModel : MonoBehaviour
                                  " Social: " + response.Social);
         }
         
-        //fuzz valence and arousal values
-        float fuzzedValence = response.Valence + UnityEngine.Random.Range(-1f, 1f);
-        float fuzzedArousal = response.Arousal + UnityEngine.Random.Range(-1f, 1f);
+        //fuzz valence and arousal values with configurable variability
+        float fuzzedValence = response.Valence + UnityEngine.Random.Range(-stochasticVariability, stochasticVariability);
+        float fuzzedArousal = response.Arousal + UnityEngine.Random.Range(-stochasticVariability, stochasticVariability);
 
         Debug.Log("Fuzzed Final Values. Valence:" + fuzzedValence + " Arousal: " + fuzzedArousal);
 
@@ -740,5 +746,56 @@ public class EmotionModel : MonoBehaviour
     public void SetSadState()
     {
         SetEmotionalState(-6f, 0f);
+    }
+    
+    // Methods to get and set mood vs event weighting
+    public float GetMoodWeight()
+    {
+        return moodWeight;
+    }
+    
+    public float GetEventWeight()
+    {
+        return eventWeight;
+    }
+    
+    public void SetMoodWeight(float weight)
+    {
+        moodWeight = Mathf.Clamp(weight, 0f, 1f);
+        // Ensure weights add up to 1.0
+        eventWeight = 1f - moodWeight;
+        
+        if (showDebugLogs)
+        {
+            Debug.Log($"EmotionModel: Mood weight set to {moodWeight:F2}, Event weight set to {eventWeight:F2}");
+        }
+    }
+    
+    public void SetEventWeight(float weight)
+    {
+        eventWeight = Mathf.Clamp(weight, 0f, 1f);
+        // Ensure weights add up to 1.0
+        moodWeight = 1f - eventWeight;
+        
+        if (showDebugLogs)
+        {
+            Debug.Log($"EmotionModel: Event weight set to {eventWeight:F2}, Mood weight set to {moodWeight:F2}");
+        }
+    }
+    
+    // Methods to get and set stochastic variability
+    public float GetStochasticVariability()
+    {
+        return stochasticVariability;
+    }
+    
+    public void SetStochasticVariability(float variability)
+    {
+        stochasticVariability = Mathf.Clamp(variability, 0f, 10f);
+        
+        if (showDebugLogs)
+        {
+            Debug.Log($"EmotionModel: Stochastic variability set to {stochasticVariability:F2} ({(stochasticVariability/20f)*100f:F0}% of emotional range)");
+        }
     }
 } 

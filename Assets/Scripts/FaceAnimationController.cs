@@ -4,29 +4,22 @@ using System.Linq;
 
 public class FaceAnimationController : MonoBehaviour
 {
-    [Header("Animation Settings")]
-    [SerializeField] private string neutralLoopPath = "NeutralLoop";  // Path in Resources folder
-    [SerializeField] private string happyLoopPath = "HappyLoop";      // Path for happy animation
-    [SerializeField] private string angryLoopPath = "AngryLoop";      // Path for angry animation
-    [SerializeField] private string sadLoopPath = "SadLoop";        // Path for sad animation
-    [SerializeField] private string scaredLoopPath = "ScaredLoop";  // Path for scared animation
-    [SerializeField] private string surprisedLoopPath = "SurprisedLoop"; // Path for surprised animation
+    [Header("Face Style Management")]
+    [SerializeField] private FaceStyleManager faceStyleManager; // Reference to face style manager
+    
+    [Header("Legacy Animation Settings (Deprecated)")]
+    [SerializeField] private string neutralLoopPath = "AbstractFaces/NeutralLoop";  // Legacy - kept for fallback
+    [SerializeField] private string happyLoopPath = "AbstractFaces/HappyLoop";      // Legacy - kept for fallback
+    [SerializeField] private string angryLoopPath = "AbstractFaces/AngryLoop";      // Legacy - kept for fallback
+    [SerializeField] private string sadLoopPath = "AbstractFaces/SadLoop";        // Legacy - kept for fallback
+    [SerializeField] private string scaredLoopPath = "AbstractFaces/ScaredLoop";  // Legacy - kept for fallback
+    [SerializeField] private string surprisedLoopPath = "AbstractFaces/SurprisedLoop"; // Legacy - kept for fallback
     [SerializeField] private float frameRate = 24f;      // Animation frame rate
     [SerializeField] private bool useOptimizedFrames = true; // Use 100 frames instead of 200
     [SerializeField] private int optimizedFrameCount = 100; // Number of frames to use when optimized
     [SerializeField] private float frameDurationMultiplier = 2f; // Each frame lasts 2x longer
 
-    // Future emotion animation paths
-    /*
-    [Header("Emotion Animation Paths")]
-    [SerializeField] private string happyPath = "HappyAnimation";
-    [SerializeField] private string sadPath = "SadAnimation";
-    [SerializeField] private string angryPath = "AngryAnimation";
-    [SerializeField] private string scaredPath = "ScaredAnimation";
-    [SerializeField] private string surprisedPath = "SurprisedAnimation";
-    */
-
-    [Header("Animation Behavior")]
+    [Header("Legacy Animation Behavior (Deprecated)")]
     [SerializeField] private bool loopNeutralAnimation = true;
     [SerializeField] private bool loopHappyAnimation = true;
     [SerializeField] private bool loopAngryAnimation = true;
@@ -58,28 +51,89 @@ public class FaceAnimationController : MonoBehaviour
 
     private void LoadAnimationFrames()
     {
-        // Load neutral, happy, angry, sad, scared, and surprised animation frames
+        Debug.Log($"FaceAnimationController: Starting frame loading. FaceStyleManager assigned: {faceStyleManager != null}");
+        
+        // Try to use FaceStyleManager first
+        if (faceStyleManager != null)
+        {
+            Debug.Log("FaceAnimationController: Using FaceStyleManager for frame loading");
+            LoadFramesFromStyleManager();
+        }
+        else
+        {
+            Debug.LogWarning("FaceAnimationController: FaceStyleManager not assigned, falling back to legacy loading");
+            // Fallback to legacy loading
+            LoadFramesLegacy();
+        }
+    }
+    
+    private void LoadFramesFromStyleManager()
+    {
+        if (faceStyleManager == null)
+        {
+            Debug.LogWarning("FaceAnimationController: FaceStyleManager not assigned, falling back to legacy loading");
+            LoadFramesLegacy();
+            return;
+        }
+        
+        var styleData = faceStyleManager.GetCurrentStyleData();
+        if (styleData == null)
+        {
+            Debug.LogWarning("FaceStyleManager: No style data available, falling back to legacy loading");
+            LoadFramesLegacy();
+            return;
+        }
+        
+        Debug.Log($"FaceAnimationController: Loading frames from {faceStyleManager.GetCurrentStyleName()} style");
+        Debug.Log($"Style data paths:");
+        Debug.Log($"  Neutral: {styleData.neutralLoopPath}");
+        Debug.Log($"  Happy: {styleData.happyLoopPath}");
+        Debug.Log($"  Angry: {styleData.angryLoopPath}");
+        Debug.Log($"  Sad: {styleData.sadLoopPath}");
+        Debug.Log($"  Scared: {styleData.scaredLoopPath}");
+        Debug.Log($"  Surprised: {styleData.surprisedLoopPath}");
+        
+        // Load frames using style manager data
+        LoadFramesForEmotion(styleData.neutralLoopPath, ref neutralFrames, styleData.neutralFrameCount);
+        LoadFramesForEmotion(styleData.happyLoopPath, ref happyFrames, styleData.happyFrameCount);
+        LoadFramesForEmotion(styleData.angryLoopPath, ref angryFrames, styleData.angryFrameCount);
+        LoadFramesForEmotion(styleData.sadLoopPath, ref sadFrames, styleData.sadFrameCount);
+        LoadFramesForEmotion(styleData.scaredLoopPath, ref scaredFrames, styleData.scaredFrameCount);
+        LoadFramesForEmotion(styleData.surprisedLoopPath, ref surprisedFrames, styleData.surprisedFrameCount);
+    }
+    
+    private void LoadFramesLegacy()
+    {
+        Debug.Log("FaceAnimationController: Using LEGACY loading method with these paths:");
+        Debug.Log($"  Neutral: {neutralLoopPath}");
+        Debug.Log($"  Happy: {happyLoopPath}");
+        Debug.Log($"  Angry: {angryLoopPath}");
+        Debug.Log($"  Sad: {sadLoopPath}");
+        Debug.Log($"  Scared: {scaredLoopPath}");
+        Debug.Log($"  Surprised: {surprisedLoopPath}");
+        
+        // Legacy loading method
         LoadFramesForEmotion(neutralLoopPath, ref neutralFrames);
         LoadFramesForEmotion(happyLoopPath, ref happyFrames);
         LoadFramesForEmotion(angryLoopPath, ref angryFrames);
         LoadFramesForEmotion(sadLoopPath, ref sadFrames);
         LoadFramesForEmotion(scaredLoopPath, ref scaredFrames);
         LoadFramesForEmotion(surprisedLoopPath, ref surprisedFrames);
-
-        // Future emotion frame loading
-        /*
-        LoadFramesForEmotion(happyPath, ref happyFrames);
-        LoadFramesForEmotion(sadPath, ref sadFrames);
-        LoadFramesForEmotion(angryPath, ref angryFrames);
-        LoadFramesForEmotion(scaredPath, ref scaredFrames);
-        LoadFramesForEmotion(surprisedPath, ref surprisedFrames);
-        */
     }
 
     private void LoadFramesForEmotion(string path, ref Texture2D[] frames)
     {
+        LoadFramesForEmotion(path, ref frames, optimizedFrameCount);
+    }
+    
+    private void LoadFramesForEmotion(string path, ref Texture2D[] frames, int targetFrameCount)
+    {
+        Debug.Log($"FaceAnimationController: Attempting to load frames from Resources/{path}");
+        
         // Load all textures from the Resources folder
         Object[] loadedObjects = Resources.LoadAll(path, typeof(Texture2D));
+        
+        Debug.Log($"FaceAnimationController: Found {loadedObjects.Length} objects in Resources/{path}");
         
         // Convert to Texture2D array and sort by name to ensure correct order
         var allFrames = loadedObjects
@@ -87,14 +141,14 @@ public class FaceAnimationController : MonoBehaviour
             .OrderBy(tex => tex.name)
             .ToArray();
 
-        if (useOptimizedFrames && allFrames.Length > optimizedFrameCount)
+        if (useOptimizedFrames && allFrames.Length > targetFrameCount)
         {
-            // Optimization: Load only every 2nd frame to reduce from 200 to 100 frames
-            // This reduces memory usage by 50% while maintaining smooth animation quality
-            frames = new Texture2D[optimizedFrameCount];
-            int step = allFrames.Length / optimizedFrameCount; // Calculate step size (should be ~2 for 200 frames)
+            // Optimization: Load only every Nth frame to reduce to target frame count
+            // This reduces memory usage while maintaining smooth animation quality
+            frames = new Texture2D[targetFrameCount];
+            int step = allFrames.Length / targetFrameCount; // Calculate step size
             
-            for (int i = 0; i < optimizedFrameCount; i++)
+            for (int i = 0; i < targetFrameCount; i++)
             {
                 int sourceIndex = i * step;
                 if (sourceIndex < allFrames.Length)
@@ -114,7 +168,7 @@ public class FaceAnimationController : MonoBehaviour
         
         if (frames.Length == 0)
         {
-            Debug.LogWarning($"No frames found in Resources/{path}");
+            Debug.LogError($"No frames found in Resources/{path} - Check if the folder exists and contains texture files");
         }
     }
 
@@ -169,27 +223,27 @@ public class FaceAnimationController : MonoBehaviour
         {
             case "neutral":
                 targetFrames = neutralFrames;
-                shouldLoop = loopNeutralAnimation;
+                shouldLoop = GetLoopSetting(emotion);
                 break;
             case "happy":
                 targetFrames = happyFrames;
-                shouldLoop = loopHappyAnimation;
+                shouldLoop = GetLoopSetting(emotion);
                 break;
             case "angry":
                 targetFrames = angryFrames;
-                shouldLoop = loopAngryAnimation;
+                shouldLoop = GetLoopSetting(emotion);
                 break;
             case "sad":
                 targetFrames = sadFrames;
-                shouldLoop = loopSadAnimation;
+                shouldLoop = GetLoopSetting(emotion);
                 break;
             case "scared":
                 targetFrames = scaredFrames;
-                shouldLoop = loopScaredAnimation;
+                shouldLoop = GetLoopSetting(emotion);
                 break;
             case "surprised":
                 targetFrames = surprisedFrames;
-                shouldLoop = loopSurprisedAnimation;
+                shouldLoop = GetLoopSetting(emotion);
                 break;
             default:
                 Debug.LogWarning($"Unknown emotion for animation: {emotion}");
@@ -206,6 +260,34 @@ public class FaceAnimationController : MonoBehaviour
         else
         {
             Debug.LogError($"No frames available for {emotion} animation");
+        }
+    }
+    
+    private bool GetLoopSetting(string emotion)
+    {
+        // Try to get loop setting from FaceStyleManager first
+        if (faceStyleManager != null)
+        {
+            return faceStyleManager.ShouldLoopAnimation(emotion);
+        }
+        
+        // Fallback to legacy settings
+        switch (emotion.ToLower())
+        {
+            case "neutral":
+                return loopNeutralAnimation;
+            case "happy":
+                return loopHappyAnimation;
+            case "angry":
+                return loopAngryAnimation;
+            case "sad":
+                return loopSadAnimation;
+            case "scared":
+                return loopScaredAnimation;
+            case "surprised":
+                return loopSurprisedAnimation;
+            default:
+                return true; // Default fallback
         }
     }
 
@@ -258,6 +340,15 @@ public class FaceAnimationController : MonoBehaviour
     public Material GetAnimatedMaterial()
     {
         return animatedMaterial;
+    }
+    
+    public void ReloadFramesForCurrentStyle()
+    {
+        if (faceStyleManager != null)
+        {
+            Debug.Log("FaceAnimationController: Reloading frames for current style");
+            LoadAnimationFrames();
+        }
     }
 
     public void SetAlpha(float alpha)

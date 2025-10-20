@@ -4,25 +4,51 @@ public class AudioController : MonoBehaviour
 {
     [Header("Audio Settings")]
     [SerializeField] private AudioSource qooboSpeaker;
-    [SerializeField] private AudioClip[] beepSounds;  // Drag your beep sound files here
+    [SerializeField] private SoundStyleManager soundStyleManager; // Reference to sound style manager
+    
+    [Header("Legacy Settings (Deprecated)")]
+    [SerializeField] private AudioClip[] beepSounds;  // Legacy - kept for fallback
 
     public void PlaySound(string emotion)
     {
-        int index = 0;
-        string[] emotionArray = {"happy", "sad", "scared", "surprised", "angry", "peep"};
-
-        for (int i = 0; i < emotionArray.Length; i++)
+        AudioClip soundToPlay = null;
+        
+        // Try to get sound from SoundStyleManager first
+        if (soundStyleManager != null)
         {
-            if (emotionArray[i] == emotion)
+            soundToPlay = soundStyleManager.GetSoundForEmotion(emotion);
+        }
+        
+        // Fallback to legacy beepSounds if SoundStyleManager fails
+        if (soundToPlay == null && beepSounds != null)
+        {
+            int index = 0;
+            string[] emotionArray = {"happy", "sad", "scared", "surprised", "angry", "peep"};
+
+            for (int i = 0; i < emotionArray.Length; i++)
             {
-                index = i;
-            }
-        }   
+                if (emotionArray[i] == emotion)
+                {
+                    index = i;
+                    break;
+                }
+            }   
 
-        if (qooboSpeaker != null && beepSounds != null && index < beepSounds.Length && beepSounds[index] != null)
+            if (index < beepSounds.Length && beepSounds[index] != null)
+            {
+                soundToPlay = beepSounds[index];
+            }
+        }
+        
+        // Play the sound
+        if (qooboSpeaker != null && soundToPlay != null)
         {
-            qooboSpeaker.clip = beepSounds[index];
+            qooboSpeaker.clip = soundToPlay;
             qooboSpeaker.Play();
+        }
+        else
+        {
+            Debug.LogWarning($"AudioController: No sound found for emotion '{emotion}'");
         }
     }
 

@@ -9,11 +9,31 @@ public class MetricsMenuController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI responseCooldownValueText;
     [SerializeField] private TextMeshProUGUI responseCooldownLabelText;
     
+    [Header("Mood vs Event Weighting")]
+    [SerializeField] private Slider moodEventBalanceSlider;
+    [SerializeField] private TextMeshProUGUI moodEventBalanceText;
+    
+    [Header("Stochastic Variability")]
+    [SerializeField] private Slider stochasticVariabilitySlider;
+    [SerializeField] private TextMeshProUGUI stochasticVariabilityText;
+    
     [Header("Emotional State Buttons")]
     [SerializeField] private Button happyButton;
     [SerializeField] private Button neutralButton;
     [SerializeField] private Button annoyedButton;
     [SerializeField] private Button sadButton;
+    
+    [Header("Sound Style Buttons")]
+    [SerializeField] private Button currentSoundButton;
+    [SerializeField] private Button animaleseSoundButton;
+    [SerializeField] private Button catSoundButton;
+    [SerializeField] private TextMeshProUGUI currentSoundStyleText;
+    
+    [Header("Face Style Buttons")]
+    [SerializeField] private Button currentFaceButton;
+    [SerializeField] private Button animeFaceButton;
+    [SerializeField] private Button catFaceButton;
+    [SerializeField] private TextMeshProUGUI currentFaceStyleText;
     
     [Header("Settings")]
     [SerializeField] private float minCooldown = 1.0f;
@@ -23,6 +43,9 @@ public class MetricsMenuController : MonoBehaviour
     [Header("Target Scripts")]
     [SerializeField] private EmotionController emotionController;
     [SerializeField] private EmotionModel emotionModel;
+    [SerializeField] private SoundStyleManager soundStyleManager;
+    [SerializeField] private FaceStyleManager faceStyleManager;
+    [SerializeField] private FaceAnimationController faceAnimationController;
     
     private float currentCooldown;
     
@@ -55,6 +78,18 @@ public class MetricsMenuController : MonoBehaviour
         
         // Setup emotional state buttons
         SetupEmotionalStateButtons();
+        
+        // Setup sound style buttons
+        SetupSoundStyleButtons();
+        
+        // Setup face style buttons
+        SetupFaceStyleButtons();
+        
+        // Setup mood vs event weighting sliders
+        SetupWeightingSliders();
+        
+        // Setup stochastic variability slider
+        SetupStochasticVariabilitySlider();
     }
     
     void SetupEmotionalStateButtons()
@@ -110,6 +145,186 @@ public class MetricsMenuController : MonoBehaviour
         }
     }
     
+    void SetupSoundStyleButtons()
+    {
+        if (currentSoundButton != null)
+        {
+            currentSoundButton.onClick.AddListener(() => SetSoundStyle(SoundStyleManager.SoundStyle.Current));
+        }
+        
+        if (animaleseSoundButton != null)
+        {
+            animaleseSoundButton.onClick.AddListener(() => SetSoundStyle(SoundStyleManager.SoundStyle.Animalese));
+        }
+        
+        if (catSoundButton != null)
+        {
+            catSoundButton.onClick.AddListener(() => SetSoundStyle(SoundStyleManager.SoundStyle.Cat));
+        }
+        
+        // Update display with current style
+        UpdateSoundStyleDisplay();
+    }
+    
+    void SetSoundStyle(SoundStyleManager.SoundStyle style)
+    {
+        if (soundStyleManager != null)
+        {
+            soundStyleManager.SetSoundStyle(style);
+            UpdateSoundStyleDisplay();
+            Debug.Log($"MetricsMenu: Sound style changed to {style}");
+        }
+        else
+        {
+            Debug.LogWarning("MetricsMenu: SoundStyleManager not assigned - cannot change sound style");
+        }
+    }
+    
+    void UpdateSoundStyleDisplay()
+    {
+        if (currentSoundStyleText != null && soundStyleManager != null)
+        {
+            currentSoundStyleText.text = $"Current: {soundStyleManager.GetCurrentStyleName()}";
+        }
+    }
+    
+    void SetupFaceStyleButtons()
+    {
+        if (currentFaceButton != null)
+        {
+            currentFaceButton.onClick.AddListener(() => SetFaceStyle(FaceStyleManager.FaceStyle.Current));
+        }
+        
+        if (animeFaceButton != null)
+        {
+            animeFaceButton.onClick.AddListener(() => SetFaceStyle(FaceStyleManager.FaceStyle.Anime));
+        }
+        
+        if (catFaceButton != null)
+        {
+            catFaceButton.onClick.AddListener(() => SetFaceStyle(FaceStyleManager.FaceStyle.Cat));
+        }
+        
+        // Update display with current style
+        UpdateFaceStyleDisplay();
+    }
+    
+    void SetFaceStyle(FaceStyleManager.FaceStyle style)
+    {
+        if (faceStyleManager != null)
+        {
+            faceStyleManager.SetFaceStyle(style);
+            UpdateFaceStyleDisplay();
+            
+            // Reload frames in the animation controller
+            if (faceAnimationController != null)
+            {
+                faceAnimationController.ReloadFramesForCurrentStyle();
+            }
+            
+            Debug.Log($"MetricsMenu: Face style changed to {style}");
+        }
+        else
+        {
+            Debug.LogWarning("MetricsMenu: FaceStyleManager not assigned - cannot change face style");
+        }
+    }
+    
+    void UpdateFaceStyleDisplay()
+    {
+        if (currentFaceStyleText != null && faceStyleManager != null)
+        {
+            currentFaceStyleText.text = $"Current: {faceStyleManager.GetCurrentStyleName()}";
+        }
+    }
+    
+    void SetupWeightingSliders()
+    {
+        // Setup mood vs event balance slider
+        if (moodEventBalanceSlider != null)
+        {
+            moodEventBalanceSlider.minValue = 0f;  // 0 = 100% Event, 0% Mood
+            moodEventBalanceSlider.maxValue = 1f;  // 1 = 0% Event, 100% Mood
+            moodEventBalanceSlider.onValueChanged.AddListener(OnMoodEventBalanceChanged);
+            
+            // Get initial value from EmotionModel (convert mood weight to slider position)
+            if (emotionModel != null)
+            {
+                moodEventBalanceSlider.value = emotionModel.GetMoodWeight();
+            }
+        }
+        
+        // Update display
+        UpdateWeightingDisplay();
+    }
+    
+    void SetupStochasticVariabilitySlider()
+    {
+        if (stochasticVariabilitySlider != null)
+        {
+            stochasticVariabilitySlider.minValue = 0f;
+            stochasticVariabilitySlider.maxValue = 10f;
+            stochasticVariabilitySlider.onValueChanged.AddListener(OnStochasticVariabilityChanged);
+            
+            // Get initial value from EmotionModel
+            if (emotionModel != null)
+            {
+                float variability = emotionModel.GetStochasticVariability();
+                stochasticVariabilitySlider.value = variability;
+            }
+            
+            UpdateStochasticVariabilityDisplay();
+        }
+    }
+    
+    void OnMoodEventBalanceChanged(float value)
+    {
+        if (emotionModel != null)
+        {
+            // value: 0 = 100% Event, 1 = 100% Mood
+            emotionModel.SetMoodWeight(value);
+            UpdateWeightingDisplay();
+            Debug.Log($"MetricsMenu: Mood/Event balance changed to {value:F2} (Mood: {value:F2}, Event: {1f-value:F2})");
+        }
+    }
+    
+    void OnStochasticVariabilityChanged(float value)
+    {
+        if (emotionModel != null)
+        {
+            emotionModel.SetStochasticVariability(value);
+            UpdateStochasticVariabilityDisplay();
+            float percentage = (value / 20f) * 100f;
+            Debug.Log($"MetricsMenu: Stochastic variability changed to {value:F1} ({percentage:F0}% of emotional range)");
+        }
+    }
+    
+    void UpdateWeightingDisplay()
+    {
+        if (emotionModel != null)
+        {
+            if (moodEventBalanceText != null)
+            {
+                float moodWeight = emotionModel.GetMoodWeight();
+                float eventWeight = emotionModel.GetEventWeight();
+                moodEventBalanceText.text = $"Mood: {moodWeight:P0} | Event: {eventWeight:P0}";
+            }
+        }
+    }
+    
+    void UpdateStochasticVariabilityDisplay()
+    {
+        if (emotionModel != null)
+        {
+            if (stochasticVariabilityText != null)
+            {
+                float variability = emotionModel.GetStochasticVariability();
+                float percentage = (variability / 20f) * 100f;
+                stochasticVariabilityText.text = $"Stochastic Variability: {percentage:F0}%";
+            }
+        }
+    }
+    
     float GetEmotionControllerCooldown()
     {
         if (emotionController != null)
@@ -127,6 +342,7 @@ public class MetricsMenuController : MonoBehaviour
     
     void OnCooldownSliderChanged(float value)
     {
+        Debug.Log($"OnCooldownSliderChanged called with value: {value}");
         currentCooldown = value;
         UpdateDisplay();
         
@@ -136,6 +352,37 @@ public class MetricsMenuController : MonoBehaviour
             // Set the displayCooldown directly using reflection or a public setter
             SetEmotionControllerCooldown(currentCooldown);
             Debug.Log($"MetricsMenu: Response cooldown changed to {currentCooldown:F1}s");
+        }
+    }
+    
+    // Debug method to test slider interaction
+    [ContextMenu("Test Slider Interaction")]
+    public void TestSliderInteraction()
+    {
+        if (responseCooldownSlider != null)
+        {
+            Debug.Log($"Slider is interactable: {responseCooldownSlider.interactable}");
+            Debug.Log($"Slider current value: {responseCooldownSlider.value}");
+            Debug.Log($"Slider min/max: {responseCooldownSlider.minValue}/{responseCooldownSlider.maxValue}");
+        }
+        else
+        {
+            Debug.LogError("Response cooldown slider is null!");
+        }
+    }
+    
+    // Debug method to manually test slider value change
+    [ContextMenu("Test Manual Slider Change")]
+    public void TestManualSliderChange()
+    {
+        if (responseCooldownSlider != null)
+        {
+            float newValue = responseCooldownSlider.value + 1f;
+            if (newValue > responseCooldownSlider.maxValue)
+                newValue = responseCooldownSlider.minValue;
+            
+            Debug.Log($"Manually changing slider from {responseCooldownSlider.value} to {newValue}");
+            responseCooldownSlider.value = newValue;
         }
     }
     

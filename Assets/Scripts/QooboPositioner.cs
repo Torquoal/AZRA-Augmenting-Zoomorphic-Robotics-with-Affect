@@ -15,6 +15,7 @@ public class QooboPositioner : MonoBehaviour
     [SerializeField] private float handHeightOffset = -0.1f; // Offset BELOW hand position (negative value)
     [SerializeField] private float handForwardOffset = 0.2f; // Offset FORWARD from hand position
     [SerializeField] private float pinchThreshold = 0.02f; // How close fingers need to be for pinch
+	[SerializeField] private bool enablePinchPlacement = true; // Toggle pinch-to-place behavior
     
     [Header("Debug")]
     [SerializeField] private bool showDebugLogs = true;
@@ -81,7 +82,7 @@ public class QooboPositioner : MonoBehaviour
             isPositioned = false;
         }
 
-        if (leftHandTracked && rightHandTracked)
+		if (enablePinchPlacement && leftHandTracked && rightHandTracked)
         {
             // Get left hand pinch gesture
             XRHandJoint leftThumbTip = handSubsystem.leftHand.GetJoint(XRHandJointID.ThumbTip);
