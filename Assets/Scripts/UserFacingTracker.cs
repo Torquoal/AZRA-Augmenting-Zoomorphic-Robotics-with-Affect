@@ -45,6 +45,12 @@ public class UserFacingTracker : MonoBehaviour
     private void Update()
     {
         if (qooboMesh == null || arCamera == null || angleDebugText == null) return;
+        
+        // Check if gaze interaction is enabled
+        if (emotionController != null && !emotionController.IsGazeInteractionEnabled())
+        {
+            return;
+        }
 
         // Get the direction the camera is facing (forward vector)
         Vector3 headDirection = arCamera.transform.forward;

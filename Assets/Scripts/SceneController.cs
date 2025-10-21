@@ -56,6 +56,12 @@ public class SceneController : MonoBehaviour
     }
     private void HandleStrokeDetected(StrokeDetector.StrokeDirection direction)
     {
+        // Check if stroke interaction is enabled
+        if (emotionController != null && !emotionController.IsStrokeInteractionEnabled())
+        {
+            return;
+        }
+        
         if (isWakingUp) return;
         
         // If asleep, don't respond to normal strokes
@@ -94,6 +100,12 @@ public class SceneController : MonoBehaviour
 
     private void HandleHoldDetected()
     {
+        // Check if stroke interaction is enabled
+        if (emotionController != null && !emotionController.IsStrokeInteractionEnabled())
+        {
+            return;
+        }
+        
         if (isWakingUp) return;
         
         // If asleep, don't respond to holds
@@ -114,6 +126,12 @@ public class SceneController : MonoBehaviour
     {
         // Only perform checks if wake-up is complete
         if (!wakeUpComplete) return;
+
+        // Check if distance interaction is enabled
+        if (emotionController != null && !emotionController.IsDistanceInteractionEnabled())
+        {
+            return;
+        }
 
         // If asleep, skip distance checking
         if (emotionModel.IsAsleep) return;
@@ -165,6 +183,12 @@ public class SceneController : MonoBehaviour
 
     public void PlaySound(string emotion)
     {
+        // Check if sound responses are enabled
+        if (emotionController != null && !emotionController.IsSoundResponsesEnabled())
+        {
+            return;
+        }
+        
         if (isWakingUp && emotion != "peep")
         {
             Debug.Log("Cannot play sound during wake-up sequence");
@@ -187,6 +211,12 @@ public class SceneController : MonoBehaviour
     */ 
     public void ShowColouredLight(string emotion)
     {
+        // Check if light responses are enabled
+        if (emotionController != null && !emotionController.IsLightResponsesEnabled())
+        {
+            return;
+        }
+        
         if (isWakingUp || emotionModel.IsAsleep)
         {
             Debug.Log("Cannot show light during wake-up sequence or while asleep");
@@ -237,6 +267,12 @@ public class SceneController : MonoBehaviour
     */
     public void ShowThought(string emotion)
     {
+        // Check if thought responses are enabled
+        if (emotionController != null && !emotionController.IsThoughtResponsesEnabled())
+        {
+            return;
+        }
+        
         if (isWakingUp)
         {
             Debug.Log("Cannot show thought during wake-up sequence");
@@ -319,6 +355,12 @@ public class SceneController : MonoBehaviour
     */
     public void SetFaceExpression(string expression)
     {
+        // Check if face responses are enabled
+        if (emotionController != null && !emotionController.IsFaceResponsesEnabled())
+        {
+            return;
+        }
+        
         if (isWakingUp)
         {
             Debug.Log("Cannot change face expression during wake-up sequence");

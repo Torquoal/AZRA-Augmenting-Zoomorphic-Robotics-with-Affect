@@ -10,6 +10,7 @@ public class EmotionController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI emotionText;
     [SerializeField] private VoiceDetector voiceDetector;
     [SerializeField] private StudyLogger studyLogger;
+    [SerializeField] private GameObject faceCanvas; // Reference to face canvas for toggling visibility
 
     [Header("Debug Settings")]
     [SerializeField] private bool showDebugText = true;
@@ -19,6 +20,18 @@ public class EmotionController : MonoBehaviour
     [SerializeField] private float displayDuration = 10f;  // Duration before returning to neutral
     [SerializeField] private float displayCooldown = 5f;   // Cooldown period before another display can be shown
     [SerializeField] private float passiveUpdateInterval = 5f; // How often to update passive expression
+    
+    [Header("Response Toggles")]
+    [SerializeField] private bool enableFaceResponses = true;
+    [SerializeField] private bool enableSoundResponses = true;
+    [SerializeField] private bool enableLightResponses = true;
+    [SerializeField] private bool enableThoughtResponses = true;
+    
+    [Header("Interaction Toggles")]
+    [SerializeField] private bool enableStrokeInteraction = true;
+    [SerializeField] private bool enableDistanceInteraction = true;
+    [SerializeField] private bool enableGazeInteraction = true;
+    [SerializeField] private bool enableSpeechInteraction = true;
 
     private bool hasInitialized = false;
     private float lastDisplayTime = -999f;
@@ -492,6 +505,152 @@ public class EmotionController : MonoBehaviour
     {
         return currentDisplayString;
     }
+    
+    // Public methods to control response toggles
+    // Timer lock to prevent immediate toggling
+    private float lastFaceToggleTime = 0f;
+    private const float FACE_TOGGLE_COOLDOWN = 0.5f;
+    
+    public void SetFaceResponsesEnabled()
+    {
+        // Check cooldown to prevent immediate toggling
+        if (Time.time - lastFaceToggleTime < FACE_TOGGLE_COOLDOWN)
+        {
+            Debug.Log($"EmotionController: Face toggle on cooldown, please wait {FACE_TOGGLE_COOLDOWN - (Time.time - lastFaceToggleTime):F1}s");
+            return;
+        }
+        
+        lastFaceToggleTime = Time.time;
+        
+        // Toggle the face responses state
+        enableFaceResponses = !enableFaceResponses;
+        
+        // Control face canvas visibility
+        if (faceCanvas != null)
+        {
+            faceCanvas.SetActive(enableFaceResponses);
+        }
+        
+        Debug.Log($"EmotionController: Face responses {(enableFaceResponses ? "enabled" : "disabled")}");
+    }
+    
+    // Context menu for testing
+    [ContextMenu("Toggle Face Responses")]
+    public void TestToggleFaceResponses()
+    {
+        SetFaceResponsesEnabled();
+    }
+    
+    public void SetSoundResponsesEnabled()
+    {
+        // Check cooldown to prevent immediate toggling
+        if (Time.time - lastFaceToggleTime < FACE_TOGGLE_COOLDOWN)
+        {
+            Debug.Log($"EmotionController: Sound toggle on cooldown, please wait {FACE_TOGGLE_COOLDOWN - (Time.time - lastFaceToggleTime):F1}s");
+            return;
+        }
+        
+        lastFaceToggleTime = Time.time;
+        enableSoundResponses = !enableSoundResponses;
+        Debug.Log($"EmotionController: Sound responses {(enableSoundResponses ? "enabled" : "disabled")}");
+    }
+    
+    public void SetLightResponsesEnabled()
+    {
+        // Check cooldown to prevent immediate toggling
+        if (Time.time - lastFaceToggleTime < FACE_TOGGLE_COOLDOWN)
+        {
+            Debug.Log($"EmotionController: Light toggle on cooldown, please wait {FACE_TOGGLE_COOLDOWN - (Time.time - lastFaceToggleTime):F1}s");
+            return;
+        }
+        
+        lastFaceToggleTime = Time.time;
+        enableLightResponses = !enableLightResponses;
+        Debug.Log($"EmotionController: Light responses {(enableLightResponses ? "enabled" : "disabled")}");
+    }
+    
+    public void SetThoughtResponsesEnabled()
+    {
+        // Check cooldown to prevent immediate toggling
+        if (Time.time - lastFaceToggleTime < FACE_TOGGLE_COOLDOWN)
+        {
+            Debug.Log($"EmotionController: Thought toggle on cooldown, please wait {FACE_TOGGLE_COOLDOWN - (Time.time - lastFaceToggleTime):F1}s");
+            return;
+        }
+        
+        lastFaceToggleTime = Time.time;
+        enableThoughtResponses = !enableThoughtResponses;
+        Debug.Log($"EmotionController: Thought responses {(enableThoughtResponses ? "enabled" : "disabled")}");
+    }
+    
+    // Getters for current toggle states
+    public bool IsFaceResponsesEnabled() => enableFaceResponses;
+    public bool IsSoundResponsesEnabled() => enableSoundResponses;
+    public bool IsLightResponsesEnabled() => enableLightResponses;
+    public bool IsThoughtResponsesEnabled() => enableThoughtResponses;
+    
+    // Interaction toggle methods
+    public void SetStrokeInteractionEnabled()
+    {
+        // Check cooldown to prevent immediate toggling
+        if (Time.time - lastFaceToggleTime < FACE_TOGGLE_COOLDOWN)
+        {
+            Debug.Log($"EmotionController: Stroke toggle on cooldown, please wait {FACE_TOGGLE_COOLDOWN - (Time.time - lastFaceToggleTime):F1}s");
+            return;
+        }
+        
+        lastFaceToggleTime = Time.time;
+        enableStrokeInteraction = !enableStrokeInteraction;
+        Debug.Log($"EmotionController: Stroke interaction {(enableStrokeInteraction ? "enabled" : "disabled")}");
+    }
+    
+    public void SetDistanceInteractionEnabled()
+    {
+        // Check cooldown to prevent immediate toggling
+        if (Time.time - lastFaceToggleTime < FACE_TOGGLE_COOLDOWN)
+        {
+            Debug.Log($"EmotionController: Distance toggle on cooldown, please wait {FACE_TOGGLE_COOLDOWN - (Time.time - lastFaceToggleTime):F1}s");
+            return;
+        }
+        
+        lastFaceToggleTime = Time.time;
+        enableDistanceInteraction = !enableDistanceInteraction;
+        Debug.Log($"EmotionController: Distance interaction {(enableDistanceInteraction ? "enabled" : "disabled")}");
+    }
+    
+    public void SetGazeInteractionEnabled()
+    {
+        // Check cooldown to prevent immediate toggling
+        if (Time.time - lastFaceToggleTime < FACE_TOGGLE_COOLDOWN)
+        {
+            Debug.Log($"EmotionController: Gaze toggle on cooldown, please wait {FACE_TOGGLE_COOLDOWN - (Time.time - lastFaceToggleTime):F1}s");
+            return;
+        }
+        
+        lastFaceToggleTime = Time.time;
+        enableGazeInteraction = !enableGazeInteraction;
+        Debug.Log($"EmotionController: Gaze interaction {(enableGazeInteraction ? "enabled" : "disabled")}");
+    }
+    
+    public void SetSpeechInteractionEnabled()
+    {
+        // Check cooldown to prevent immediate toggling
+        if (Time.time - lastFaceToggleTime < FACE_TOGGLE_COOLDOWN)
+        {
+            Debug.Log($"EmotionController: Speech toggle on cooldown, please wait {FACE_TOGGLE_COOLDOWN - (Time.time - lastFaceToggleTime):F1}s");
+            return;
+        }
+        
+        lastFaceToggleTime = Time.time;
+        enableSpeechInteraction = !enableSpeechInteraction;
+        Debug.Log($"EmotionController: Speech interaction {(enableSpeechInteraction ? "enabled" : "disabled")}");
+    }
+    
+    // Getters for interaction toggle states
+    public bool IsStrokeInteractionEnabled() => enableStrokeInteraction;
+    public bool IsDistanceInteractionEnabled() => enableDistanceInteraction;
+    public bool IsGazeInteractionEnabled() => enableGazeInteraction;
+    public bool IsSpeechInteractionEnabled() => enableSpeechInteraction;
 
     public bool TryDisplayEmotion(string displayString, string triggerEvent, bool bypassCooldown = false)
     {

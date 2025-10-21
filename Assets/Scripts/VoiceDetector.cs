@@ -272,6 +272,11 @@ public class VoiceDetector : MonoBehaviour
 
     private void HandleWordGroupMatch(string groupName)
     {
+        // Check if speech interaction is enabled
+        if (emotionController != null && !emotionController.IsSpeechInteractionEnabled())
+        {
+            return;
+        }
         
         switch (groupName)
         {

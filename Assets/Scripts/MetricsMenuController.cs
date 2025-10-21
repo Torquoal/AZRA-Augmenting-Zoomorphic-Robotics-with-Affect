@@ -17,6 +17,18 @@ public class MetricsMenuController : MonoBehaviour
     [SerializeField] private Slider stochasticVariabilitySlider;
     [SerializeField] private TextMeshProUGUI stochasticVariabilityText;
     
+    [Header("Response Toggles")]
+    [SerializeField] private Toggle faceToggle;
+    [SerializeField] private Toggle soundToggle;
+    [SerializeField] private Toggle lightToggle;
+    [SerializeField] private Toggle thoughtToggle;
+    
+    [Header("Interaction Toggles")]
+    [SerializeField] private Toggle strokeToggle;
+    [SerializeField] private Toggle distanceToggle;
+    [SerializeField] private Toggle gazeToggle;
+    [SerializeField] private Toggle speechToggle;
+    
     [Header("Emotional State Buttons")]
     [SerializeField] private Button happyButton;
     [SerializeField] private Button neutralButton;
@@ -90,6 +102,12 @@ public class MetricsMenuController : MonoBehaviour
         
         // Setup stochastic variability slider
         SetupStochasticVariabilitySlider();
+        
+        // Setup response toggles
+        SetupResponseToggles();
+        
+        // Setup interaction toggles
+        SetupInteractionToggles();
     }
     
     void SetupEmotionalStateButtons()
@@ -322,6 +340,292 @@ public class MetricsMenuController : MonoBehaviour
                 float percentage = (variability / 20f) * 100f;
                 stochasticVariabilityText.text = $"Stochastic Variability: {percentage:F0}%";
             }
+        }
+    }
+    
+
+    public 
+
+    void SetupResponseToggles()
+    {
+        // Setup face toggle
+        if (faceToggle != null)
+        {
+            faceToggle.onValueChanged.AddListener(OnFaceToggleChanged);
+            // Get initial value from EmotionController
+            if (emotionController != null)
+            {
+                // Set value without triggering event
+                faceToggle.SetIsOnWithoutNotify(emotionController.IsFaceResponsesEnabled());
+            }
+        }
+        
+        // Setup sound toggle
+        if (soundToggle != null)
+        {
+            soundToggle.onValueChanged.AddListener(OnSoundToggleChanged);
+            if (emotionController != null)
+            {
+                // Set value without triggering event
+                soundToggle.SetIsOnWithoutNotify(emotionController.IsSoundResponsesEnabled());
+            }
+        }
+        
+        // Setup light toggle
+        if (lightToggle != null)
+        {
+            lightToggle.onValueChanged.AddListener(OnLightToggleChanged);
+            if (emotionController != null)
+            {
+                // Set value without triggering event
+                lightToggle.SetIsOnWithoutNotify(emotionController.IsLightResponsesEnabled());
+            }
+        }
+        
+        // Setup thought toggle
+        if (thoughtToggle != null)
+        {
+            thoughtToggle.onValueChanged.AddListener(OnThoughtToggleChanged);
+            if (emotionController != null)
+            {
+                // Set value without triggering event
+                thoughtToggle.SetIsOnWithoutNotify(emotionController.IsThoughtResponsesEnabled());
+            }
+        }
+    }
+    
+    // Timer lock for face toggle to prevent rapid clicking
+    private float lastFaceToggleTime = 0f;
+    private const float FACE_TOGGLE_COOLDOWN = 0.5f;
+    
+    void OnFaceToggleChanged(bool enabled)
+    {
+        // Check cooldown to prevent rapid clicking
+        if (Time.time - lastFaceToggleTime < FACE_TOGGLE_COOLDOWN)
+        {
+            Debug.Log($"MetricsMenu: Face toggle on cooldown, please wait {FACE_TOGGLE_COOLDOWN - (Time.time - lastFaceToggleTime):F1}s");
+            // Reset the toggle to its previous state
+            if (faceToggle != null)
+            {
+                faceToggle.SetIsOnWithoutNotify(!enabled);
+            }
+            return;
+        }
+        
+        lastFaceToggleTime = Time.time;
+        
+        if (emotionController != null)
+        {
+            emotionController.SetFaceResponsesEnabled();
+            Debug.Log($"MetricsMenu: Face toggle clicked");
+        }
+    }
+    
+    void OnSoundToggleChanged(bool enabled)
+    {
+        // Check cooldown to prevent rapid clicking
+        if (Time.time - lastFaceToggleTime < FACE_TOGGLE_COOLDOWN)
+        {
+            Debug.Log($"MetricsMenu: Sound toggle on cooldown, please wait {FACE_TOGGLE_COOLDOWN - (Time.time - lastFaceToggleTime):F1}s");
+            // Reset the toggle to its previous state
+            if (soundToggle != null)
+            {
+                soundToggle.SetIsOnWithoutNotify(!enabled);
+            }
+            return;
+        }
+        
+        lastFaceToggleTime = Time.time;
+        
+        if (emotionController != null)
+        {
+            emotionController.SetSoundResponsesEnabled();
+            Debug.Log($"MetricsMenu: Sound toggle clicked");
+        }
+    }
+    
+    void OnLightToggleChanged(bool enabled)
+    {
+        // Check cooldown to prevent rapid clicking
+        if (Time.time - lastFaceToggleTime < FACE_TOGGLE_COOLDOWN)
+        {
+            Debug.Log($"MetricsMenu: Light toggle on cooldown, please wait {FACE_TOGGLE_COOLDOWN - (Time.time - lastFaceToggleTime):F1}s");
+            // Reset the toggle to its previous state
+            if (lightToggle != null)
+            {
+                lightToggle.SetIsOnWithoutNotify(!enabled);
+            }
+            return;
+        }
+        
+        lastFaceToggleTime = Time.time;
+        
+        if (emotionController != null)
+        {
+            emotionController.SetLightResponsesEnabled();
+            Debug.Log($"MetricsMenu: Light toggle clicked");
+        }
+    }
+    
+    void OnThoughtToggleChanged(bool enabled)
+    {
+        // Check cooldown to prevent rapid clicking
+        if (Time.time - lastFaceToggleTime < FACE_TOGGLE_COOLDOWN)
+        {
+            Debug.Log($"MetricsMenu: Thought toggle on cooldown, please wait {FACE_TOGGLE_COOLDOWN - (Time.time - lastFaceToggleTime):F1}s");
+            // Reset the toggle to its previous state
+            if (thoughtToggle != null)
+            {
+                thoughtToggle.SetIsOnWithoutNotify(!enabled);
+            }
+            return;
+        }
+        
+        lastFaceToggleTime = Time.time;
+        
+        if (emotionController != null)
+        {
+            emotionController.SetThoughtResponsesEnabled();
+            Debug.Log($"MetricsMenu: Thought toggle clicked");
+        }
+    }
+    
+    void SetupInteractionToggles()
+    {
+        // Setup stroke toggle
+        if (strokeToggle != null)
+        {
+            strokeToggle.onValueChanged.AddListener(OnStrokeToggleChanged);
+            if (emotionController != null)
+            {
+                // Set value without triggering event
+                strokeToggle.SetIsOnWithoutNotify(emotionController.IsStrokeInteractionEnabled());
+            }
+        }
+        
+        // Setup distance toggle
+        if (distanceToggle != null)
+        {
+            distanceToggle.onValueChanged.AddListener(OnDistanceToggleChanged);
+            if (emotionController != null)
+            {
+                // Set value without triggering event
+                distanceToggle.SetIsOnWithoutNotify(emotionController.IsDistanceInteractionEnabled());
+            }
+        }
+        
+        // Setup gaze toggle
+        if (gazeToggle != null)
+        {
+            gazeToggle.onValueChanged.AddListener(OnGazeToggleChanged);
+            if (emotionController != null)
+            {
+                // Set value without triggering event
+                gazeToggle.SetIsOnWithoutNotify(emotionController.IsGazeInteractionEnabled());
+            }
+        }
+        
+        // Setup speech toggle
+        if (speechToggle != null)
+        {
+            speechToggle.onValueChanged.AddListener(OnSpeechToggleChanged);
+            if (emotionController != null)
+            {
+                // Set value without triggering event
+                speechToggle.SetIsOnWithoutNotify(emotionController.IsSpeechInteractionEnabled());
+            }
+        }
+    }
+    
+    void OnStrokeToggleChanged(bool enabled)
+    {
+        // Check cooldown to prevent rapid clicking
+        if (Time.time - lastFaceToggleTime < FACE_TOGGLE_COOLDOWN)
+        {
+            Debug.Log($"MetricsMenu: Stroke toggle on cooldown, please wait {FACE_TOGGLE_COOLDOWN - (Time.time - lastFaceToggleTime):F1}s");
+            // Reset the toggle to its previous state
+            if (strokeToggle != null)
+            {
+                strokeToggle.SetIsOnWithoutNotify(!enabled);
+            }
+            return;
+        }
+        
+        lastFaceToggleTime = Time.time;
+        
+        if (emotionController != null)
+        {
+            emotionController.SetStrokeInteractionEnabled();
+            Debug.Log($"MetricsMenu: Stroke toggle clicked");
+        }
+    }
+    
+    void OnDistanceToggleChanged(bool enabled)
+    {
+        // Check cooldown to prevent rapid clicking
+        if (Time.time - lastFaceToggleTime < FACE_TOGGLE_COOLDOWN)
+        {
+            Debug.Log($"MetricsMenu: Distance toggle on cooldown, please wait {FACE_TOGGLE_COOLDOWN - (Time.time - lastFaceToggleTime):F1}s");
+            // Reset the toggle to its previous state
+            if (distanceToggle != null)
+            {
+                distanceToggle.SetIsOnWithoutNotify(!enabled);
+            }
+            return;
+        }
+        
+        lastFaceToggleTime = Time.time;
+        
+        if (emotionController != null)
+        {
+            emotionController.SetDistanceInteractionEnabled();
+            Debug.Log($"MetricsMenu: Distance toggle clicked");
+        }
+    }
+    
+    void OnGazeToggleChanged(bool enabled)
+    {
+        // Check cooldown to prevent rapid clicking
+        if (Time.time - lastFaceToggleTime < FACE_TOGGLE_COOLDOWN)
+        {
+            Debug.Log($"MetricsMenu: Gaze toggle on cooldown, please wait {FACE_TOGGLE_COOLDOWN - (Time.time - lastFaceToggleTime):F1}s");
+            // Reset the toggle to its previous state
+            if (gazeToggle != null)
+            {
+                gazeToggle.SetIsOnWithoutNotify(!enabled);
+            }
+            return;
+        }
+        
+        lastFaceToggleTime = Time.time;
+        
+        if (emotionController != null)
+        {
+            emotionController.SetGazeInteractionEnabled();
+            Debug.Log($"MetricsMenu: Gaze toggle clicked");
+        }
+    }
+    
+    void OnSpeechToggleChanged(bool enabled)
+    {
+        // Check cooldown to prevent rapid clicking
+        if (Time.time - lastFaceToggleTime < FACE_TOGGLE_COOLDOWN)
+        {
+            Debug.Log($"MetricsMenu: Speech toggle on cooldown, please wait {FACE_TOGGLE_COOLDOWN - (Time.time - lastFaceToggleTime):F1}s");
+            // Reset the toggle to its previous state
+            if (speechToggle != null)
+            {
+                speechToggle.SetIsOnWithoutNotify(!enabled);
+            }
+            return;
+        }
+        
+        lastFaceToggleTime = Time.time;
+        
+        if (emotionController != null)
+        {
+            emotionController.SetSpeechInteractionEnabled();
+            Debug.Log($"MetricsMenu: Speech toggle clicked");
         }
     }
     
