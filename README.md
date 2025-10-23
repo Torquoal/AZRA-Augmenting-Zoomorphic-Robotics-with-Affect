@@ -23,24 +23,15 @@ AZRAM is an interactive robot companion project designed for use with Meta Quest
    - In the Unity Editor, open the main scene (e.g., `AR.unity`) from the `Assets/Scenes` directory.
 
 ## Usage
-1. **Enter Play Mode**
-   - In Unity, press the Play button.
+1. **Build and Run from Unity**
 2. **Put on the Headset**
-   - Wear your Meta Quest 3 headset. You should see the AR scene in the headset display.
-3. **Wake Up the Robot**
-   - Place your right hand on the robot, aligning your index finger with the tail at the back.
-   - Pinch with your left hand to wake up the robot **OR**
-   - Press the `Spacebar` on your keyboard to wake up the robot.
+   - Wear your Meta Quest 3 headset. You should see the AR scene in the headset display, which will guide you through setting up the robot.
 
 ## Controls & Interactions
 - **Hand Gestures:** Interact with the robot using hand tracking and gestures.
 - **Voice Commands:** (If enabled) Speak to the robot to trigger responses.
 - **Need Gauges:** The robot's emotional state is influenced by touch, rest, social, and hunger needs.
 - **Debugging:** Use the Debug Canvas in the scene to view internal state and events.
-
-## Notes
-- Ensure all required hardware and software are connected and running before entering Play mode.
-- For best results, use the latest Meta Quest PC app and Unity LTS version.
 
 ---
 ## SceneController.cs
