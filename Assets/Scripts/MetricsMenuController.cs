@@ -58,8 +58,14 @@ public class MetricsMenuController : MonoBehaviour
     [SerializeField] private SoundStyleManager soundStyleManager;
     [SerializeField] private FaceStyleManager faceStyleManager;
     [SerializeField] private FaceAnimationController faceAnimationController;
+    [SerializeField] private StudyLogger studyLogger;
     
     private float currentCooldown;
+    
+    // Tracking for slider interactions to log only once per interaction
+    private bool isSliderBeingDragged = false;
+    private bool isMoodEventSliderBeingDragged = false;
+    private bool isStochasticSliderBeingDragged = false;
     
     void Start()
     {
@@ -156,6 +162,9 @@ public class MetricsMenuController : MonoBehaviour
                     Debug.Log("MetricsMenu: Set robot to Sad state (V: -6, A: 0)");
                     break;
             }
+            
+            // Log the button press
+            LogPrototypingEvent($"{state} State Button", "pressed");
         }
         else
         {
@@ -191,6 +200,9 @@ public class MetricsMenuController : MonoBehaviour
             soundStyleManager.SetSoundStyle(style);
             UpdateSoundStyleDisplay();
             Debug.Log($"MetricsMenu: Sound style changed to {style}");
+            
+            // Log the button press
+            LogPrototypingEvent($"{style} Sound Style Button", "pressed");
         }
         else
         {
@@ -241,6 +253,9 @@ public class MetricsMenuController : MonoBehaviour
             }
             
             Debug.Log($"MetricsMenu: Face style changed to {style}");
+            
+            // Log the button press
+            LogPrototypingEvent($"{style} Face Style Button", "pressed");
         }
         else
         {
@@ -304,6 +319,12 @@ public class MetricsMenuController : MonoBehaviour
             UpdateWeightingDisplay();
             Debug.Log($"MetricsMenu: Mood/Event balance changed to {value:F2} (Mood: {value:F2}, Event: {1f-value:F2})");
         }
+        
+        // Only log when dragging ends, not during dragging
+        if (!isMoodEventSliderBeingDragged)
+        {
+            LogPrototypingEvent("Mood Event Balance Slider", value.ToString("F2"));
+        }
     }
     
     void OnStochasticVariabilityChanged(float value)
@@ -314,6 +335,12 @@ public class MetricsMenuController : MonoBehaviour
             UpdateStochasticVariabilityDisplay();
             float percentage = (value / 20f) * 100f;
             Debug.Log($"MetricsMenu: Stochastic variability changed to {value:F1} ({percentage:F0}% of emotional range)");
+        }
+        
+        // Only log when dragging ends, not during dragging
+        if (!isStochasticSliderBeingDragged)
+        {
+            LogPrototypingEvent("Stochastic Variability Slider", value.ToString("F1"));
         }
     }
     
@@ -657,36 +684,11 @@ public class MetricsMenuController : MonoBehaviour
             SetEmotionControllerCooldown(currentCooldown);
             Debug.Log($"MetricsMenu: Response cooldown changed to {currentCooldown:F1}s");
         }
-    }
-    
-    // Debug method to test slider interaction
-    [ContextMenu("Test Slider Interaction")]
-    public void TestSliderInteraction()
-    {
-        if (responseCooldownSlider != null)
+        
+        // Only log when dragging ends, not during dragging
+        if (!isSliderBeingDragged)
         {
-            Debug.Log($"Slider is interactable: {responseCooldownSlider.interactable}");
-            Debug.Log($"Slider current value: {responseCooldownSlider.value}");
-            Debug.Log($"Slider min/max: {responseCooldownSlider.minValue}/{responseCooldownSlider.maxValue}");
-        }
-        else
-        {
-            Debug.LogError("Response cooldown slider is null!");
-        }
-    }
-    
-    // Debug method to manually test slider value change
-    [ContextMenu("Test Manual Slider Change")]
-    public void TestManualSliderChange()
-    {
-        if (responseCooldownSlider != null)
-        {
-            float newValue = responseCooldownSlider.value + 1f;
-            if (newValue > responseCooldownSlider.maxValue)
-                newValue = responseCooldownSlider.minValue;
-            
-            Debug.Log($"Manually changing slider from {responseCooldownSlider.value} to {newValue}");
-            responseCooldownSlider.value = newValue;
+            LogPrototypingEvent("Response Cooldown Slider", currentCooldown.ToString("F1"));
         }
     }
     
@@ -701,6 +703,15 @@ public class MetricsMenuController : MonoBehaviour
             {
                 field.SetValue(emotionController, cooldown);
             }
+        }
+    }
+    
+    // Log prototyping events to StudyLogger
+    void LogPrototypingEvent(string item, string value)
+    {
+        if (studyLogger != null)
+        {
+            studyLogger.LogEmotionalResponse("prototyping", $"prototyping {item} changed to {value}");
         }
     }
     
@@ -735,5 +746,45 @@ public class MetricsMenuController : MonoBehaviour
         }
         
         UpdateDisplay();
+    }
+    
+    // Public methods to control toggles programmatically for GuidedTour
+    public void SetGazeToggle(bool enabled)
+    {
+        if (gazeToggle != null)
+        {
+            gazeToggle.SetIsOnWithoutNotify(enabled);
+        }
+    }
+    
+    public void SetDistanceToggle(bool enabled)
+    {
+        if (distanceToggle != null)
+        {
+            distanceToggle.SetIsOnWithoutNotify(enabled);
+        }
+    }
+    
+    public void SetSpeechToggle(bool enabled)
+    {
+        if (speechToggle != null)
+        {
+            speechToggle.SetIsOnWithoutNotify(enabled);
+        }
+    }
+    
+    public bool IsGazeToggleOn()
+    {
+        return gazeToggle != null ? gazeToggle.isOn : false;
+    }
+    
+    public bool IsDistanceToggleOn()
+    {
+        return distanceToggle != null ? distanceToggle.isOn : false;
+    }
+    
+    public bool IsSpeechToggleOn()
+    {
+        return speechToggle != null ? speechToggle.isOn : false;
     }
 }

@@ -18,6 +18,7 @@ public class WelcomeSequenceController : MonoBehaviour
     [Header("References")]
     [SerializeField] private QooboPositioner qooboPositioner; // Reference to QooboPositioner
     [SerializeField] private MenuFollowSystem menuFollowSystem; // Reference to MenuFollowSystem
+    [SerializeField] private GuidedTourController guidedTourController; // Reference to GuidedTourController
     
     [Header("Debug")]
     [SerializeField] private bool showDebugLogs = true;
@@ -216,6 +217,16 @@ public class WelcomeSequenceController : MonoBehaviour
     {
         // This can be called by other systems to check if welcome sequence is done
         if (showDebugLogs) Debug.Log("WelcomeSequence: Welcome sequence completed - app ready");
+        
+        // Start the guided tour after welcome sequence
+        if (guidedTourController != null)
+        {
+            guidedTourController.StartTour();
+        }
+        else
+        {
+            Debug.LogWarning("WelcomeSequence: GuidedTourController not assigned - tour will not start");
+        }
     }
     
     // Public methods for other systems to check status

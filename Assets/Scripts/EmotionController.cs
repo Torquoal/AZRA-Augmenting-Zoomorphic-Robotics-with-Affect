@@ -235,6 +235,7 @@ public class EmotionController : MonoBehaviour
                 break;
             case "greetingheard":
                 sceneController.ShowThought("heart");
+                sceneController.ShowColouredLight("happy");
                 break;
             case "nameheard":
                 sceneController.ShowThought("exclamation");
@@ -271,6 +272,7 @@ public class EmotionController : MonoBehaviour
                 break;
             case "feeding":
                 sceneController.ShowThought("hungry");
+                sceneController.ShowColouredLight("happy");
                 // Increment hunger gauge when fed
                 if (emotionModel != null)
                 {
