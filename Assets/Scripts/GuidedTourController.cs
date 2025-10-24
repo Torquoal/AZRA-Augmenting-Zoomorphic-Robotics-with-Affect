@@ -361,6 +361,14 @@ public class GuidedTourController : MonoBehaviour
             metricsMenuController.SetDistanceToggle(originalDistanceToggle);
             metricsMenuController.SetSpeechToggle(originalSpeechToggle);
         }
+        
+        // Also restore the EmotionController states using programmatic methods
+        if (emotionController != null)
+        {
+            emotionController.SetGazeInteractionEnabledProgrammatic(originalGazeToggle);
+            emotionController.SetDistanceInteractionEnabledProgrammatic(originalDistanceToggle);
+            emotionController.SetSpeechInteractionEnabledProgrammatic(originalSpeechToggle);
+        }
     }
     
     void DisableInterferingInteractions()
@@ -371,6 +379,14 @@ public class GuidedTourController : MonoBehaviour
             metricsMenuController.SetGazeToggle(false);
             metricsMenuController.SetDistanceToggle(false);
             metricsMenuController.SetSpeechToggle(false);
+        }
+        
+        // Also directly disable the EmotionController states using programmatic methods
+        if (emotionController != null)
+        {
+            emotionController.SetGazeInteractionEnabledProgrammatic(false);
+            emotionController.SetDistanceInteractionEnabledProgrammatic(false);
+            emotionController.SetSpeechInteractionEnabledProgrammatic(false);
         }
     }
     
@@ -385,12 +401,18 @@ public class GuidedTourController : MonoBehaviour
             {
                 case "gaze":
                     metricsMenuController.SetGazeToggle(true);
+                    // Also enable in EmotionController using programmatic method
+                    emotionController.SetGazeInteractionEnabledProgrammatic(true);
                     break;
                 case "distance":
                     metricsMenuController.SetDistanceToggle(true);
+                    // Also enable in EmotionController using programmatic method
+                    emotionController.SetDistanceInteractionEnabledProgrammatic(true);
                     break;
                 case "speech":
                     metricsMenuController.SetSpeechToggle(true);
+                    // Also enable in EmotionController using programmatic method
+                    emotionController.SetSpeechInteractionEnabledProgrammatic(true);
                     break;
                 // Stroking, feeding, and ghost_mode don't need special interaction toggles
             }

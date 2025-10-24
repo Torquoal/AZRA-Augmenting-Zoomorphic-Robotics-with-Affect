@@ -653,6 +653,25 @@ public class EmotionController : MonoBehaviour
     public bool IsDistanceInteractionEnabled() => enableDistanceInteraction;
     public bool IsGazeInteractionEnabled() => enableGazeInteraction;
     public bool IsSpeechInteractionEnabled() => enableSpeechInteraction;
+    
+    // Programmatic toggle methods that bypass cooldown checks (for GuidedTour)
+    public void SetGazeInteractionEnabledProgrammatic(bool enabled)
+    {
+        enableGazeInteraction = enabled;
+        Debug.Log($"EmotionController: Gaze interaction programmatically {(enabled ? "enabled" : "disabled")}");
+    }
+    
+    public void SetDistanceInteractionEnabledProgrammatic(bool enabled)
+    {
+        enableDistanceInteraction = enabled;
+        Debug.Log($"EmotionController: Distance interaction programmatically {(enabled ? "enabled" : "disabled")}");
+    }
+    
+    public void SetSpeechInteractionEnabledProgrammatic(bool enabled)
+    {
+        enableSpeechInteraction = enabled;
+        Debug.Log($"EmotionController: Speech interaction programmatically {(enabled ? "enabled" : "disabled")}");
+    }
 
     public bool TryDisplayEmotion(string displayString, string triggerEvent, bool bypassCooldown = false)
     {
