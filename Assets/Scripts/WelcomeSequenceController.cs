@@ -9,6 +9,7 @@ public class WelcomeSequenceController : MonoBehaviour
     [SerializeField] private Canvas welcomeCanvas;
     [SerializeField] private TextMeshProUGUI instructionText;
     [SerializeField] private TextMeshProUGUI countdownText;
+    [SerializeField] private UnityEngine.UI.RawImage recenterImage; // Image to show during recentering prompt
     
     [Header("Sequence Settings")]
     [SerializeField] private float qooboCountdownDuration = 10f; // Countdown before Qoobo placement
@@ -66,6 +67,12 @@ public class WelcomeSequenceController : MonoBehaviour
         if (countdownText != null)
         {
             countdownText.text = "Use Quest Menu → Recenter";
+        }
+        
+        // Show the recenter image
+        if (recenterImage != null)
+        {
+            recenterImage.gameObject.SetActive(true);
         }
         
         if (showDebugLogs) Debug.Log("WelcomeSequence: Waiting for user to recenter manually");
@@ -210,6 +217,12 @@ public class WelcomeSequenceController : MonoBehaviour
         else
         {
             if (showDebugLogs) Debug.LogWarning("WelcomeSequence: Recenter detection timed out");
+        }
+        
+        // Hide the recenter image when detection is complete
+        if (recenterImage != null)
+        {
+            recenterImage.gameObject.SetActive(false);
         }
     }
     

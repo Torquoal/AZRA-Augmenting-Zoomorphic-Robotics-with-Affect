@@ -13,10 +13,7 @@ public class FaceStyleManager : MonoBehaviour
     [SerializeField] private FaceStyleData catStyleData;
     
     [Header("Animation Settings")]
-    [SerializeField] private float frameRate = 24f;
-    [SerializeField] private bool useOptimizedFrames = true;
-    [SerializeField] private int optimizedFrameCount = 100;
-    [SerializeField] private float frameDurationMultiplier = 2f;
+    // Animation settings removed - not currently used
     
     [Header("Debug")]
     [SerializeField] private bool showDebugLogs = true;

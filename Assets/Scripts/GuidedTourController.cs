@@ -12,7 +12,7 @@ public class GuidedTourController : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Button nextButton;
     
     [Header("Tour Settings")]
-    [SerializeField] private bool startTourAfterWelcome = true;
+    // Tour settings removed - not currently used
     
     [Header("References")]
     [SerializeField] private StudyLogger studyLogger;

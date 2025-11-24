@@ -46,6 +46,9 @@ public class UserFacingTracker : MonoBehaviour
     {
         if (qooboMesh == null || arCamera == null || angleDebugText == null) return;
         
+        // Always update telemetry display regardless of gaze interaction state
+        UpdateTelemetryDisplay();
+        
         // Check if gaze interaction is enabled
         if (emotionController != null && !emotionController.IsGazeInteractionEnabled())
         {
@@ -126,6 +129,17 @@ public class UserFacingTracker : MonoBehaviour
 
         // Update debug texts
         angleDebugText.text = $"Angle: {angleToQoobo:F1}°\nLook Timer: {sustainedLookTimer:F1}s\nAway Timer: {lookAwayTimer:F1}s\nState: {(isLookingAtRobot ? "Looking At" : isLookingAway ? "Looking Away" : "Neutral")}";
+
+        // Draw debug ray if enabled
+        if (showDebugRay)
+        {
+            Debug.DrawRay(arCamera.transform.position, headDirection * debugRayLength, debugRayColor);
+        }
+    }
+    
+    private void UpdateTelemetryDisplay()
+    {
+        // Update telemetry display regardless of gaze interaction state
         if (lastEventText != null && responseText != null && emotionModel != null)
         {
             lastEventText.text = $"Last Event: {emotionModel.LastTriggeredEvent}";
@@ -134,12 +148,6 @@ public class UserFacingTracker : MonoBehaviour
             {
                 gaugeValuesText.text = $"T:{emotionModel.TouchGauge:F0} R:{emotionModel.RestGauge:F0} S:{emotionModel.SocialGauge:F0} H:{emotionModel.HungerGauge:F0}";
             }
-        }
-
-        // Draw debug ray if enabled
-        if (showDebugRay)
-        {
-            Debug.DrawRay(arCamera.transform.position, headDirection * debugRayLength, debugRayColor);
         }
     }
 } 

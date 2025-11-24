@@ -52,8 +52,24 @@ ExportedObj/
 *.pdb.meta
 *.mdb.meta
 
+# ParticipantLogs
+/[Pp]articipantLogs/
+
+# DoNotShips
+/AZRA_BurstDebugInformation_DoNotShip/
+/AZRAM MR_BurstDebugInformation_DoNotShip/
+
 # Unity3D generated file on crash reports
 sysinfo.txt
+
+#XR samples
+Unity.XR.Hands.Samples.VisualizerSample.csproj
+Unity.XR.Interaction.Toolkit.Samples.ARStarterAssets.csproj
+Unity.XR.Interaction.Toolkit.Samples.ARStarterAssets.Editor.csproj
+Unity.XR.Interaction.Toolkit.Samples.Hands.csproj
+Unity.XR.Interaction.Toolkit.Samples.Hands.Editor.csproj
+Unity.XR.Interaction.Toolkit.Samples.StarterAssets.csproj
+Unity.XR.Interaction.Toolkit.Samples.StarterAssets.Editor.csproj
 
 # Builds
 *.apk
